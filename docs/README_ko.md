@@ -128,7 +128,7 @@ omg --agent architect "현재 코드베이스의 아키텍처를 분석해줘"
 > — 에이전트 시대에도 캐시가 전부입니다.
 
 oh-my-gemini-cli의 핵심 철학은 **컨텍스트 엔지니어링**입니다.
-Claude Code 팀이 공유한 [프롬프트 캐싱 교훈](https://news.hada.io/topic?id=26835)에서 영감을 받아,
+Claude Code 팀이 공유한 [프롬프트 캐싱 교훈](https://x.com/trq212/status/2024574133011673516)에서 영감을 받아,
 Gemini CLI 환경에 맞게 적용했습니다.
 
 ### 프롬프트 캐싱이란?
@@ -346,7 +346,7 @@ omg team shutdown
 Ink (React for CLI) 기반의 실시간 터미널 대시보드입니다.
 모든 에이전트의 작업 상태를 한 화면에서 확인할 수 있습니다.
 
-### 대시보드 미리보기 (Retro Pixel Art)
+### 대시보드 미리보기
 
 ```
 ╔══════════════════════════════════════════════════════════════════════╗
@@ -795,9 +795,10 @@ oh-my-gemini-cli/
 ## 영감을 받은 프로젝트
 
 - [Gemini CLI](https://github.com/google-gemini/gemini-cli) - Google의 오픈소스 AI 터미널 에이전트
+- [oh-my-claudecode](https://github.com/Yeachan-Heo/oh-my-claudecode) - Claude Code를 위한 팀 중심 멀티 에이전트 오케스트레이션
 - [oh-my-codex](https://github.com/Yeachan-Heo/oh-my-codex) - OpenAI Codex CLI 하네스
 - [oh-my-opencode](https://github.com/code-yeongyu/oh-my-opencode) - OpenCode 에이전트 하네스
-- [Claude Code 프롬프트 캐싱 교훈](https://news.hada.io/topic?id=26835) - 컨텍스트 엔지니어링 원리
+- [Claude Code 프롬프트 캐싱 교훈](https://x.com/trq212/status/2024574133011673516) - 컨텍스트 엔지니어링 원리
 
 ---
 

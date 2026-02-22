@@ -78,7 +78,7 @@ omg team "Implement OAuth authentication"  # Multi-agent team mode
 omg --agent architect "Analyze this codebase"  # Specific agent
 ```
 
-## Dashboard Preview (Retro Pixel Art)
+## Dashboard Preview
 
 ```
 ╔══════════════════════════════════════════════════════════════════════╗
@@ -105,7 +105,7 @@ omg --agent architect "Analyze this codebase"  # Specific agent
 
 ## Core Concept: Context Engineering
 
-Inspired by [Claude Code's prompt caching lessons](https://news.hada.io/topic?id=26835), OmG applies 5 principles:
+Inspired by [Claude Code's prompt caching lessons](https://x.com/trq212/status/2024574133011673516), OmG applies 5 principles:
 
 1. **Prefix Stability** - Static content first, dynamic content last. Never break the cached prefix.
 2. **Tool Set Invariance** - Never add/remove tools mid-session. Use state-transition tools instead.
@@ -175,9 +175,10 @@ oh-my-gemini-cli/
 ## Inspiration
 
 - [Gemini CLI](https://github.com/google-gemini/gemini-cli) - Google's open-source AI terminal agent
+- [oh-my-claudecode](https://github.com/Yeachan-Heo/oh-my-claudecode) - Teams-first Multi-agent orchestration for Claude Code
 - [oh-my-codex](https://github.com/Yeachan-Heo/oh-my-codex) - Codex CLI harness
 - [oh-my-opencode](https://github.com/code-yeongyu/oh-my-opencode) - OpenCode agent harness
-- [Claude Code Prompt Caching](https://news.hada.io/topic?id=26835) - Context engineering principles
+- [Claude Code Prompt Caching](https://x.com/trq212/status/2024574133011673516) - Context engineering principles
 
 ## Contributing
 
