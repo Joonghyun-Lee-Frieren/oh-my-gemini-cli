@@ -4,9 +4,9 @@
   <strong>Context engineering powered multi-agent harness for Gemini CLI</strong>
 </p>
 
-<p align="center">
+<h3 align="center">
   <em>Gemini thinks. OmG orchestrates.</em>
-</p>
+</h3>
 
 <p align="center">
   <a href="https://www.npmjs.com/package/oh-my-gemini-cli"><img src="https://img.shields.io/npm/v/oh-my-gemini-cli.svg" alt="npm version"></a>
@@ -18,12 +18,25 @@
   <strong>English</strong> | <a href="./docs/README_ko.md">한국어</a> | <a href="./docs/history.md">Changelog</a>
 </p>
 
+
+
+---
+
+> "Claude Code's core competitiveness isn't the Opus or Sonnet engine. It's Claude Code itself. Surprisingly, Gemini works well too when attached to Claude Code."
+>
+> — **Jeongkyu Shin (CEO of Lablup Inc.)**, *from a YouTube interview*
+
+*This project started from this insight: "What if we bring that harness to Gemini CLI?"*
+
+
+
 ---
 
 > Extends [Gemini CLI](https://github.com/google-gemini/gemini-cli) from a single-session tool into a
 > **context engineering powered multi-agent orchestration system**.
 
 ---
+
 
 ## Why OmG?
 
@@ -173,3 +186,7 @@ Contributions welcome! See the [한국어 README](./docs/README_ko.md) for detai
 ## License
 
 [MIT](./LICENSE)
+
+## Contact
+
+📧 kissdesty@gmail.com

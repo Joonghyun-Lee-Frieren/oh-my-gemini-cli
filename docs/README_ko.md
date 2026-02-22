@@ -4,9 +4,9 @@
   <strong>Gemini CLI를 위한 컨텍스트 엔지니어링 기반 멀티 에이전트 하네스</strong>
 </p>
 
-<p align="center">
+<h3 align="center">
   <em>Gemini thinks. OmG orchestrates.</em>
-</p>
+</h3>
 
 <p align="center">
   <a href="https://www.npmjs.com/package/oh-my-gemini-cli"><img src="https://img.shields.io/npm/v/oh-my-gemini-cli.svg" alt="npm version"></a>
@@ -18,10 +18,24 @@
   <a href="../README.md">English</a> | <strong>한국어</strong> | <a href="./history_ko.md">변경 이력</a>
 </p>
 
+
+
 ---
+
+> "Claude Code의 핵심 경쟁력은 Opus나 Sonnet 엔진이 아닙니다. Claude Code 그 자체예요. 놀랍지만 Gemini도 Claude Code를 붙이면 잘 돌아갑니다."
+>
+> — **신정규 (CEO of Lablup Inc.)**, *YouTube 인터뷰 중*
+
+*이 프로젝트는 위 통찰에서 시작되었습니다: "그렇다면 Gemini CLI에도 그 하네스를 입혀보자."*
+
+
+
+---
+
 
 > **[Gemini CLI](https://github.com/google-gemini/gemini-cli)**를 단일 세션 도구에서
 > **컨텍스트 엔지니어링 기반의 멀티 에이전트 오케스트레이션 시스템**으로 확장합니다.
+
 
 ---
 
@@ -800,6 +814,10 @@ oh-my-gemini-cli/
 ## 라이선스
 
 [MIT](../LICENSE)
+
+## 문의
+
+📧 kissdesty@gmail.com
 
 ---
 
