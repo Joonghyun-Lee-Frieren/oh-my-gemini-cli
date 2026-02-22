@@ -1,0 +1,66 @@
+# /omg:team — 멀티 에이전트 팀 실행
+# 작업을 분석하여 적절한 에이전트 팀을 구성하고 병렬 실행합니다.
+
+[command]
+name = "omg:team"
+description = "멀티 에이전트 팀을 구성하고 작업을 병렬 실행합니다"
+
+[command.args]
+workers = { type = "number", default = 4, description = "최대 동시 실행 에이전트 수 (1-6)" }
+plan-only = { type = "boolean", default = false, description = "계획 수립만 하고 실행하지 않음" }
+agents = { type = "string", default = "", description = "사용할 에이전트 조합 (예: architect,executor,reviewer)" }
+
+[prompt]
+text = """
+멀티 에이전트 팀을 구성하여 사용자의 작업을 분석하고 실행해주세요.
+
+## 팀 구성 절차
+
+### Phase 1: 작업 분석 (Planner)
+
+사용자의 요청을 분석하여 다음을 결정합니다:
+
+1. **작업 복잡도 평가**: 단순(1 Phase), 보통(2-3 Phases), 복잡(4+ Phases)
+2. **필요 에이전트 결정**:
+   - 단순: Executor × 1
+   - 보통: Planner + Executor × 2 + Reviewer
+   - 복잡: Architect + Planner + Executor × 3 + Reviewer + Debugger
+3. **작업 분해**: 원자적 하위 작업으로 분해
+4. **의존성 그래프**: 작업 간 선후 관계 매핑
+5. **병렬화 기회**: 독립적 작업을 병렬 실행 가능 그룹으로 분류
+
+### Phase 2: 팀 생성
+
+결정된 구성에 따라 에이전트를 생성합니다:
+- Architect, Planner, Reviewer, Debugger → Gemini 3.1 Pro
+- Executor, Quick → Gemini 3.1 Flash
+- 최대 동시 에이전트: {workers}개
+
+### Phase 3: 파이프라인 실행
+
+1. 의존성이 없는 작업부터 병렬 시작
+2. 각 에이전트의 완료를 감지하여 다음 작업 할당
+3. 실패한 작업은 최대 3회 재시도
+4. 모든 구현 완료 후 Reviewer가 코드 리뷰 수행
+
+### Phase 4: 결과 보고
+
+```
+🏁 팀 실행 완료
+━━━━━━━━━━━━━━━━
+📋 작업: {total}개 중 {done}개 완료
+🤖 에이전트: {agents} 사용
+⏱️ 소요: {time} (순차 예상: {sequential_time})
+💾 캐시 적중률: {hit_rate}%
+📁 변경 파일: {file_count}개
+```
+
+변경된 파일 목록과 각 에이전트의 작업 결과를 요약해주세요.
+
+## 안전 규칙
+
+- 같은 파일을 여러 에이전트가 동시에 수정하지 않습니다
+- 삭제 작업은 사용자 확인 후 진행합니다
+- 비용 상한을 초과하면 자동으로 일시 중지합니다
+- plan-only 모드에서는 계획만 출력하고 실행하지 않습니다
+"""

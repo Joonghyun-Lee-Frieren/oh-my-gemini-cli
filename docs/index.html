@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>oh-my-gemini-cli — Context Engineering Powered Multi-Agent Harness for Gemini CLI</title>
+  <meta name="description" content="Transform Gemini CLI into a context-engineering powered multi-agent orchestration system. Multi-agent teams, ASCII dashboard, prompt caching, and more.">
+  <meta property="og:title" content="oh-my-gemini-cli">
+  <meta property="og:description" content="Context Engineering powered multi-agent harness for Gemini CLI">
+  <meta property="og:type" content="website">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>✦</text></svg>">
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+    :root {
+      --bg: #0a0a0f;
+      --bg-card: #12121a;
+      --bg-terminal: #0d0d14;
+      --border: #1e1e2e;
+      --border-glow: #4f46e5;
+      --text: #e2e8f0;
+      --text-dim: #64748b;
+      --text-bright: #f8fafc;
+      --accent: #818cf8;
+      --accent-bright: #a5b4fc;
+      --green: #34d399;
+      --yellow: #fbbf24;
+      --red: #f87171;
+      --cyan: #22d3ee;
+      --purple: #c084fc;
+      --font-mono: 'SF Mono', 'Cascadia Code', 'JetBrains Mono', 'Fira Code', Consolas, monospace;
+      --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      --max-w: 1120px;
+    }
+
+    html { scroll-behavior: smooth }
+
+    body {
+      font-family: var(--font-sans);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a { color: var(--accent); text-decoration: none; transition: color .2s }
+    a:hover { color: var(--accent-bright) }
+
+    .container { max-width: var(--max-w); margin: 0 auto; padding: 0 1.5rem }
+
+    /* ── Nav ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      background: rgba(10,10,15,.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+    nav .container {
+      display: flex; align-items: center; justify-content: space-between;
+      height: 56px;
+    }
+    .nav-brand {
+      font-family: var(--font-mono); font-weight: 700; font-size: .95rem;
+      color: var(--text-bright);
+    }
+    .nav-brand span { color: var(--accent) }
+    .nav-links { display: flex; gap: 1.5rem; font-size: .875rem }
+    .nav-links a { color: var(--text-dim) }
+    .nav-links a:hover { color: var(--text) }
+
+    /* ── Hero ── */
+    .hero {
+      padding: 10rem 0 5rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -40%; left: 50%; transform: translateX(-50%);
+      width: 600px; height: 600px;
+      background: radial-gradient(circle, rgba(79,70,229,.12) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .hero-badge {
+      display: inline-block;
+      padding: .35rem .9rem;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: var(--bg-card);
+      font-size: .8rem;
+      color: var(--text-dim);
+      margin-bottom: 1.5rem;
+    }
+    .hero-badge span { color: var(--green) }
+    .hero h1 {
+      font-family: var(--font-mono);
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      font-weight: 800;
+      color: var(--text-bright);
+      letter-spacing: -.02em;
+      margin-bottom: .75rem;
+    }
+    .hero h1 .accent { color: var(--accent) }
+    .hero .tagline {
+      font-size: clamp(1rem, 2.5vw, 1.25rem);
+      color: var(--text-dim);
+      max-width: 600px;
+      margin: 0 auto 2.5rem;
+    }
+
+    .install-box {
+      display: inline-flex; align-items: center; gap: .75rem;
+      background: var(--bg-terminal);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: .75rem 1rem .75rem 1.25rem;
+      font-family: var(--font-mono);
+      font-size: .95rem;
+      margin-bottom: 1rem;
+      position: relative;
+    }
+    .install-box .prompt { color: var(--green) }
+    .install-box code { color: var(--text-bright) }
+    .install-box button {
+      background: var(--bg-card); border: 1px solid var(--border);
+      color: var(--text-dim); border-radius: 6px;
+      padding: .4rem .6rem; cursor: pointer; font-size: .8rem;
+      transition: all .2s;
+    }
+    .install-box button:hover { color: var(--text); border-color: var(--accent) }
+    .install-box button.copied { color: var(--green); border-color: var(--green) }
+
+    .hero-links { display: flex; justify-content: center; gap: 1rem; margin-top: 1.5rem }
+    .btn {
+      display: inline-flex; align-items: center; gap: .5rem;
+      padding: .65rem 1.5rem;
+      border-radius: 8px;
+      font-size: .9rem; font-weight: 600;
+      transition: all .2s;
+    }
+    .btn-primary {
+      background: var(--accent); color: #fff;
+    }
+    .btn-primary:hover { background: #6366f1; color: #fff }
+    .btn-secondary {
+      background: var(--bg-card); color: var(--text);
+      border: 1px solid var(--border);
+    }
+    .btn-secondary:hover { border-color: var(--accent); color: var(--accent-bright) }
+
+    /* ── Section ── */
+    section { padding: 5rem 0 }
+    .section-label {
+      font-family: var(--font-mono); font-size: .8rem;
+      color: var(--accent); text-transform: uppercase;
+      letter-spacing: .1em; margin-bottom: .5rem;
+    }
+    .section-title {
+      font-size: clamp(1.5rem, 3vw, 2rem);
+      font-weight: 700; color: var(--text-bright);
+      margin-bottom: 1rem;
+    }
+    .section-desc {
+      color: var(--text-dim); max-width: 600px; margin-bottom: 3rem;
+    }
+
+    /* ── Features Grid ── */
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.25rem;
+    }
+    .feature-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.75rem;
+      transition: border-color .3s, transform .3s;
+    }
+    .feature-card:hover {
+      border-color: var(--border-glow);
+      transform: translateY(-2px);
+    }
+    .feature-icon {
+      width: 40px; height: 40px;
+      display: flex; align-items: center; justify-content: center;
+      border-radius: 10px;
+      font-size: 1.2rem;
+      margin-bottom: 1rem;
+    }
+    .fi-agents { background: rgba(129,140,248,.12); color: var(--accent) }
+    .fi-context { background: rgba(52,211,153,.12); color: var(--green) }
+    .fi-dashboard { background: rgba(34,211,238,.12); color: var(--cyan) }
+    .fi-models { background: rgba(251,191,36,.12); color: var(--yellow) }
+    .fi-external { background: rgba(192,132,252,.12); color: var(--purple) }
+    .fi-bots { background: rgba(248,113,113,.12); color: var(--red) }
+    .feature-card h3 {
+      font-size: 1rem; font-weight: 600;
+      color: var(--text-bright); margin-bottom: .5rem;
+    }
+    .feature-card p { font-size: .875rem; color: var(--text-dim); line-height: 1.5 }
+
+    /* ── Terminal Preview ── */
+    .terminal-section { padding: 5rem 0 }
+    .terminal-window {
+      background: var(--bg-terminal);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    .terminal-bar {
+      display: flex; align-items: center; gap: .5rem;
+      padding: .75rem 1rem;
+      background: rgba(18,18,26,.8);
+      border-bottom: 1px solid var(--border);
+    }
+    .terminal-dot {
+      width: 10px; height: 10px; border-radius: 50%;
+    }
+    .terminal-dot.r { background: #f87171 }
+    .terminal-dot.y { background: #fbbf24 }
+    .terminal-dot.g { background: #34d399 }
+    .terminal-title {
+      flex: 1; text-align: center;
+      font-family: var(--font-mono); font-size: .75rem;
+      color: var(--text-dim);
+    }
+    .terminal-body {
+      padding: 1.25rem 1.5rem;
+      font-family: var(--font-mono);
+      font-size: clamp(.6rem, 1.3vw, .8rem);
+      line-height: 1.45;
+      overflow-x: auto;
+      white-space: pre;
+      color: var(--text);
+    }
+    .terminal-body .t-dim { color: var(--text-dim) }
+    .terminal-body .t-accent { color: var(--accent) }
+    .terminal-body .t-green { color: var(--green) }
+    .terminal-body .t-yellow { color: var(--yellow) }
+    .terminal-body .t-cyan { color: var(--cyan) }
+    .terminal-body .t-red { color: var(--red) }
+    .terminal-body .t-purple { color: var(--purple) }
+    .terminal-body .t-bright { color: var(--text-bright) }
+
+    /* ── Quick Start ── */
+    .quickstart { padding: 5rem 0 }
+    .quickstart-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.25rem;
+    }
+    .step-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.75rem;
+    }
+    .step-num {
+      font-family: var(--font-mono);
+      font-size: .75rem; font-weight: 700;
+      color: var(--accent);
+      margin-bottom: .75rem;
+    }
+    .step-card h3 {
+      font-size: 1rem; color: var(--text-bright);
+      margin-bottom: .75rem;
+    }
+    .step-card pre {
+      background: var(--bg-terminal);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: .75rem 1rem;
+      font-family: var(--font-mono);
+      font-size: .8rem;
+      overflow-x: auto;
+      color: var(--text);
+    }
+    .step-card pre .prompt { color: var(--green) }
+    .step-card pre .comment { color: var(--text-dim) }
+
+    /* ── Footer ── */
+    footer {
+      padding: 3rem 0;
+      border-top: 1px solid var(--border);
+      text-align: center;
+    }
+    .footer-links {
+      display: flex; justify-content: center; gap: 2rem;
+      margin-bottom: 1.5rem; font-size: .875rem;
+    }
+    .footer-copy {
+      font-size: .8rem; color: var(--text-dim);
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 640px) {
+      .hero { padding: 8rem 0 3rem }
+      .nav-links { gap: 1rem }
+      .features-grid { grid-template-columns: 1fr }
+      .quickstart-grid { grid-template-columns: 1fr }
+      .terminal-body { font-size: .55rem }
+      .install-box { flex-wrap: wrap; justify-content: center }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Nav -->
+  <nav>
+    <div class="container">
+      <div class="nav-brand"><span>omg</span> oh-my-gemini-cli</div>
+      <div class="nav-links">
+        <a href="#features">Features</a>
+        <a href="#dashboard">Dashboard</a>
+        <a href="#quickstart">Quick Start</a>
+        <a href="https://github.com/Joonghyun-Lee-Frieren/oh-my-gemini-cli">GitHub</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <header class="hero">
+    <div class="container">
+      <div class="hero-badge"><span>●</span> v0.1.0 — now available</div>
+      <h1>oh-my-<span class="accent">gemini</span>-cli</h1>
+      <p class="tagline">Context Engineering powered multi-agent harness for Gemini CLI</p>
+      <div class="install-box">
+        <span class="prompt">$</span>
+        <code>npm install -g oh-my-gemini-cli</code>
+        <button onclick="copyInstall(this)" aria-label="Copy install command">Copy</button>
+      </div>
+      <div class="hero-links">
+        <a href="#quickstart" class="btn btn-primary">Get Started</a>
+        <a href="https://github.com/Joonghyun-Lee-Frieren/oh-my-gemini-cli" class="btn btn-secondary">
+          GitHub →
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Features -->
+  <section id="features">
+    <div class="container">
+      <p class="section-label">Features</p>
+      <h2 class="section-title">Everything you need for agent orchestration</h2>
+      <p class="section-desc">
+        OMG extends Gemini CLI from a single-session tool into a full multi-agent
+        orchestration system — without forking. It uses only native extension points.
+      </p>
+      <div class="features-grid">
+
+        <div class="feature-card">
+          <div class="feature-icon fi-agents">⊚</div>
+          <h3>Multi-Agent Orchestration</h3>
+          <p>Spawn up to 6 concurrent agents — Architect, Planner, Executor, Reviewer, Debugger, and Researcher — working in parallel on your tasks.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon fi-context">◈</div>
+          <h3>Context Engineering</h3>
+          <p>Prompt caching optimization based on prefix stability, tool invariance, and cache-safe compaction. Monitor cache hit rates like uptime.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon fi-dashboard">▦</div>
+          <h3>ASCII Dashboard</h3>
+          <p>Real-time terminal UI built with Ink (React for CLI). See all agents, task pipelines, logs, and cache stats at a glance.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon fi-models">⟡</div>
+          <h3>Dual Model Strategy</h3>
+          <p>Gemini 3.1 Pro for planning and architecture. Gemini 3.1 Flash for fast code generation. Automatic routing based on task type.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon fi-external">⬡</div>
+          <h3>External LLM Support</h3>
+          <p>Connect Claude, GPT, and other models via OAuth or API key. Mix and match models for different agent roles.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon fi-bots">⊕</div>
+          <h3>Telegram / Discord Control</h3>
+          <p>Monitor and control your agent sessions remotely. Get notifications on completion, errors, and review requests.</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Dashboard Preview -->
+  <section id="dashboard" class="terminal-section">
+    <div class="container">
+      <p class="section-label">Dashboard Preview</p>
+      <h2 class="section-title">Real-time ASCII terminal dashboard</h2>
+      <p class="section-desc">
+        Every agent's status, task pipeline, and logs — all in your terminal.
+      </p>
+      <div class="terminal-window">
+        <div class="terminal-bar">
+          <span class="terminal-dot r"></span>
+          <span class="terminal-dot y"></span>
+          <span class="terminal-dot g"></span>
+          <span class="terminal-title">omg — oh-my-gemini-cli</span>
+          <span style="width:30px"></span>
+        </div>
+        <div class="terminal-body"><span class="t-dim">┌─────────────────────────────────────────────────────────────────────┐</span>
+<span class="t-dim">│</span>                                                                     <span class="t-dim">│</span>
+<span class="t-dim">│</span>   <span class="t-accent">╔═══╗ ╔╗╔╗ ╔═══╗</span>                                                <span class="t-dim">│</span>
+<span class="t-dim">│</span>   <span class="t-accent">║   ║ ║╚╝║ ║   ╠═╗</span>  <span class="t-bright">oh-my-gemini-cli v0.1.0</span>                    <span class="t-dim">│</span>
+<span class="t-dim">│</span>   <span class="t-accent">║   ║ ║  ║ ║   ║ ║</span>  <span class="t-dim">⏱ 00:03:42</span>    <span class="t-green">Agents: 4/6 active</span>           <span class="t-dim">│</span>
+<span class="t-dim">│</span>   <span class="t-accent">╚═══╝ ╚╗╔╝ ╚═══╩═╝</span>                                              <span class="t-dim">│</span>
+<span class="t-dim">│</span>          <span class="t-accent">╚╝</span>                                                        <span class="t-dim">│</span>
+<span class="t-dim">├──────────────────────────────┬──────────────────────────────────────┤</span>
+<span class="t-dim">│</span>  <span class="t-bright">AGENTS</span>                      <span class="t-dim">│</span>  <span class="t-bright">TASK PIPELINE</span>                       <span class="t-dim">│</span>
+<span class="t-dim">│</span>                              <span class="t-dim">│</span>                                      <span class="t-dim">│</span>
+<span class="t-dim">│</span>  <span class="t-green">◉</span> Planner    <span class="t-purple">[Pro]</span>  <span class="t-accent">██████░</span> <span class="t-dim">│</span>  <span class="t-green">✓</span> analyze-auth     Planner   <span class="t-green">done</span>   <span class="t-dim">│</span>
+<span class="t-dim">│</span>    <span class="t-dim">"Analyzing auth module..."</span> <span class="t-dim">│</span>  <span class="t-green">✓</span> design-schema    Architect <span class="t-green">done</span>   <span class="t-dim">│</span>
+<span class="t-dim">│</span>                              <span class="t-dim">│</span>  <span class="t-yellow">●</span> implement-oauth  Exec #1   <span class="t-yellow">run</span>    <span class="t-dim">│</span>
+<span class="t-dim">│</span>  <span class="t-green">◉</span> Architect  <span class="t-purple">[Pro]</span>  <span class="t-accent">████░░░</span> <span class="t-dim">│</span>  <span class="t-yellow">●</span> implement-token  Exec #2   <span class="t-yellow">run</span>    <span class="t-dim">│</span>
+<span class="t-dim">│</span>    <span class="t-dim">"Designing DB schema..."</span>   <span class="t-dim">│</span>  <span class="t-yellow">●</span> implement-routes Exec #3   <span class="t-yellow">run</span>    <span class="t-dim">│</span>
+<span class="t-dim">│</span>                              <span class="t-dim">│</span>  <span class="t-dim">○</span> code-review      Reviewer  <span class="t-dim">queue</span>  <span class="t-dim">│</span>
+<span class="t-dim">│</span>  <span class="t-cyan">⟳</span> Executor#1 <span class="t-yellow">[Flash]</span> <span class="t-accent">██░░░░</span> <span class="t-dim">│</span>  <span class="t-dim">○</span> integration-test Debugger  <span class="t-dim">queue</span>  <span class="t-dim">│</span>
+<span class="t-dim">│</span>    <span class="t-dim">"Writing oauth/callback.ts"</span><span class="t-dim">│</span>                                      <span class="t-dim">│</span>
+<span class="t-dim">│</span>                              <span class="t-dim">│</span>                                      <span class="t-dim">│</span>
+<span class="t-dim">│</span>  <span class="t-cyan">⟳</span> Executor#2 <span class="t-yellow">[Flash]</span> <span class="t-accent">███░░░</span> <span class="t-dim">│</span>                                      <span class="t-dim">│</span>
+<span class="t-dim">│</span>    <span class="t-dim">"Writing token/refresh.ts"</span> <span class="t-dim">│</span>                                      <span class="t-dim">│</span>
+<span class="t-dim">│</span>                              <span class="t-dim">│</span>                                      <span class="t-dim">│</span>
+<span class="t-dim">│</span>  <span class="t-cyan">⟳</span> Executor#3 <span class="t-yellow">[Flash]</span> <span class="t-accent">█░░░░░</span> <span class="t-dim">│</span>                                      <span class="t-dim">│</span>
+<span class="t-dim">│</span>    <span class="t-dim">"Writing routes/auth.ts"</span>   <span class="t-dim">│</span>                                      <span class="t-dim">│</span>
+<span class="t-dim">│</span>                              <span class="t-dim">│</span>                                      <span class="t-dim">│</span>
+<span class="t-dim">│</span>  <span class="t-dim">○</span> Reviewer   <span class="t-purple">[Pro]</span>   <span class="t-dim">queued</span> <span class="t-dim">│</span>                                      <span class="t-dim">│</span>
+<span class="t-dim">├──────────────────────────────┴──────────────────────────────────────┤</span>
+<span class="t-dim">│</span>  <span class="t-bright">LOG</span>                                                                <span class="t-dim">│</span>
+<span class="t-dim">│</span>  <span class="t-dim">03:41</span> <span class="t-cyan">[Exec#1]</span> ✎ Created oauth/callback.ts (42 lines)            <span class="t-dim">│</span>
+<span class="t-dim">│</span>  <span class="t-dim">03:42</span> <span class="t-cyan">[Exec#2]</span> ✎ Writing token/refresh.ts...                      <span class="t-dim">│</span>
+<span class="t-dim">│</span>  <span class="t-dim">03:42</span> <span class="t-green">[Planner]</span> <span class="t-green">✓</span> Task decomposition complete (5 subtasks)        <span class="t-dim">│</span>
+<span class="t-dim">│</span>  <span class="t-dim">03:42</span> <span class="t-green">[Arch]</span>    <span class="t-green">✓</span> Schema design finalized                         <span class="t-dim">│</span>
+<span class="t-dim">├─────────────────────────────────────────────────────────────────────┤</span>
+<span class="t-dim">│</span>  CTX Cache: <span class="t-green">94.2% hit</span> <span class="t-dim">│</span> Tokens: <span class="t-cyan">12.4k/1M</span> <span class="t-dim">│</span> Cost: <span class="t-yellow">$0.03</span>            <span class="t-dim">│</span>
+<span class="t-dim">├─────────────────────────────────────────────────────────────────────┤</span>
+<span class="t-dim">│</span>  <span class="t-dim">[q] quit  [p] pause  [r] resume  [d] detail  [t] telegram-sync</span>   <span class="t-dim">│</span>
+<span class="t-dim">└─────────────────────────────────────────────────────────────────────┘</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Quick Start -->
+  <section id="quickstart" class="quickstart">
+    <div class="container">
+      <p class="section-label">Quick Start</p>
+      <h2 class="section-title">Up and running in 60 seconds</h2>
+      <p class="section-desc">OMG is an add-on, not a fork. It uses only Gemini CLI's native extension points.</p>
+      <div class="quickstart-grid">
+
+        <div class="step-card">
+          <div class="step-num">01 — Install</div>
+          <h3>Install globally via npm</h3>
+          <pre><span class="comment"># Requires Node.js >= 20 and Gemini CLI</span>
+<span class="prompt">$</span> npm install -g oh-my-gemini-cli</pre>
+        </div>
+
+        <div class="step-card">
+          <div class="step-num">02 — Setup</div>
+          <h3>Initialize in your project</h3>
+          <pre><span class="comment"># Installs prompts, skills, commands, MCP servers</span>
+<span class="prompt">$</span> omg setup</pre>
+        </div>
+
+        <div class="step-card">
+          <div class="step-num">03 — Verify</div>
+          <h3>Check everything is ready</h3>
+          <pre><span class="comment"># Diagnose installation status</span>
+<span class="prompt">$</span> omg doctor</pre>
+        </div>
+
+        <div class="step-card">
+          <div class="step-num">04 — Run</div>
+          <h3>Launch with multi-agent team</h3>
+          <pre><span class="comment"># Start a multi-agent session</span>
+<span class="prompt">$</span> omg team "Implement OAuth auth"</pre>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <div class="footer-links">
+        <a href="https://github.com/Joonghyun-Lee-Frieren/oh-my-gemini-cli">GitHub</a>
+        <a href="https://www.npmjs.com/package/oh-my-gemini-cli">npm</a>
+        <a href="./guide/installation.md">Installation Guide</a>
+        <a href="https://github.com/Joonghyun-Lee-Frieren/oh-my-gemini-cli/blob/main/LICENSE">MIT License</a>
+      </div>
+      <p class="footer-copy">Built with Gemini and the open source community</p>
+    </div>
+  </footer>
+
+  <script>
+    function copyInstall(btn) {
+      navigator.clipboard.writeText('npm install -g oh-my-gemini-cli').then(function() {
+        btn.textContent = '✓';
+        btn.classList.add('copied');
+        setTimeout(function() {
+          btn.textContent = 'Copy';
+          btn.classList.remove('copied');
+        }, 2000);
+      });
+    }
+  </script>
+
+</body>
+</html>

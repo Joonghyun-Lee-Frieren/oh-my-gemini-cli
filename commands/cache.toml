@@ -1,0 +1,72 @@
+# /omg:cache — 캐시 적중률 모니터링
+# 프롬프트 캐시 적중률을 실시간으로 모니터링하고 이상 징후를 감지합니다.
+
+[command]
+name = "omg:cache"
+description = "프롬프트 캐시 적중률을 모니터링하고 분석합니다"
+
+[command.args]
+history = { type = "boolean", default = false, description = "시간대별 캐시 적중률 이력 표시" }
+alert-threshold = { type = "number", default = 90, description = "경고 발생 기준 적중률 (%)" }
+
+[prompt]
+text = """
+프롬프트 캐시의 현재 상태를 상세하게 분석하고 보고해주세요.
+
+## 캐시 데이터
+
+### 현재 캐시 상태
+!{omg status --cache --json}
+
+### 최근 요청 이력 (캐시 적중/미스)
+!{omg status --cache-history --json}
+
+## 분석 항목
+
+### 1. 캐시 적중률 현황
+
+```
+📊 Cache Performance
+━━━━━━━━━━━━━━━━━━━━━
+적중률:    {hit_rate}% {'✅' if >= 90 else '⚠️'}
+적중 수:   {hits}
+미스 수:   {misses}
+목표:      ≥ 90%
+```
+
+### 2. 캐시 레이어 분석
+
+각 레이어별 캐시 상태를 확인하세요:
+
+| 레이어 | 토큰 수 | 캐시 상태 | 안정성 |
+|--------|---------|----------|--------|
+| 시스템 프롬프트 | {tokens} | {cached/uncached} | {stable/unstable} |
+| 도구 정의 | {tokens} | {cached/uncached} | {stable/unstable} |
+| GEMINI.md | {tokens} | {cached/uncached} | {stable/unstable} |
+| 세션 컨텍스트 | {tokens} | {cached/uncached} | N/A |
+
+### 3. 캐시 미스 원인 분석
+
+최근 캐시 미스가 발생한 경우:
+- **접두사 변경**: 어떤 접두사가 변경되었는지
+- **도구 집합 변경**: 도구가 추가/제거되었는지
+- **컴팩션 발생**: 컨텍스트 요약으로 캐시가 무효화되었는지
+
+### 4. 비용 영향
+
+캐시 적중률에 따른 비용 분석:
+- 캐시 적중 시 비용: 기본 비용의 ~25%
+- 현재 적중률로 인한 절감액: ${savings}
+- 적중률 1% 개선 시 추가 절감: ${per_percent}
+
+### 5. 권장 조치
+
+캐시 적중률이 목표 미만이면:
+- ⚠️ 즉시 `$context-optimize`를 실행하세요
+- 접두사 안정성을 점검하세요
+- 불필요한 도구 변경을 되돌리세요
+
+캐시 적중률이 목표 이상이면:
+- ✅ 현재 상태를 유지하세요
+- 다음 점검 시점을 알려주세요
+"""
