@@ -1,29 +1,31 @@
 import React, { useState, useEffect } from 'react';
 import { Box, Text } from 'ink';
-import { colors } from '../theme.js';
+import { retroColors } from '../theme.js';
 
-const logoFrames = [
-  [
-    '  ___  __  __  ___  ',
-    ' / _ \\|  \\/  |/ __| ',
-    '| (_) | |\\/| | (_ | ',
-    ' \\___/|_|  |_|\\___| ',
-  ],
-  [
-    '  ___  __  __  ___  ',
-    ' / _ \\|  \\/  |/ __| ',
-    '| (_) | |\\/| | (_ | ',
-    ' \\___/|_|  |_|\\___| ',
-    '   oh-my-gemini-cli  ',
-  ],
-  [
-    '  ___  __  __  ___  ',
-    ' / _ \\|  \\/  |/ __| ',
-    '| (_) | |\\/| | (_ | ',
-    ' \\___/|_|  |_|\\___| ',
-    '   oh-my-gemini-cli  ',
-    '  ✦ context is king  ',
-  ],
+const frames = [
+  { lines: [{ text: '    · · ·', color: retroColors.slate }] },
+  {
+    lines: [{ text: '  ░▒▓█ LOADING █▓▒░', color: retroColors.cyan }],
+  },
+  {
+    lines: [
+      { text: '  ╔══════════════════════════════════╗', color: retroColors.white },
+      { text: '  ║  ◆ oh-my-gemini-cli ◆          ║', color: retroColors.pink },
+      { text: '  ║  ░▒▓ CONTEXT QUEST v0.1.1 ▓▒░  ║', color: retroColors.cyan },
+      { text: '  ╚══════════════════════════════════╝', color: retroColors.white },
+    ],
+  },
+  {
+    lines: [
+      { text: '  ╔══════════════════════════════════╗', color: retroColors.white },
+      { text: '  ║  ◆ oh-my-gemini-cli ◆          ║', color: retroColors.pink },
+      { text: '  ║  ░▒▓ CONTEXT QUEST v0.1.1 ▓▒░  ║', color: retroColors.cyan },
+      { text: '  ║                                  ║', color: retroColors.white },
+      { text: '  ║  ★ Gemini thinks. OmG orchestrates. ★   ║', color: retroColors.gold },
+      { text: '  ╚══════════════════════════════════╝', color: retroColors.white },
+      { text: '       PRESS ANY KEY TO START', color: retroColors.slate },
+    ],
+  },
 ];
 
 interface AsciiArtProps {
@@ -31,35 +33,48 @@ interface AsciiArtProps {
 }
 
 export function AsciiArt({ onComplete }: AsciiArtProps) {
-  const [frame, setFrame] = useState(0);
+  const [frameIdx, setFrameIdx] = useState(0);
   const [visible, setVisible] = useState(true);
+  const [blink, setBlink] = useState(true);
 
   useEffect(() => {
-    if (frame >= logoFrames.length - 1) {
+    if (frameIdx >= frames.length - 1) {
+      const blinkTimer = setInterval(() => setBlink((b) => !b), 500);
       const hideTimer = setTimeout(() => {
+        clearInterval(blinkTimer);
         setVisible(false);
         onComplete?.();
-      }, 2000);
-      return () => clearTimeout(hideTimer);
+      }, 3000);
+      return () => {
+        clearInterval(blinkTimer);
+        clearTimeout(hideTimer);
+      };
     }
 
-    const timer = setTimeout(() => {
-      setFrame((prev) => prev + 1);
-    }, 400);
+    const timer = setTimeout(() => setFrameIdx((p) => p + 1), 500);
     return () => clearTimeout(timer);
-  }, [frame, onComplete]);
+  }, [frameIdx, onComplete]);
 
   if (!visible) return null;
 
-  const lines = logoFrames[frame];
+  const current = frames[frameIdx];
+  const isLastFrame = frameIdx === frames.length - 1;
 
   return (
     <Box flexDirection="column" alignItems="center" paddingY={1}>
-      {lines.map((line, i) => (
-        <Text key={i} color={i < 4 ? colors.primary : colors.accent} bold={i < 4}>
-          {line}
-        </Text>
-      ))}
+      {current.lines.map((line, i) => {
+        const isPromptLine = isLastFrame && i === current.lines.length - 1;
+        return (
+          <Text
+            key={i}
+            color={line.color}
+            bold={line.color === retroColors.pink}
+            dimColor={isPromptLine && !blink}
+          >
+            {line.text}
+          </Text>
+        );
+      })}
     </Box>
   );
 }

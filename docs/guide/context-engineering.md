@@ -19,7 +19,7 @@
 - **지연**: 캐시 미스 시 전체 컨텍스트를 처음부터 재연산
 - **품질**: 컨텍스트 구조가 불안정하면 모델 응답의 일관성 저하
 
-oh-my-gemini-cli(OMG)는 이 문제를 **프롬프트 캐싱 최적화**를 중심으로 해결합니다.
+oh-my-gemini-cli(OmG)는 이 문제를 **프롬프트 캐싱 최적화**를 중심으로 해결합니다.
 
 ---
 
@@ -74,7 +74,7 @@ LLM API의 프롬프트 캐싱은 **접두사 매칭(Prefix Matching)** 방식�
 ├── 거의 변경 안 됨 (캐시 안정) ────────┤ ├── 매 턴 변경 ┤
 ```
 
-#### OMG의 구현
+#### OmG의 구현
 
 ```
 요청 구조 (캐싱 최적화 순서):
@@ -91,7 +91,7 @@ LLM API의 프롬프트 캐싱은 **접두사 매칭(Prefix Matching)** 방식�
 └──────────────────────────────────┘
 ```
 
-OMG의 `context-layer.ts`는 이 계층 구조를 자동으로 관리합니다. 정적 레이어와 동적 레이어를 분리하여 캐시 적중률을 극대화합니다.
+OmG의 `context-layer.ts`는 이 계층 구조를 자동으로 관리합니다. 정적 레이어와 동적 레이어를 분리하여 캐시 적중률을 극대화합니다.
 
 **관련 코드**: `src/context/context-layer.ts`, `src/context/prefix-optimizer.ts`
 
@@ -110,7 +110,7 @@ OMG의 `context-layer.ts`는 이 계층 구조를 자동으로 관리합니다. 
 턴 2: [시스템] [도구A, 도구B]         [대화...]  ← 도구C 제거 → 캐시 파괴!
 ```
 
-#### OMG의 해결책
+#### OmG의 해결책
 
 **1. Plan Mode를 도구로 구현**
 
@@ -127,7 +127,7 @@ OMG의 `context-layer.ts`는 이 계층 구조를 자동으로 관리합니다. 
 
 **2. MCP 도구 지연 로딩**
 
-MCP 서버가 제공하는 수십 개의 도구를 모두 등록하면 컨텍스트가 비대해집니다. OMG는 경량 스텁(stub)만 등록하고, 실제 필요 시 `ToolSearch`로 전체 스키마를 로드합니다.
+MCP 서버가 제공하는 수십 개의 도구를 모두 등록하면 컨텍스트가 비대해집니다. OmG는 경량 스텁(stub)만 등록하고, 실제 필요 시 `ToolSearch`로 전체 스키마를 로드합니다.
 
 ```
 등록된 도구 (항상 동일, 캐시 안정):
@@ -153,15 +153,15 @@ MCP 서버가 제공하는 수십 개의 도구를 모두 등록하면 컨텍스
 턴 3: [Pro]   시스템 + 대화         → Pro 캐시를 다시 처음부터... 
 ```
 
-#### OMG의 해결책: 서브에이전트 패턴
+#### OmG의 해결책: 서브에이전트 패턴
 
 메인 세션의 모델은 절대 변경하지 않습니다. 다른 모델이 필요한 작업은 **별도의 서브에이전트**로 위임합니다.
 
 ```
-메인 세션 (Gemini 3.1 Pro) ──── Pro 캐시 계속 유지
+메인 세션 (Gemini Pro) ──── Pro 캐시 계속 유지
   │
   ├─→ "이 코드를 구현해줘" (핸드오프)
-  │     └─→ 서브에이전트 (Gemini 3.1 Flash)
+  │     └─→ 서브에이전트 (Gemini Flash)
   │           ├── 자체 Flash 캐시 구축
   │           └── 결과만 반환
   │
@@ -172,8 +172,8 @@ MCP 서버가 제공하는 수십 개의 도구를 모두 등록하면 컨텍스
 
 | 역할 | 모델 | 이유 |
 |------|------|------|
-| Architect, Planner, Reviewer | Gemini 3.1 Pro | 깊은 추론, 복잡한 설계 판단 |
-| Executor, Quick | Gemini 3.1 Flash | 빠른 코드 생성, 단순 편집 |
+| Architect, Planner, Reviewer | Gemini Pro | 깊은 추론, 복잡한 설계 판단 |
+| Executor, Quick | Gemini Flash | 빠른 코드 생성, 단순 편집 |
 | Researcher | Pro (또는 외부 LLM) | 웹 검색, 문서 분석 |
 
 각 에이전트는 자신만의 세션과 캐시를 유지하므로, 서로의 캐시를 파괴하지 않습니다.
@@ -196,7 +196,7 @@ MCP 서버가 제공하는 수십 개의 도구를 모두 등록하면 컨텍스
                     ↑ 원본과 다른 텍스트 → 캐시 파괴
 ```
 
-#### OMG의 해결책: Cache-Safe Forking
+#### OmG의 해결책: Cache-Safe Forking
 
 부모 대화와 **동일한 접두사**를 사용하는 새로운 대화 분기를 생성합니다.
 
@@ -232,7 +232,7 @@ Cache-Safe Fork:
                                                     ↑ 변경! → 전체 캐시 무효화
 ```
 
-#### OMG의 해결책
+#### OmG의 해결책
 
 시스템 프롬프트는 **절대 변경하지 않습니다**. 대신, 다음 턴의 사용자 메시지에 `<system-reminder>` 태그로 동적 정보를 삽입합니다.
 
@@ -253,7 +253,7 @@ Cache-Safe Fork:
 
 ---
 
-## OMG의 구현 아키텍처
+## OmG의 구현 아키텍처
 
 ### 컨텍스트 엔진 구조
 
@@ -302,7 +302,7 @@ src/context/
 
 ### MCP 서버와의 통합
 
-OMG는 4개의 MCP 서버를 통해 Gemini CLI에 컨텍스트 엔지니어링을 제공합니다:
+OmG는 4개의 MCP 서버를 통해 Gemini CLI에 컨텍스트 엔지니어링을 제공합니다:
 
 | MCP 서버 | 역할 | 컨텍스트 레이어 |
 |----------|------|-----------------|
@@ -345,7 +345,7 @@ Breakdown:
 
 ### 캐시 미스 진단
 
-캐시 적중률이 목표 이하로 떨어지면, OMG는 이를 **인시던트**로 취급합니다.
+캐시 적중률이 목표 이하로 떨어지면, OmG는 이를 **인시던트**로 취급합니다.
 
 ```bash
 # 캐시 미스 원인 분석
@@ -412,6 +412,6 @@ ASCII 대시보드의 하단 상태바에서 실시간 캐시 적중률을 확�
 
 ## 참고 자료
 
-- [Claude Code 프롬프트 캐싱 교훈](https://news.hada.io/topic?id=26835) — OMG의 컨텍스트 엔지니어링 영감의 원천
+- [Claude Code 프롬프트 캐싱 교훈](https://news.hada.io/topic?id=26835) — OmG의 컨텍스트 엔지니어링 영감의 원천
 - [Gemini API Prompt Caching](https://ai.google.dev/gemini-api/docs/caching) — Gemini의 프롬프트 캐싱 공식 문서
 - [Anthropic Prompt Caching](https://docs.anthropic.com/en/docs/build-with-claude/prompt-caching) — 접두사 매칭 캐싱의 원리

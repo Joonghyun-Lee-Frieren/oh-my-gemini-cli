@@ -1,62 +1,63 @@
 import React, { useState, useEffect } from 'react';
 import { Box, Text } from 'ink';
-import { colors } from '../theme.js';
+import { retroColors } from '../theme.js';
 
 interface HeaderProps {
   projectName?: string;
   version?: string;
   activeAgentCount: number;
+  totalAgentCount?: number;
 }
 
-function formatElapsed(ms: number): string {
+function formatGameTimer(ms: number): string {
   const s = Math.floor(ms / 1000) % 60;
   const m = Math.floor(ms / 60000) % 60;
   const h = Math.floor(ms / 3600000);
-  if (h > 0) return `${h}h ${String(m).padStart(2, '0')}m`;
-  return `${m}m ${String(s).padStart(2, '0')}s`;
+  const mm = String(m).padStart(2, '0');
+  const ss = String(s).padStart(2, '0');
+  if (h > 0) return `${String(h).padStart(2, '0')}:${mm}:${ss}`;
+  return `${mm}:${ss}`;
 }
 
 export function Header({
-  projectName = 'oh-my-gemini-cli',
-  version = '0.1.0',
   activeAgentCount,
+  totalAgentCount = 6,
 }: HeaderProps) {
   const [elapsed, setElapsed] = useState(0);
   const [startTime] = useState(() => Date.now());
+  const [blink, setBlink] = useState(true);
 
   useEffect(() => {
-    const timer = setInterval(() => {
-      setElapsed(Date.now() - startTime);
-    }, 1000);
+    const timer = setInterval(() => setElapsed(Date.now() - startTime), 1000);
     return () => clearInterval(timer);
   }, [startTime]);
 
+  useEffect(() => {
+    const timer = setInterval(() => setBlink((b) => !b), 600);
+    return () => clearInterval(timer);
+  }, []);
+
+  const partyDiamonds =
+    '♦'.repeat(activeAgentCount) + '○'.repeat(Math.max(0, totalAgentCount - activeAgentCount));
+
   return (
-    <Box
-      borderStyle="round"
-      borderColor={colors.primary}
-      paddingX={1}
-      justifyContent="space-between"
-    >
-      <Box gap={1}>
-        <Text bold color={colors.primary}>
-          ✦ {projectName}
-        </Text>
-        <Text dimColor>v{version}</Text>
-      </Box>
-      <Box gap={2}>
-        <Text>
-          <Text dimColor>elapsed:</Text>
-          <Text color={colors.secondary}> {formatElapsed(elapsed)}</Text>
-        </Text>
-        <Text>
-          <Text dimColor>agents:</Text>
-          <Text color={activeAgentCount > 0 ? colors.success : colors.muted}>
-            {' '}
-            {activeAgentCount}
-          </Text>
-        </Text>
-      </Box>
+    <Box flexDirection="column">
+      <Text color={retroColors.purple}>╔══════════════════════════════════════════════════════════════════════════╗</Text>
+      <Text>
+        <Text color={retroColors.purple}>║ </Text>
+        <Text color={retroColors.pink} bold>◆ OMG ◆</Text>
+        <Text color={retroColors.dim}> │ </Text>
+        <Text color={retroColors.cyan}>⏱ TIME </Text>
+        <Text color={retroColors.white} bold>{formatGameTimer(elapsed)}</Text>
+        <Text color={retroColors.dim}> │ </Text>
+        <Text color={retroColors.gold}>PARTY </Text>
+        <Text color={retroColors.green}>{partyDiamonds}</Text>
+        <Text color={retroColors.slate}> {activeAgentCount}/{totalAgentCount}</Text>
+        <Text> </Text>
+        <Text color={retroColors.cyan} dimColor={!blink}>▸</Text>
+        <Text color={retroColors.purple}> ║</Text>
+      </Text>
+      <Text color={retroColors.purple}>╚══════════════════════════════════════════════════════════════════════════╝</Text>
     </Box>
   );
 }

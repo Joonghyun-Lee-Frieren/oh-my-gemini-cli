@@ -9,6 +9,7 @@ import { StatusBar } from './components/status-bar.js';
 import { AsciiArt } from './components/ascii-art.js';
 import { useAgentStatus } from './hooks/use-agent-status.js';
 import { useTaskStream } from './hooks/use-task-stream.js';
+import { retroColors } from './theme.js';
 
 interface DashboardAppProps {
   projectName?: string;
@@ -66,7 +67,12 @@ export function DashboardApp({ projectName, version }: DashboardAppProps) {
 
   return (
     <Box flexDirection="column" width="100%">
-      <Header projectName={projectName} version={version} activeAgentCount={activeCount} />
+      <Header
+        projectName={projectName}
+        version={version}
+        activeAgentCount={activeCount}
+        totalAgentCount={agents.length || 6}
+      />
 
       <Box flexDirection="row" flexGrow={1}>
         <Box flexDirection="column" flexGrow={1} flexBasis="60%">
@@ -86,9 +92,25 @@ export function DashboardApp({ projectName, version }: DashboardAppProps) {
       />
 
       {paused && (
-        <Box justifyContent="center">
-          <Box paddingX={2} borderStyle="round" borderColor="yellow">
-            <Text color="yellow">⏸ PAUSED — press [r] to resume</Text>
+        <Box
+          justifyContent="center"
+          alignItems="center"
+          position="absolute"
+          width="100%"
+          height="100%"
+        >
+          <Box flexDirection="column" alignItems="center" paddingX={3} paddingY={1}>
+            <Text color={retroColors.purple}>╔══════════════════════════╗</Text>
+            <Text color={retroColors.purple}>║                          ║</Text>
+            <Text color={retroColors.purple}>
+              ║  <Text color={retroColors.gold} bold>  ⏸ GAME PAUSED ⏸  </Text>  ║
+            </Text>
+            <Text color={retroColors.purple}>║                          ║</Text>
+            <Text color={retroColors.purple}>
+              ║  <Text color={retroColors.slate}> press [r] to resume </Text>  ║
+            </Text>
+            <Text color={retroColors.purple}>║                          ║</Text>
+            <Text color={retroColors.purple}>╚══════════════════════════╝</Text>
           </Box>
         </Box>
       )}

@@ -220,7 +220,7 @@ omg config get models.planner
 ### Basic Launch
 
 ```bash
-# Start Gemini CLI with OMG dashboard
+# Start Gemini CLI with OmG dashboard
 omg
 ```
 

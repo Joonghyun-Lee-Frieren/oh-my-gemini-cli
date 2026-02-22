@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Box, Text } from 'ink';
 import { eventBus } from '../../shared/event-bus.js';
-import { colors } from '../theme.js';
+import { retroColors } from '../theme.js';
 
 interface LogEntry {
   timestamp: Date;
@@ -21,10 +21,17 @@ function formatTime(date: Date): string {
 }
 
 const levelColors: Record<string, string> = {
-  info: 'white',
-  warn: 'yellow',
-  error: 'red',
-  debug: 'gray',
+  info: retroColors.white,
+  warn: retroColors.gold,
+  error: retroColors.red,
+  debug: retroColors.dim,
+};
+
+const levelIcons: Record<string, string> = {
+  info: '⚔️',
+  warn: '⚠',
+  error: '✘',
+  debug: '…',
 };
 
 export function LogPanel({ maxLines = 10 }: LogPanelProps) {
@@ -39,7 +46,12 @@ export function LogPanel({ maxLines = 10 }: LogPanelProps) {
     };
 
     const onSpawn = ({ agent }: { agent: { id: string; type: string } }) => {
-      push({ timestamp: new Date(), agentId: agent.id, message: `Agent spawned (${agent.type})`, level: 'info' });
+      push({
+        timestamp: new Date(),
+        agentId: agent.id,
+        message: `${agent.type} joined the party!`,
+        level: 'info',
+      });
     };
 
     const onProgress = (p: { agentId: string; progress: number; message?: string }) => {
@@ -53,11 +65,21 @@ export function LogPanel({ maxLines = 10 }: LogPanelProps) {
     };
 
     const onComplete = (p: { agentId: string }) => {
-      push({ timestamp: new Date(), agentId: p.agentId, message: 'Completed', level: 'info' });
+      push({
+        timestamp: new Date(),
+        agentId: p.agentId,
+        message: 'Quest complete! ★ Victory!',
+        level: 'info',
+      });
     };
 
     const onError = (p: { agentId: string; error: string }) => {
-      push({ timestamp: new Date(), agentId: p.agentId, message: p.error, level: 'error' });
+      push({
+        timestamp: new Date(),
+        agentId: p.agentId,
+        message: `was hit by ${p.error}! Retrying...`,
+        level: 'error',
+      });
     };
 
     eventBus.on('agent:spawn', onSpawn);
@@ -78,27 +100,24 @@ export function LogPanel({ maxLines = 10 }: LogPanelProps) {
   const visible = logs.slice(-maxLines);
 
   return (
-    <Box
-      flexDirection="column"
-      borderStyle="round"
-      borderColor={colors.border}
-      paddingX={1}
-      height={maxLines + 2}
-    >
-      <Text bold color={colors.primary}>
-        Log
-      </Text>
-      {visible.length === 0 ? (
-        <Text dimColor>Waiting for events...</Text>
-      ) : (
-        visible.map((entry, i) => (
-          <Text key={i} wrap="truncate">
-            <Text dimColor>{formatTime(entry.timestamp)}</Text>
-            <Text color={colors.accent}> [{entry.agentId}]</Text>
-            <Text color={levelColors[entry.level] ?? 'white'}> {entry.message}</Text>
-          </Text>
-        ))
-      )}
+    <Box flexDirection="column" paddingX={1} height={maxLines + 3}>
+      <Text color={retroColors.cyan} bold>═══ BATTLE LOG ═══</Text>
+      <Text color={retroColors.purple}>╔══════════════════════════════════════════════════════════════════════════╗</Text>
+      <Box flexDirection="column" paddingX={1}>
+        {visible.length === 0 ? (
+          <Text color={retroColors.dim} italic>Waiting for battle to begin...</Text>
+        ) : (
+          visible.map((entry, i) => (
+            <Text key={i} wrap="truncate">
+              <Text color={retroColors.dim}>[{formatTime(entry.timestamp)}]</Text>
+              <Text> {levelIcons[entry.level] ?? '·'} </Text>
+              <Text color={retroColors.pink}>{entry.agentId}</Text>
+              <Text color={levelColors[entry.level] ?? retroColors.white}> {entry.message}</Text>
+            </Text>
+          ))
+        )}
+      </Box>
+      <Text color={retroColors.purple}>╚══════════════════════════════════════════════════════════════════════════╝</Text>
     </Box>
   );
 }

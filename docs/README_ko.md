@@ -1,11 +1,11 @@
-# oh-my-gemini-cli (OMG)
+# oh-my-gemini-cli (OmG)
 
 <p align="center">
   <strong>Gemini CLI를 위한 컨텍스트 엔지니어링 기반 멀티 에이전트 하네스</strong>
 </p>
 
 <p align="center">
-  <em>Your Gemini is not alone.</em>
+  <em>Gemini thinks. OmG orchestrates.</em>
 </p>
 
 <p align="center">
@@ -15,7 +15,7 @@
 </p>
 
 <p align="center">
-  <a href="./README.md">English</a> | <strong>한국어</strong>
+  <a href="../README.md">English</a> | <strong>한국어</strong> | <a href="./history_ko.md">변경 이력</a>
 </p>
 
 ---
@@ -30,16 +30,16 @@
 Gemini CLI는 강력합니다. 1M 토큰 컨텍스트 윈도우, Google Search 그라운딩, MCP 지원까지.
 하지만 대규모 작업에서는 구조가 필요합니다.
 
-OMG는 다음을 추가합니다:
+OmG는 다음을 추가합니다:
 
 - **멀티 에이전트 오케스트레이션**: 작업 유형에 따라 여러 에이전트를 동시 생성하고 협업시킵니다
 - **컨텍스트 엔지니어링**: 프롬프트 캐싱 최적화로 비용과 지연을 최소화합니다
 - **실시간 ASCII 대시보드**: 모든 에이전트의 작업 상태를 터미널에서 실시간으로 확인합니다
-- **듀얼 모델 전략**: Gemini 3.1 Pro(계획)와 Flash(구현)를 자동으로 분배합니다
+- **듀얼 모델 전략**: Gemini Pro(계획)와 Flash(구현)를 자동으로 분배합니다
 - **외부 LLM 지원**: OAuth/API로 Claude, GPT 등 다른 모델도 연결 가능합니다
 - **원격 제어**: Telegram/Discord 봇으로 어디서든 세션을 모니터링하고 제어합니다
 
-OMG는 포크가 아닌 애드온입니다. Gemini CLI의 네이티브 확장 포인트(MCP, 커스텀 명령어, GEMINI.md)만 사용합니다.
+OmG는 포크가 아닌 애드온입니다. Gemini CLI의 네이티브 확장 포인트(MCP, 커스텀 명령어, GEMINI.md)만 사용합니다.
 
 ---
 
@@ -143,7 +143,7 @@ Gemini CLI 환경에 맞게 적용했습니다.
 #### 1. 접두사 안정성 유지
 
 접두사의 어떤 부분이든 변경되면 그 이후의 모든 캐시가 무효화됩니다.
-OMG는 정적 콘텐츠를 앞에, 동적 콘텐츠를 뒤에 배치하여 캐시 적중률을 극대화합니다.
+OmG는 정적 콘텐츠를 앞에, 동적 콘텐츠를 뒤에 배치하여 캐시 적중률을 극대화합니다.
 
 ```
 변경 금지 영역   │  시스템 프롬프트, 도구 정의
@@ -155,7 +155,7 @@ OMG는 정적 콘텐츠를 앞에, 동적 콘텐츠를 뒤에 배치하여 캐�
 
 #### 2. 도구 집합 불변 원칙
 
-도구를 추가하거나 제거하면 캐시가 파괴됩니다. OMG는 이를 방지하기 위해:
+도구를 추가하거나 제거하면 캐시가 파괴됩니다. OmG는 이를 방지하기 위해:
 
 - **Plan Mode**: 도구를 제거하는 대신 `EnterPlanMode` / `ExitPlanMode`를 도구로 구현
 - **지연 로딩**: MCP 도구를 경량 스텁으로 유지하고, 필요 시 `ToolSearch`로 전체 스키마 로드
@@ -175,13 +175,13 @@ OMG는 정적 콘텐츠를 앞에, 동적 콘텐츠를 뒤에 배치하여 캐�
 프롬프트 캐시는 **모델별로 고유**합니다. 대화 중 모델을 전환하면 새 모델용 캐시를
 처음부터 구축해야 하므로, 오히려 비용이 증가합니다.
 
-OMG의 해결책: **서브에이전트 패턴**
+OmG의 해결책: **서브에이전트 패턴**
 
 ```
-메인 세션 (Gemini 3.1 Pro)
+메인 세션 (Gemini Pro)
   │
   ├─→ "이 작업을 구현해줘" (핸드오프 메시지)
-  │     └─→ 서브에이전트 (Gemini 3.1 Flash) ─→ 결과 반환
+  │     └─→ 서브에이전트 (Gemini Flash) ─→ 결과 반환
   │
   └─→ 메인 세션 계속 (Pro 캐시 유지)
 ```
@@ -191,7 +191,7 @@ OMG의 해결책: **서브에이전트 패턴**
 컨텍스트 윈도우를 초과하면 대화를 요약해야 합니다.
 단순 요약은 부모 대화의 캐시 접두사와 일치하지 않아 전액 비용이 발생합니다.
 
-OMG의 해결책: **Cache-Safe Forking**
+OmG의 해결책: **Cache-Safe Forking**
 
 ```
 부모 대화와 동일한 접두사 사용
@@ -211,13 +211,13 @@ OMG의 해결책: **Cache-Safe Forking**
 캐시 파괴하는 방법 (나쁜 예):
   시스템 프롬프트에 "현재 시간: 15:30" 삽입 → 전체 캐시 무효화
 
-캐시 보존하는 방법 (OMG 방식):
+캐시 보존하는 방법 (OmG 방식):
   다음 user message에 "<system-reminder>현재 15:30</system-reminder>" 추가
 ```
 
 ### 캐시 모니터링
 
-OMG는 캐시 적중률을 **업타임처럼 모니터링**합니다.
+OmG는 캐시 적중률을 **업타임처럼 모니터링**합니다.
 수 퍼센트의 캐시 미스도 비용과 지연에 극적인 영향을 미치므로 인시던트로 취급합니다.
 
 ```bash
@@ -234,7 +234,7 @@ omg status --cache
 
 ## 멀티 에이전트 시스템
 
-OMG는 작업 유형에 따라 여러 에이전트를 동시에 생성하고, 각 에이전트가 독립적으로 작업을 수행합니다.
+OmG는 작업 유형에 따라 여러 에이전트를 동시에 생성하고, 각 에이전트가 독립적으로 작업을 수행합니다.
 
 ### 아키텍처
 
@@ -268,13 +268,13 @@ OMG는 작업 유형에 따라 여러 에이전트를 동시에 생성하고, �
 
 | 에이전트 | 모델 | 역할 |
 |---------|------|------|
-| **Architect** | Gemini 3.1 Pro | 아키텍처 분석, 설계 결정, 의존성 파악 |
-| **Planner** | Gemini 3.1 Pro | 작업 분해, 실행 계획 수립, 우선순위 결정 |
-| **Executor** | Gemini 3.1 Flash | 코드 생성, 파일 편집, 리팩토링 (병렬 N개) |
-| **Reviewer** | Gemini 3.1 Pro | 코드 리뷰, 품질 검증, 보안 체크 |
-| **Debugger** | Gemini 3.1 Pro | 에러 분석, 디버깅, 테스트 실패 수정 |
-| **Researcher** | Gemini 3.1 Pro | 웹 검색, 문서 조사, 라이브러리 분석 |
-| **Quick** | Gemini 3.1 Flash | 단순 작업 (타이포 수정, 포맷팅, 소규모 변경) |
+| **Architect** | Gemini Pro | 아키텍처 분석, 설계 결정, 의존성 파악 |
+| **Planner** | Gemini Pro | 작업 분해, 실행 계획 수립, 우선순위 결정 |
+| **Executor** | Gemini Flash | 코드 생성, 파일 편집, 리팩토링 (병렬 N개) |
+| **Reviewer** | Gemini Pro | 코드 리뷰, 품질 검증, 보안 체크 |
+| **Debugger** | Gemini Pro | 에러 분석, 디버깅, 테스트 실패 수정 |
+| **Researcher** | Gemini Pro | 웹 검색, 문서 조사, 라이브러리 분석 |
+| **Quick** | Gemini Flash | 단순 작업 (타이포 수정, 포맷팅, 소규모 변경) |
 
 ### 에이전트 생명주기
 
@@ -332,69 +332,82 @@ omg team shutdown
 Ink (React for CLI) 기반의 실시간 터미널 대시보드입니다.
 모든 에이전트의 작업 상태를 한 화면에서 확인할 수 있습니다.
 
-### 대시보드 미리보기
+### 대시보드 미리보기 (Retro Pixel Art)
 
 ```
-┌─────────────────────────────────────────────────────────────────────┐
-│                                                                     │
-│   ╔═══╗ ╔╗╔╗ ╔═══╗                                                │
-│   ║   ║ ║╚╝║ ║   ╠═╗  oh-my-gemini-cli v0.1.0                    │
-│   ║   ║ ║  ║ ║   ║ ║  ⏱ 00:03:42    Agents: 4/6 active           │
-│   ╚═══╝ ╚╗╔╝ ╚═══╩═╝                                              │
-│           ╚╝                                                        │
-├──────────────────────────────┬──────────────────────────────────────┤
-│  AGENTS                      │  TASK PIPELINE                       │
-│                              │                                      │
-│  ◉ Planner    [Pro]  ██████░ │  ✓ analyze-auth     Planner   done   │
-│    "분석 중: auth 모듈..."   │  ✓ design-schema    Architect done   │
-│                              │  ● implement-oauth  Exec #1   run    │
-│  ◉ Architect  [Pro]  ████░░░ │  ● implement-token  Exec #2   run    │
-│    "DB 스키마 설계 중..."    │  ● implement-routes Exec #3   run    │
-│                              │  ○ code-review      Reviewer  queue  │
-│  ⟳ Executor#1 [Flash] ██░░░░ │  ○ integration-test Debugger  queue  │
-│    "oauth/callback.ts 작성"  │                                      │
-│                              │                                      │
-│  ⟳ Executor#2 [Flash] ███░░░ │                                      │
-│    "token/refresh.ts 작성"   │                                      │
-│                              │                                      │
-│  ⟳ Executor#3 [Flash] █░░░░░ │                                      │
-│    "routes/auth.ts 작성"     │                                      │
-│                              │                                      │
-│  ○ Reviewer   [Pro]   대기중 │                                      │
-├──────────────────────────────┴──────────────────────────────────────┤
-│  LOG                                                                │
-│  03:41 [Exec#1] ✎ Created oauth/callback.ts (42 lines)            │
-│  03:42 [Exec#2] ✎ Writing token/refresh.ts...                      │
-│  03:42 [Planner] ✓ Task decomposition complete (5 subtasks)        │
-│  03:42 [Arch]    ✓ Schema design finalized                         │
-├─────────────────────────────────────────────────────────────────────┤
-│  CTX Cache: 94.2% hit │ Tokens: 12.4k/1M │ Cost: $0.03            │
-├─────────────────────────────────────────────────────────────────────┤
-│  [q] quit  [p] pause  [r] resume  [d] detail  [t] telegram-sync   │
-└─────────────────────────────────────────────────────────────────────┘
+╔══════════════════════════════════════════════════════════════════════╗
+║  ◆ OmG ◆  oh-my-gemini-cli    ⏱ TIME 03:42   PARTY ♦♦♦♦◇◇ 4/6  ▸ ║
+╠════════════════════════════════╦═════════════════════════════════════╣
+║  ═══ PARTY MEMBERS ═══        ║  ═══ QUEST LOG ═══                  ║
+║  ♦ Active: 4 / Total: 6      ║  ★ 2/7 quests cleared               ║
+║                               ║                                     ║
+║  📜 Planner  [gemini-pro] ATK ║  ★ [CLEAR!] analyze-auth  → Plan   ║
+║     HP ▓▓▓▓▓▓▒░ 82%          ║  ★ [CLEAR!] design-schema → Arch   ║
+║     » quest: 분석 중...       ║  ⚡ [ACTIVE] impl-oauth   → Exec#1 ║
+║  ──────────────────────       ║  ⚡ [ACTIVE] impl-token   → Exec#2 ║
+║  🏰 Architect [gemini-pro] ATK║  ⚡ [ACTIVE] impl-routes  → Exec#3 ║
+║     HP ▓▓▓▓▒░░░ 52%          ║  · [WAIT]   code-review  → Review  ║
+║     » quest: DB 설계 중...    ║  · [WAIT]   integ-test   → Debug   ║
+║  ──────────────────────       ║                                     ║
+║  ⚔️  Exec#1 [gemini-flash] ATK║                                     ║
+║     HP ▓▓░░░░░░ 25%          ║                                     ║
+║     » quest: callback.ts     ║                                     ║
+║  ──────────────────────       ║                                     ║
+║  🛡️  Reviewer [gemini-pro] ZZZ║                                     ║
+║     HP ░░░░░░░░  0%          ║                                     ║
+╠════════════════════════════════╩═════════════════════════════════════╣
+║  ═══ BATTLE LOG ═══                                                 ║
+║  [03:41] ⚔️ Exec#1 used CodeWrite! oauth/callback.ts created!      ║
+║  [03:42] ★ Planner cast TaskDecompose! 5 subtasks appeared!        ║
+╠═════════════════════════════════════════════════════════════════════╣
+║  CACHE ▓▓▓▓▓░ 94%  │  TOKENS 12.4k/1M  │  GOLD -$0.03            ║
+║  A:quit  B:pause  X:resume  Y:detail  SELECT:tg-sync              ║
+╚═════════════════════════════════════════════════════════════════════╝
 ```
 
-### 에이전트 상태 아이콘
+### 에이전트 상태 아이콘 (Retro Game Style)
 
-| 아이콘 | 상태 | 설명 |
-|--------|------|------|
-| `◉` | 활성 | 작업 수행 중 (스피너 애니메이션) |
-| `⟳` | 실행 | 코드 생성/편집 중 (회전 애니메이션 `⠋⠙⠹⠸⠼⠴⠦⠧⠇⠏`) |
-| `✓` | 완료 | 작업 성공 (초록색) |
-| `✗` | 실패 | 작업 실패 (빨간색) |
-| `○` | 대기 | 큐에서 대기 중 |
-| `⏸` | 일시중지 | 사용자가 일시 중지 |
+| 아이콘 | 상태 | RPG 표시 | 설명 |
+|--------|------|----------|------|
+| `♦` | 실행 중 | `ATK` | 전투 중 (스피너 애니메이션 `◜◝◞◟`) |
+| `★` | 완료 | `WIN` | 승리! (초록색) |
+| `✘` | 실패 | `KO` | 전투 불능 (빨간색) |
+| `◇` | 대기 | `ZZZ` | 휴식 중 |
+| `▶` | 할당됨 | `RDY` | 출격 준비 완료 |
 
-### 에이전트 스폰 애니메이션
+### 에이전트 스프라이트
 
-새로운 에이전트가 생성될 때 표시되는 애니메이션:
+| 에이전트 | 스프라이트 | 모델 태그 |
+|---------|-----------|---------|
+| Architect | 🏰 | `[gemini-pro]` (골드) |
+| Planner | 📜 | `[gemini-pro]` (골드) |
+| Executor | ⚔️ | `[gemini-flash]` (시안) |
+| Reviewer | 🛡️ | `[gemini-pro]` (골드) |
+| Debugger | 🔧 | `[gemini-pro]` (골드) |
+| Researcher | 🔮 | `[gemini-pro]` (골드) |
+| Quick | ⚡ | `[gemini-flash]` (시안) |
+
+### 시작 애니메이션
+
+레트로 게임 부팅 화면 스타일:
 
 ```
-Frame 1:  .              Frame 2:  o              Frame 3:  O
-          spawning...              spawning...              spawning...
+Frame 1:     · · ·
 
-Frame 4:  ◉
-          Executor#1 ready!
+Frame 2:     ░▒▓█ LOADING █▓▒░
+
+Frame 3:     ╔══════════════════════════════════╗
+             ║  ◆ oh-my-gemini-cli ◆            ║
+             ║  ░▒▓ CONTEXT QUEST v0.1.2 ▓▒░    ║
+             ╚══════════════════════════════════╝
+
+Frame 4:     ╔══════════════════════════════════╗
+             ║  ◆ oh-my-gemini-cli ◆            ║
+             ║  ░▒▓ CONTEXT QUEST v0.1.2 ▓▒░    ║
+             ║                                    ║
+             ║  ★ Gemini thinks. OmG orchestrates. ★  ║
+             ╚══════════════════════════════════╝
+                  PRESS ANY KEY TO START
 ```
 
 ### 키보드 단축키
@@ -416,11 +429,11 @@ Frame 4:  ◉
 
 ### 듀얼 모델 전략
 
-OMG의 기본 전략은 **계획은 Pro, 실행은 Flash**입니다.
+OmG의 기본 전략은 **계획은 Pro, 실행은 Flash**입니다.
 
 ```
 ┌─────────────────────────────────────────┐
-│           Gemini 3.1 Pro                │
+│           Gemini Pro                    │
 │  ┌─────────┐ ┌──────────┐ ┌──────────┐ │
 │  │Architect│ │ Planner  │ │ Reviewer │ │
 │  │         │ │          │ │          │ │
@@ -429,7 +442,7 @@ OMG의 기본 전략은 **계획은 Pro, 실행은 Flash**입니다.
 └─────────────────────────────────────────┘
 
 ┌─────────────────────────────────────────┐
-│          Gemini 3.1 Flash               │
+│          Gemini Flash                   │
 │  ┌──────────┐ ┌──────────┐ ┌─────────┐ │
 │  │Executor#1│ │Executor#2│ │  Quick  │ │
 │  │          │ │          │ │         │ │
@@ -531,7 +544,7 @@ TOML 형식의 커스텀 명령어를 지원합니다.
 
 **`/omg:status`** - 현재 에이전트 상태 조회
 ```toml
-description = "OMG 에이전트 상태를 조회합니다"
+description = "OmG 에이전트 상태를 조회합니다"
 prompt = """
 현재 활성 에이전트 상태를 확인하고 요약해주세요.
 !{omg status --json}
@@ -551,7 +564,7 @@ prompt = """
 
 ## Telegram / Discord 봇
 
-원격에서 OMG 세션을 모니터링하고 제어할 수 있습니다.
+원격에서 OmG 세션을 모니터링하고 제어할 수 있습니다.
 
 ### Telegram 설정
 
@@ -643,7 +656,7 @@ omg bot discord start
     "enabled": true,
     "refresh_interval": 500,
     "log_lines": 10,
-    "theme": "default"
+    "theme": "retro"
   },
   "bot": {
     "telegram": { "token": "", "chat_id": "" },
@@ -711,55 +724,28 @@ oh-my-gemini-cli/
 │   │   └── types.ts                  # 에이전트/태스크 타입
 │   ├── dashboard/                    # ASCII 대시보드 TUI
 │   │   ├── app.tsx                   # Ink 루트 컴포넌트
-│   │   ├── components/
-│   │   │   ├── agent-panel.tsx       # 에이전트 상태 패널
-│   │   │   ├── agent-grid.tsx        # 에이전트 그리드 레이아웃
-│   │   │   ├── task-list.tsx         # 작업 목록
-│   │   │   ├── progress-bar.tsx      # 프로그레스 바
-│   │   │   ├── spinner.tsx           # 스피너 애니메이션
-│   │   │   ├── log-panel.tsx         # 실시간 로그
-│   │   │   ├── header.tsx            # 상단 헤더
-│   │   │   ├── status-bar.tsx        # 하단 상태바
-│   │   │   └── ascii-art.tsx         # ASCII 아트 애니메이션
-│   │   ├── hooks/
-│   │   │   ├── use-agent-status.ts   # 에이전트 상태 구독
-│   │   │   └── use-task-stream.ts    # 태스크 스트림 구독
-│   │   └── theme.ts                  # 컬러/스타일 테마
+│   │   ├── components/               # UI 컴포넌트
+│   │   ├── hooks/                    # React 훅
+│   │   └── theme.ts                  # 레트로 컬러/스타일 테마
 │   ├── context/                      # 컨텍스트 엔지니어링 엔진
-│   │   ├── cache-manager.ts          # 캐시 적중률 관리
-│   │   ├── context-layer.ts          # 정적/동적 레이어 분리
-│   │   ├── compaction.ts             # 캐시 안전 컴팩션
-│   │   └── prefix-optimizer.ts       # 접두사 안정성 최적화
 │   ├── orchestrator/                 # 모델 오케스트레이션
-│   │   ├── planner.ts                # Gemini 3.1 Pro 기반 계획
-│   │   ├── executor.ts               # Gemini 3.1 Flash 기반 실행
-│   │   ├── external-llm.ts           # 외부 LLM 연결 (OAuth/API)
-│   │   └── model-registry.ts         # 모델 레지스트리
 │   ├── mcp/                          # MCP 서버
-│   │   ├── state-server.ts           # 상태 관리
-│   │   ├── memory-server.ts          # 프로젝트 메모리
-│   │   ├── context-server.ts         # 컨텍스트 엔진
-│   │   └── orchestrator-server.ts    # 오케스트레이션
-│   ├── bot/                          # 메신저 봇
-│   │   ├── telegram.ts               # Telegram 봇
-│   │   └── discord.ts                # Discord 봇
+│   ├── bot/                          # Telegram/Discord 봇
 │   └── shared/                       # 공통 유틸리티
-│       ├── event-bus.ts              # 에이전트 <-> 대시보드 이벤트
-│       ├── logger.ts                 # 로깅
-│       └── config.ts                 # 설정 로더
 ├── prompts/                          # 에이전트 프롬프트 (.md)
 ├── skills/                           # 워크플로우 스킬 (SKILL.md)
 ├── commands/                         # 커스텀 명령어 (.toml)
 ├── templates/                        # GEMINI.md 및 설정 템플릿
-├── docs/                             # GitHub Pages 랜딩 페이지
-│   ├── index.html
+├── docs/                             # 문서 (이 파일 포함)
+│   ├── README_ko.md                  # 한국어 문서 (이 파일)
+│   ├── history.md                    # 영문 변경 이력
+│   ├── history_ko.md                 # 한국어 변경 이력
 │   └── guide/
-│       └── installation.md           # LLM 자동 설치 가이드
-├── scripts/                          # 빌드/배포 스크립트
+│       ├── installation.md           # LLM 자동 설치 가이드
+│       └── context-engineering.md    # 컨텍스트 엔지니어링 가이드
 ├── package.json
 ├── tsconfig.json
-├── README.md                         # English
-├── README_ko.md                      # 한국어 (이 문서)
+├── README.md                         # English README
 └── LICENSE                           # MIT
 ```
 
@@ -803,7 +789,7 @@ oh-my-gemini-cli/
 
 ## 컨트리뷰션
 
-기여를 환영합니다! OMG는 Apache 2.0이 아닌 MIT 라이선스로 자유롭게 사용 가능합니다.
+기여를 환영합니다! OmG는 MIT 라이선스로 자유롭게 사용 가능합니다.
 
 - 버그 리포트 및 기능 제안
 - 새로운 에이전트 프롬프트
@@ -813,7 +799,7 @@ oh-my-gemini-cli/
 
 ## 라이선스
 
-[MIT](./LICENSE)
+[MIT](../LICENSE)
 
 ---
 

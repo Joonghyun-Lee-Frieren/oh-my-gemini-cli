@@ -1,6 +1,6 @@
 {
   "name": "oh-my-gemini-cli",
-  "version": "0.1.0",
+  "version": "0.1.2",
   "description": "Context engineering powered multi-agent harness for Gemini CLI",
   "keywords": [
     "gemini",

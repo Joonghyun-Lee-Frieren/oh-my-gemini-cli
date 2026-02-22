@@ -1,7 +1,7 @@
 import React from 'react';
 import { Box, Text } from 'ink';
 import { TaskStatus, type Task } from '../../agents/types.js';
-import { taskStatusColors, taskStatusIcons, colors } from '../theme.js';
+import { taskStatusColors, taskStatusIcons, taskStatusLabels, retroColors } from '../theme.js';
 
 interface TaskListProps {
   tasks: Task[];
@@ -19,36 +19,41 @@ export function TaskList({ tasks }: TaskListProps) {
   const sorted = [...tasks].sort(
     (a, b) => (statusOrder[a.status] ?? 99) - (statusOrder[b.status] ?? 99),
   );
+  const doneCount = tasks.filter((t) => t.status === TaskStatus.Done).length;
 
   return (
-    <Box flexDirection="column" borderStyle="round" borderColor={colors.border} paddingX={1}>
-      <Box marginBottom={1}>
-        <Text bold color={colors.primary}>
-          Tasks
+    <Box flexDirection="column" paddingX={1}>
+      <Text color={retroColors.gold} bold>═══ QUEST LOG ═══</Text>
+      <Text color={retroColors.purple}>╔════════════════════════════════════════╗</Text>
+      <Box flexDirection="column" paddingX={1}>
+        <Text color={retroColors.gold}>
+          ★ <Text color={retroColors.green}>{doneCount}</Text>
+          <Text color={retroColors.slate}>/{tasks.length} quests cleared</Text>
         </Text>
-        <Text dimColor>
-          {' '}
-          ({tasks.filter((t) => t.status === TaskStatus.Done).length}/{tasks.length} done)
-        </Text>
-      </Box>
-      {sorted.length === 0 ? (
-        <Text dimColor>No tasks in pipeline</Text>
-      ) : (
-        sorted.map((task) => (
-          <Box key={task.id} flexDirection="row" gap={1}>
-            <Text color={taskStatusColors[task.status]}>{taskStatusIcons[task.status]}</Text>
-            <Box width={20}>
-              <Text wrap="truncate">{task.description}</Text>
-            </Box>
-            <Box width={12}>
-              <Text dimColor wrap="truncate">
+        <Text color={retroColors.dim}>──────────────────────────────────────</Text>
+        {sorted.length === 0 ? (
+          <Text color={retroColors.dim} italic>No quests available...</Text>
+        ) : (
+          sorted.map((task) => (
+            <Box key={task.id} flexDirection="row" gap={1}>
+              <Text color={taskStatusColors[task.status]}>
+                {taskStatusIcons[task.status]}
+              </Text>
+              <Text color={taskStatusColors[task.status]} bold>
+                [{taskStatusLabels[task.status]}]
+              </Text>
+              <Box width={20}>
+                <Text wrap="truncate" color={retroColors.white}>{task.description}</Text>
+              </Box>
+              <Text color={retroColors.dim}>→</Text>
+              <Text color={retroColors.slate} wrap="truncate">
                 {task.assignedTo || '—'}
               </Text>
             </Box>
-            <Text color={taskStatusColors[task.status]}>{task.status}</Text>
-          </Box>
-        ))
-      )}
+          ))
+        )}
+      </Box>
+      <Text color={retroColors.purple}>╚════════════════════════════════════════╝</Text>
     </Box>
   );
 }

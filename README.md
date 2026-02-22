@@ -1,11 +1,11 @@
-# oh-my-gemini-cli (OMG)
+# oh-my-gemini-cli (OmG)
 
 <p align="center">
   <strong>Context engineering powered multi-agent harness for Gemini CLI</strong>
 </p>
 
 <p align="center">
-  <em>Your Gemini is not alone.</em>
+  <em>Gemini thinks. OmG orchestrates.</em>
 </p>
 
 <p align="center">
@@ -15,7 +15,7 @@
 </p>
 
 <p align="center">
-  <strong>English</strong> | <a href="./README_ko.md">한국어</a>
+  <strong>English</strong> | <a href="./docs/README_ko.md">한국어</a> | <a href="./docs/history.md">Changelog</a>
 </p>
 
 ---
@@ -25,20 +25,20 @@
 
 ---
 
-## Why OMG?
+## Why OmG?
 
 Gemini CLI is powerful: 1M token context window, Google Search grounding, MCP support. But large-scale work demands structure.
 
-OMG adds:
+OmG adds:
 
 - **Multi-Agent Orchestration**: Spawn multiple agents simultaneously, coordinated by task type
 - **Context Engineering**: Prompt cache optimization to minimize cost and latency
 - **Real-time ASCII Dashboard**: Monitor all agents in a rich terminal UI
-- **Dual Model Strategy**: Gemini 3.1 Pro for planning, Flash for execution - automatically
+- **Dual Model Strategy**: Gemini Pro for planning, Flash for execution - automatically
 - **External LLM Support**: Connect Claude, GPT, and others via OAuth/API
 - **Remote Control**: Monitor and control sessions via Telegram/Discord bots
 
-OMG is an add-on, not a fork. It uses only Gemini CLI's native extension points (MCP, custom commands, GEMINI.md).
+OmG is an add-on, not a fork. It uses only Gemini CLI's native extension points (MCP, custom commands, GEMINI.md).
 
 ## Quick Start
 
@@ -65,32 +65,34 @@ omg team "Implement OAuth authentication"  # Multi-agent team mode
 omg --agent architect "Analyze this codebase"  # Specific agent
 ```
 
-## Dashboard Preview
+## Dashboard Preview (Retro Pixel Art)
 
 ```
-┌─────────────────────────────────────────────────────────────────────┐
-│  oh-my-gemini-cli v0.1.0          ⏱ 00:03:42    Agents: 4/6 active │
-├──────────────────────────────┬──────────────────────────────────────┤
-│  AGENTS                      │  TASK PIPELINE                       │
-│  ◉ Planner    [Pro]  ██████░ │  ✓ analyze-auth     Planner   done   │
-│  ◉ Architect  [Pro]  ████░░░ │  ● implement-oauth  Exec #1   run    │
-│  ⟳ Executor#1 [Flash] ██░░░░ │  ● implement-token  Exec #2   run    │
-│  ⟳ Executor#2 [Flash] ███░░░ │  ○ code-review      Reviewer  queue  │
-│  ○ Reviewer   [Pro]   idle   │                                      │
-├──────────────────────────────┴──────────────────────────────────────┤
-│  LOG                                                                │
-│  03:42 [Exec#1] ✎ Created oauth/callback.ts (42 lines)            │
-│  03:42 [Planner] ✓ Task decomposition complete (5 subtasks)        │
-├─────────────────────────────────────────────────────────────────────┤
-│  CTX Cache: 94.2% hit │ Tokens: 12.4k/1M │ Cost: $0.03            │
-├─────────────────────────────────────────────────────────────────────┤
-│  [q] quit  [p] pause  [r] resume  [d] detail  [t] telegram-sync   │
-└─────────────────────────────────────────────────────────────────────┘
+╔══════════════════════════════════════════════════════════════════════╗
+║  ◆ OmG ◆  oh-my-gemini-cli    ⏱ TIME 03:42   PARTY ♦♦♦♦◇◇ 4/6  ▸ ║
+╠════════════════════════════════╦═════════════════════════════════════╣
+║  ═══ PARTY MEMBERS ═══        ║  ═══ QUEST LOG ═══                  ║
+║                               ║  ★ 2/7 quests cleared               ║
+║  📜 Planner    [PRO]  ATK     ║                                     ║
+║     HP ▓▓▓▓▓▓▒░ 82%          ║  ★ [CLEAR!] analyze-auth  → Plan   ║
+║  🏰 Architect [PRO]  ATK     ║  ⚡ [ACTIVE] impl-oauth   → Exec#1 ║
+║     HP ▓▓▓▓▒░░░ 52%          ║  ⚡ [ACTIVE] impl-token   → Exec#2 ║
+║  ⚔️  Exec#1   [FLASH] ATK     ║  · [WAIT]   code-review  → Review  ║
+║     HP ▓▓░░░░░░ 25%          ║                                     ║
+║  🛡️  Reviewer [PRO]   ZZZ     ║                                     ║
+╠════════════════════════════════╩═════════════════════════════════════╣
+║  ═══ BATTLE LOG ═══                                                 ║
+║  [03:42] ⚔️ Exec#1 used CodeWrite! oauth/callback.ts created!      ║
+║  [03:42] ★ Planner cast TaskDecompose! 5 subtasks appeared!        ║
+╠═════════════════════════════════════════════════════════════════════╣
+║  CACHE ▓▓▓▓▓░ 94%  │  TOKENS 12.4k/1M  │  GOLD -$0.03            ║
+║  A:quit  B:pause  X:resume  Y:detail  SELECT:tg-sync              ║
+╚═════════════════════════════════════════════════════════════════════╝
 ```
 
 ## Core Concept: Context Engineering
 
-Inspired by [Claude Code's prompt caching lessons](https://news.hada.io/topic?id=26835), OMG applies 5 principles:
+Inspired by [Claude Code's prompt caching lessons](https://news.hada.io/topic?id=26835), OmG applies 5 principles:
 
 1. **Prefix Stability** - Static content first, dynamic content last. Never break the cached prefix.
 2. **Tool Set Invariance** - Never add/remove tools mid-session. Use state-transition tools instead.
@@ -104,13 +106,13 @@ See the [Context Engineering Guide](./docs/guide/context-engineering.md) for det
 
 | Agent | Model | Role |
 |-------|-------|------|
-| **Architect** | Gemini 3.1 Pro | Architecture analysis, design decisions |
-| **Planner** | Gemini 3.1 Pro | Task decomposition, execution planning |
-| **Executor** | Gemini 3.1 Flash | Code generation, file editing (parallel N) |
-| **Reviewer** | Gemini 3.1 Pro | Code review, security/quality checks |
-| **Debugger** | Gemini 3.1 Pro | Error analysis, root cause diagnosis |
-| **Researcher** | Gemini 3.1 Pro | Web search, documentation analysis |
-| **Quick** | Gemini 3.1 Flash | Typo fixes, formatting, small changes |
+| **Architect** | Gemini Pro | Architecture analysis, design decisions |
+| **Planner** | Gemini Pro | Task decomposition, execution planning |
+| **Executor** | Gemini Flash | Code generation, file editing (parallel N) |
+| **Reviewer** | Gemini Pro | Code review, security/quality checks |
+| **Debugger** | Gemini Pro | Error analysis, root cause diagnosis |
+| **Researcher** | Gemini Pro | Web search, documentation analysis |
+| **Quick** | Gemini Flash | Typo fixes, formatting, small changes |
 
 ## CLI Commands
 
@@ -166,7 +168,7 @@ oh-my-gemini-cli/
 
 ## Contributing
 
-Contributions welcome! See the [한국어 README](./README_ko.md) for detailed documentation.
+Contributions welcome! See the [한국어 README](./docs/README_ko.md) for detailed documentation.
 
 ## License
 
