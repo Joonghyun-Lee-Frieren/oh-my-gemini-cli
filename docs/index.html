@@ -84,61 +84,6 @@
     .nav-links { display: flex; align-items: center; gap: 1.5rem; font-size: .875rem }
     .nav-links a { color: var(--text-dim) }
     .nav-links a:hover { color: var(--text) }
-    .desktop-only { display: inline-flex }
-    .mobile-only { display: none }
-    .nav-dropdown {
-      position: relative;
-    }
-    .nav-dropbtn {
-      background: transparent;
-      border: 0;
-      padding: 0;
-      color: var(--text-dim);
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      gap: .35rem;
-      user-select: none;
-      font: inherit;
-    }
-    .nav-dropbtn:hover,
-    .nav-dropdown:focus-within .nav-dropbtn {
-      color: var(--text);
-    }
-    .nav-dropdown-menu {
-      position: absolute;
-      top: calc(100% + .55rem);
-      right: 0;
-      min-width: 230px;
-      max-width: 320px;
-      padding: .5rem;
-      display: none;
-      grid-template-columns: 1fr;
-      gap: .35rem;
-      background: rgba(18,18,26,.98);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      box-shadow: 0 12px 30px rgba(0,0,0,.35);
-      z-index: 200;
-    }
-    .nav-dropdown:hover .nav-dropdown-menu,
-    .nav-dropdown:focus-within .nav-dropdown-menu {
-      display: grid;
-    }
-    .nav-dropdown-menu a {
-      color: var(--text-dim);
-      border: 1px solid transparent;
-      border-radius: 8px;
-      padding: .4rem .55rem;
-      white-space: nowrap;
-    }
-    .nav-dropdown-menu a:hover,
-    .nav-dropdown-menu a:focus-visible {
-      color: var(--text);
-      border-color: var(--accent);
-      outline: none;
-      background: rgba(79,70,229,.1);
-    }
 
     /* ── Hero ── */
     .hero {
@@ -205,30 +150,6 @@
     .install-box button.copied { color: var(--green); border-color: var(--green) }
 
     .hero-links { display: flex; justify-content: center; gap: 1rem; margin-top: 1.5rem }
-    .docs-language-links {
-      margin-top: 1rem;
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: .6rem;
-      font-size: .85rem;
-      color: var(--text-dim);
-    }
-    .docs-language-links .label {
-      color: var(--text-dim);
-      margin-right: .2rem;
-    }
-    .docs-language-links a {
-      color: var(--text-dim);
-      border: 1px solid var(--border);
-      border-radius: 999px;
-      padding: .2rem .55rem;
-      background: rgba(18,18,26,.6);
-    }
-    .docs-language-links a:hover {
-      color: var(--text);
-      border-color: var(--accent);
-    }
     .btn {
       display: inline-flex; align-items: center; gap: .5rem;
       padding: .65rem 1.5rem;
@@ -400,8 +321,7 @@
     }
     .chat-interface {
       max-width: 380px; 
-      /* align left on desktop, center on mobile if needed, but for now let's keep it simple */
-      margin: 2rem 0 0 0; /* Changed from margin: 0 auto */
+      margin: 2rem auto 0;
       background: var(--bg); border: 1px solid var(--border);
       border-radius: 20px; overflow: hidden;
       box-shadow: 0 20px 40px rgba(0,0,0,.3);
@@ -455,24 +375,10 @@
         padding: .65rem 0 .2rem;
       }
       .nav-links.is-open { display: flex }
-      .nav-links .nav-dropdown-menu {
-        position: static;
-        display: grid;
-        min-width: 0;
-        max-width: none;
-        width: 100%;
-        margin-top: .3rem;
-      }
-      .desktop-only { display: none }
-      .mobile-only { display: inline-flex }
       .features-grid { grid-template-columns: 1fr }
       .quickstart-grid { grid-template-columns: 1fr }
       .terminal-body { font-size: .55rem }
       .install-box { flex-wrap: wrap; justify-content: center }
-      .docs-language-links {
-        margin-top: 1.1rem;
-        justify-content: flex-start;
-      }
     }
   </style>
 </head>
@@ -488,24 +394,6 @@
         <a href="#dashboard">Dashboard</a>
         <a href="#remote">Remote</a>
         <a href="#quickstart">Quick Start</a>
-        <div class="nav-dropdown desktop-only">
-          <button class="nav-dropbtn" type="button" aria-haspopup="true">Docs ▾</button>
-          <div class="nav-dropdown-menu" role="menu" aria-label="Documentation languages">
-            <a role="menuitem" href="../README.md">English</a>
-            <a role="menuitem" href="./README_ko.md">한국어</a>
-            <a role="menuitem" href="./README_ja.md">日本語</a>
-            <a role="menuitem" href="./README_zh.md">中文</a>
-            <a role="menuitem" href="./README_es.md">Español</a>
-            <a role="menuitem" href="./README_pt.md">Português</a>
-            <a role="menuitem" href="./README_fr.md">Français</a>
-            <a role="menuitem" href="./README_nl.md">Nederlands</a>
-            <a role="menuitem" href="./README_pl.md">Polski</a>
-            <a role="menuitem" href="./README_uk.md">Українська</a>
-            <a role="menuitem" href="./README_ru.md">Русский</a>
-            <a role="menuitem" href="./README_de.md">Deutsch</a>
-          </div>
-        </div>
-        <a class="mobile-only" href="#docs-languages">Docs</a>
         <a href="https://github.com/Joonghyun-Lee-Frieren/oh-my-gemini-cli">GitHub</a>
       </div>
     </div>
@@ -531,22 +419,6 @@
           GitHub →
         </a>
       </div>
-      <div id="docs-languages" class="docs-language-links" aria-label="Documentation language links">
-        <span class="label">Docs:</span>
-        <a href="../README.md">English</a>
-        <a href="./README_ko.md">한국어</a>
-        <a href="./README_ja.md">日本語</a>
-        <a href="./README_zh.md">中文</a>
-        <a href="./README_es.md">Español</a>
-        <a href="./README_pt.md">Português</a>
-        <a href="./README_fr.md">Français</a>
-        <a href="./README_nl.md">Nederlands</a>
-        <a href="./README_pl.md">Polski</a>
-        <a href="./README_uk.md">Українська</a>
-        <a href="./README_ru.md">Русский</a>
-        <a href="./README_de.md">Deutsch</a>
-      </div>
-
       <div style="margin-top: 4rem; max-width: 700px; margin-left: auto; margin-right: auto; text-align: left; background: rgba(129,140,248,0.08); border: 1px solid rgba(129,140,248,0.2); border-radius: 12px; padding: 1.5rem;">
         <p style="font-size: 1.1rem; color: var(--text-bright); font-style: italic; margin-bottom: 1rem; line-height: 1.6;">
           "Claude Code's core competitiveness isn't the Opus or Sonnet engine. It's Claude Code itself. Surprisingly, Gemini works well too when attached to Claude Code."
