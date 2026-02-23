@@ -15,6 +15,10 @@
 </p>
 
 <p align="center">
+  <a href="https://joonghyun-lee-frieren.github.io/oh-my-gemini-cli/">Landing Page</a>
+</p>
+
+<p align="center">
   <a href="../README.md">English</a> | <strong>한국어</strong> | <a href="./history_ko.md">변경 이력</a>
 </p>
 
