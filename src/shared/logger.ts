@@ -1,6 +1,7 @@
 import { appendFileSync, existsSync, mkdirSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 import { LOGS_DIR } from './config.js';
+import { eventBus } from './event-bus.js';
 
 export type LogLevel = 'debug' | 'info' | 'warn' | 'error';
 
@@ -64,6 +65,12 @@ class Logger {
       ? `${message} ${args.map(a => typeof a === 'string' ? a : JSON.stringify(a)).join(' ')}`
       : message;
 
+    eventBus.emit('system:log', {
+      level,
+      source: 'omg',
+      message: formatted,
+      timestamp: Date.now(),
+    });
     console.error(`${color}[${tag}]${RESET} ${formatted}`);
 
     if (this.logFile) {
@@ -73,3 +80,21 @@ class Logger {
 }
 
 export const logger = new Logger();
+
+export function createLogger(source: string) {
+  const prefix = `[${source}]`;
+  return {
+    debug(message: string, ...args: unknown[]) {
+      logger.debug(`${prefix} ${message}`, ...args);
+    },
+    info(message: string, ...args: unknown[]) {
+      logger.info(`${prefix} ${message}`, ...args);
+    },
+    warn(message: string, ...args: unknown[]) {
+      logger.warn(`${prefix} ${message}`, ...args);
+    },
+    error(message: string, ...args: unknown[]) {
+      logger.error(`${prefix} ${message}`, ...args);
+    },
+  };
+}

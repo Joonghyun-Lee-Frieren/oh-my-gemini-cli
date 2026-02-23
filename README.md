@@ -49,7 +49,7 @@
 - [Quick Start](#quick-start)
 - [Core Concept: Context Engineering](#core-concept-context-engineering)
 - [Multi-Agent System](#multi-agent-system)
-- [ASCII Dashboard](#ascii-dashboard)
+- [TUI Dashboard](#tui-dashboard)
 - [Model Orchestration](#model-orchestration)
 - [Agent Catalog](#agent-catalog)
 - [Skill Catalog](#skill-catalog)
@@ -72,7 +72,7 @@ OmG adds:
 
 - **Multi-Agent Orchestration**: Spawn multiple agents in parallel and coordinate by task type
 - **Context Engineering**: Prompt cache optimization to reduce latency and cost
-- **Real-time ASCII Dashboard**: Monitor all agents in a rich terminal UI
+- **Real-time TUI Dashboard**: Monitor agents, tasks, logs, and HUD metrics in one screen
 - **Dual Model Strategy**: Gemini Pro (planning) + Gemini Flash (execution)
 - **External LLM Support**: Connect Claude, GPT, and other models via OAuth/API
 - **Remote Control**: Monitor and control sessions through Telegram/Discord bots
@@ -124,7 +124,7 @@ https://raw.githubusercontent.com/Joonghyun-Lee-Frieren/oh-my-gemini-cli/main/do
 ### First Session
 
 ```bash
-# Basic launch (Gemini CLI + dashboard)
+# Basic launch (Gemini CLI + TUI HUD)
 omg
 
 # Multi-agent team mode
@@ -267,9 +267,10 @@ omg team shutdown
 
 ---
 
-## ASCII Dashboard
+## TUI Dashboard
 
-Real-time terminal dashboard built with Ink (React for CLI).
+Real-time terminal dashboard built with Ink (React for CLI).  
+Default commands (`omg`, `omg launch`, `omg team start`, `omg status`) open this TUI unless `--no-dashboard` is used.
 
 ### Dashboard preview
 
@@ -295,11 +296,9 @@ Real-time terminal dashboard built with Ink (React for CLI).
 | `q` / `Ctrl+C` | Quit |
 | `p` | Pause all agents |
 | `r` | Resume |
-| `d` | Show selected agent detail stream |
-| `t` | Toggle Telegram/Discord sync |
-| `Tab` | Move focus between agents |
-| `Enter` | Open focused agent detail panel |
-| `1`-`9` | Focus agent by number |
+| `Tab` / `0` / `1` / `2` / `3` | Switch HUD view (all/agents/tasks/logs) |
+| `a` / `f` | Change auto-refresh interval / force refresh now |
+| `i` / `Esc` | Launch mode only: input bridge on/off |
 
 ---
 
@@ -406,7 +405,7 @@ omg bot discord start
 ## CLI Commands
 
 ```bash
-omg                         # Launch Gemini CLI + dashboard
+omg                         # Launch Gemini CLI + TUI HUD
 omg setup                   # Install prompts/skills/commands/MCP/GEMINI.md
 omg doctor                  # Run diagnostics
 omg update                  # Update to latest version
@@ -431,7 +430,7 @@ omg help                    # Show help
 --agent <type>     # specific agent (architect, executor, ...)
 --workers <N>      # team workers (default: 4)
 --model <model>    # model override
---no-dashboard     # disable dashboard
+--no-dashboard     # disable TUI HUD (plain CLI mode)
 --verbose          # verbose logs
 --dry-run          # plan only, no execution
 ```
@@ -456,7 +455,7 @@ oh-my-gemini-cli/
 ├── src/
 │   ├── cli/                          # CLI commands
 │   ├── agents/                       # Multi-agent system
-│   ├── dashboard/                    # ASCII dashboard TUI
+│   ├── dashboard/                    # Ink-based TUI dashboard
 │   ├── context/                      # Context engineering engine
 │   ├── orchestrator/                 # Model orchestration
 │   ├── mcp/                          # MCP servers

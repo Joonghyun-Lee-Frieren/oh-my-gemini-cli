@@ -77,7 +77,7 @@ export function LogPanel({ maxLines = 10, renderMode }: LogPanelProps) {
       push({
         timestamp: new Date(),
         agentId: p.agentId,
-        message: 'Quest complete! ★ Victory!',
+        message: 'Task completed',
         level: 'info',
       });
     };
@@ -86,8 +86,17 @@ export function LogPanel({ maxLines = 10, renderMode }: LogPanelProps) {
       push({
         timestamp: new Date(),
         agentId: p.agentId,
-        message: `was hit by ${p.error}! Retrying...`,
+        message: p.error,
         level: 'error',
+      });
+    };
+
+    const onSystemLog = (payload: { level: 'debug' | 'info' | 'warn' | 'error'; source: string; message: string; timestamp: number }) => {
+      push({
+        timestamp: new Date(payload.timestamp),
+        agentId: payload.source,
+        message: payload.message,
+        level: payload.level,
       });
     };
 
@@ -96,6 +105,7 @@ export function LogPanel({ maxLines = 10, renderMode }: LogPanelProps) {
     eventBus.on('agent:output', onOutput);
     eventBus.on('agent:complete', onComplete);
     eventBus.on('agent:error', onError);
+    eventBus.on('system:log', onSystemLog);
 
     return () => {
       eventBus.off('agent:spawn', onSpawn);
@@ -103,6 +113,7 @@ export function LogPanel({ maxLines = 10, renderMode }: LogPanelProps) {
       eventBus.off('agent:output', onOutput);
       eventBus.off('agent:complete', onComplete);
       eventBus.off('agent:error', onError);
+      eventBus.off('system:log', onSystemLog);
     };
   }, [maxLines]);
 
@@ -115,7 +126,7 @@ export function LogPanel({ maxLines = 10, renderMode }: LogPanelProps) {
       <Text color={retroColors.purple}>╔══════════════════════════════════════════════════════════════════════════╗</Text>
       <Box flexDirection="column" paddingX={1}>
         {visible.length === 0 ? (
-          <Text color={retroColors.dim} italic>Waiting for battle to begin...</Text>
+          <Text color={retroColors.dim} italic>Waiting for runtime logs...</Text>
         ) : (
           visible.map((entry, i) => (
             <Text key={i}>

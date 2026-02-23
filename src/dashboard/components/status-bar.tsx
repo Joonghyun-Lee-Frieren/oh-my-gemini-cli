@@ -6,6 +6,15 @@ interface StatusBarProps {
   cacheHitRate?: number;
   tokenUsage?: number;
   costEstimate?: number;
+  activeAgents: number;
+  totalAgents: number;
+  doneTasks: number;
+  totalTasks: number;
+  sessionState: 'running' | 'done' | 'failed';
+  layoutMode: 'all' | 'agents' | 'tasks' | 'logs';
+  refreshMs: number;
+  inputMode: boolean;
+  command: 'launch' | 'team-start' | 'status' | 'team-status' | null;
   renderMode: DashboardRenderMode;
 }
 
@@ -22,7 +31,21 @@ function formatTokens(n: number): string {
   return String(n);
 }
 
-export function StatusBar({ cacheHitRate = 0, tokenUsage = 0, costEstimate = 0, renderMode }: StatusBarProps) {
+export function StatusBar({
+  cacheHitRate = 0,
+  tokenUsage = 0,
+  costEstimate = 0,
+  activeAgents,
+  totalAgents,
+  doneTasks,
+  totalTasks,
+  sessionState,
+  layoutMode,
+  refreshMs,
+  inputMode,
+  command,
+  renderMode,
+}: StatusBarProps) {
   const [blink, setBlink] = useState(true);
 
   useEffect(() => {
@@ -31,12 +54,29 @@ export function StatusBar({ cacheHitRate = 0, tokenUsage = 0, costEstimate = 0, 
   }, []);
 
   const cacheColor = cacheHitRate > 60 ? retroColors.green : cacheHitRate > 30 ? retroColors.gold : retroColors.red;
+  const sessionColor = sessionState === 'done'
+    ? retroColors.green
+    : sessionState === 'failed'
+      ? retroColors.red
+      : retroColors.cyan;
+  const sessionLabel = sessionState.toUpperCase();
+  const layoutLabel = layoutMode.toUpperCase();
 
   return (
     <Box flexDirection="column">
       <Text color={retroColors.purple}>═══════════════════════════════════════════════════════════════════════════</Text>
       <Box justifyContent="space-between" paddingX={1}>
         <Box gap={2}>
+          <Text>
+            <Text color={retroColors.slate}>AGENTS </Text>
+            <Text color={retroColors.white}>{activeAgents}</Text>
+            <Text color={retroColors.dim}>/{totalAgents}</Text>
+          </Text>
+          <Text>
+            <Text color={retroColors.slate}>TASKS </Text>
+            <Text color={retroColors.white}>{doneTasks}</Text>
+            <Text color={retroColors.dim}>/{totalTasks}</Text>
+          </Text>
           <Text>
             <Text color={retroColors.slate}>CACHE </Text>
             <Text color={cacheColor}>{miniBar(cacheHitRate)}</Text>
@@ -48,18 +88,45 @@ export function StatusBar({ cacheHitRate = 0, tokenUsage = 0, costEstimate = 0, 
           </Text>
           <Text>
             <Text color={retroColors.slate}>GOLD </Text>
-            <Text color={retroColors.gold}>-${costEstimate.toFixed(2)}</Text>
+            <Text color={retroColors.gold}>-${costEstimate.toFixed(4)}</Text>
           </Text>
+          <Text>
+            <Text color={retroColors.slate}>STATE </Text>
+            <Text color={sessionColor}>{sessionLabel}</Text>
+          </Text>
+          <Text>
+            <Text color={retroColors.slate}>VIEW </Text>
+            <Text color={retroColors.white}>{layoutLabel}</Text>
+          </Text>
+          <Text>
+            <Text color={retroColors.slate}>REFRESH </Text>
+            <Text color={retroColors.white}>{(refreshMs / 1000).toFixed(1)}s</Text>
+          </Text>
+          {command === 'launch' && (
+            <Text>
+              <Text color={retroColors.slate}>INPUT </Text>
+              <Text color={inputMode ? retroColors.green : retroColors.dim}>
+                {inputMode ? 'ON' : 'OFF'}
+              </Text>
+            </Text>
+          )}
         </Box>
         <Box gap={1}>
           <Text color={retroColors.dim}>
             <Text color={blink ? retroColors.cyan : retroColors.dim}>{renderMode === 'retro' ? '▸' : '>'}</Text>
             {' '}
-            <Text color={retroColors.pink}>A</Text>:quit{' '}
-            <Text color={retroColors.pink}>B</Text>:pause{' '}
-            <Text color={retroColors.pink}>X</Text>:resume{' '}
-            <Text color={retroColors.pink}>Y</Text>:detail{' '}
-            <Text color={retroColors.pink}>SELECT</Text>:tg-sync
+            <Text color={retroColors.pink}>q</Text>:quit{' '}
+            <Text color={retroColors.pink}>p</Text>:pause{' '}
+            <Text color={retroColors.pink}>r</Text>:resume{' '}
+            <Text color={retroColors.pink}>tab</Text>:view{' '}
+            <Text color={retroColors.pink}>a</Text>:rate{' '}
+            <Text color={retroColors.pink}>f</Text>:refresh{' '}
+            {command === 'launch' && (
+              <>
+                <Text color={retroColors.pink}>i</Text>:input{' '}
+                <Text color={retroColors.pink}>esc</Text>:input-off
+              </>
+            )}
           </Text>
         </Box>
       </Box>

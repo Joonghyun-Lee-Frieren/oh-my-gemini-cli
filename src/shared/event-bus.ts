@@ -1,6 +1,8 @@
 import { EventEmitter } from 'node:events';
 import type { Agent, Task, TaskResult } from '../agents/types.js';
 
+export type SystemLogLevel = 'debug' | 'info' | 'warn' | 'error';
+
 export interface EventMap {
   'agent:spawn': { agent: Agent };
   'agent:progress': { agentId: string; progress: number; message?: string };
@@ -10,6 +12,28 @@ export interface EventMap {
   'task:queued': { task: Task };
   'task:started': { task: Task; agentId: string };
   'task:done': { task: Task; result: TaskResult };
+  'task:failed': { task: Task; error: string };
+  'system:log': {
+    level: SystemLogLevel;
+    source: string;
+    message: string;
+    timestamp: number;
+  };
+  'hud:metrics': {
+    tokenUsage?: number;
+    costEstimate?: number;
+    cacheHitRate?: number;
+    model?: string;
+    phase?: string;
+  };
+  'hud:session': {
+    command: 'launch' | 'team-start' | 'status' | 'team-status';
+    state: 'running' | 'done' | 'failed';
+    message?: string;
+  };
+  'hud:stdin': {
+    data: string;
+  };
 }
 
 export type EventName = keyof EventMap;

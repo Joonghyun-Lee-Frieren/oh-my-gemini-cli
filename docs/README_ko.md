@@ -52,7 +52,7 @@ OmG는 다음을 추가합니다:
 
 - **멀티 에이전트 오케스트레이션**: 작업 유형에 따라 여러 에이전트를 동시 생성하고 협업시킵니다
 - **컨텍스트 엔지니어링**: 프롬프트 캐싱 최적화로 비용과 지연을 최소화합니다
-- **실시간 ASCII 대시보드**: 모든 에이전트의 작업 상태를 터미널에서 실시간으로 확인합니다
+- **실시간 TUI 대시보드**: 에이전트/작업/로그/HUD 메트릭을 한 화면에서 실시간 확인합니다
 - **듀얼 모델 전략**: Gemini Pro(계획)와 Flash(구현)를 자동으로 분배합니다
 - **외부 LLM 지원**: OAuth/API로 Claude, GPT 등 다른 모델도 연결 가능합니다
 - **원격 제어**: Telegram/Discord 봇으로 어디서든 세션을 모니터링하고 제어합니다
@@ -66,7 +66,7 @@ OmG는 포크가 아닌 애드온입니다. Gemini CLI의 네이티브 확장 �
 - [빠른 시작](#빠른-시작)
 - [핵심 개념: 컨텍스트 엔지니어링](#핵심-개념-컨텍스트-엔지니어링)
 - [멀티 에이전트 시스템](#멀티-에이전트-시스템)
-- [ASCII 대시보드](#ascii-대시보드)
+- [TUI 대시보드](#tui-대시보드)
 - [모델 오케스트레이션](#모델-오케스트레이션)
 - [에이전트 카탈로그](#에이전트-카탈로그)
 - [스킬 카탈로그](#스킬-카탈로그)
@@ -126,7 +126,7 @@ https://raw.githubusercontent.com/Joonghyun-Lee-Frieren/oh-my-gemini-cli/main/do
 ### 첫 번째 세션
 
 ```bash
-# 기본 실행 (Gemini CLI + 대시보드)
+# 기본 실행 (Gemini CLI + TUI HUD)
 omg
 
 # 멀티 에이전트 팀 모드
@@ -357,9 +357,10 @@ omg team shutdown
 
 ---
 
-## ASCII 대시보드
+## TUI 대시보드
 
-Ink (React for CLI) 기반의 실시간 터미널 대시보드입니다.
+Ink (React for CLI) 기반의 실시간 터미널 대시보드입니다.  
+기본 명령(`omg`, `omg launch`, `omg team start`, `omg status`)은 기본적으로 TUI를 실행합니다.
 모든 에이전트의 작업 상태를 한 화면에서 확인할 수 있습니다.
 
 ### 대시보드 미리보기
@@ -441,11 +442,9 @@ Frame 4:     ╔═════════════════════�
 | `q` / `Ctrl+C` | 종료 |
 | `p` | 모든 에이전트 일시 중지 |
 | `r` | 재개 |
-| `d` | 선택한 에이전트 상세 보기 (전체 출력 스트림) |
-| `t` | Telegram/Discord 동기화 토글 |
-| `Tab` | 에이전트 간 포커스 이동 |
-| `Enter` | 포커스된 에이전트 상세 패널 열기 |
-| `1`-`9` | N번 에이전트 직접 선택 |
+| `Tab` / `0` / `1` / `2` / `3` | HUD 화면 전환 (전체/에이전트/작업/로그) |
+| `a` / `f` | 자동 새로고침 주기 변경 / 즉시 새로고침 |
+| `i` / `Esc` | launch 모드 전용: 입력 브리지 켜기/끄기 |
 
 ---
 
@@ -698,7 +697,7 @@ omg bot discord start
 ## CLI 명령어
 
 ```bash
-omg                         # Gemini CLI 실행 + 대시보드
+omg                         # Gemini CLI 실행 + TUI HUD
 omg setup                   # 프롬프트/스킬/설정/GEMINI.md 설치
 omg doctor                  # 설치 상태 진단
 omg update                  # 최신 버전으로 업데이트
@@ -723,7 +722,7 @@ omg help                    # 도움말
 --agent <type>     # 특정 에이전트로 실행 (architect, executor 등)
 --workers <N>      # 팀 모드 워커 수 (기본: 4)
 --model <model>    # 모델 지정
---no-dashboard     # 대시보드 비활성화
+--no-dashboard     # TUI HUD 비활성화(기존 텍스트 CLI 모드)
 --verbose          # 상세 로그
 --dry-run          # 실제 실행 없이 계획만 표시
 ```
@@ -759,7 +758,7 @@ oh-my-gemini-cli/
 │   │   ├── task-queue.ts             # 우선순위 기반 작업 큐
 │   │   ├── agent-registry.ts         # 에이전트 유형 레지스트리
 │   │   └── types.ts                  # 에이전트/태스크 타입
-│   ├── dashboard/                    # ASCII 대시보드 TUI
+│   ├── dashboard/                    # Ink 기반 TUI 대시보드
 │   │   ├── app.tsx                   # Ink 루트 컴포넌트
 │   │   ├── components/               # UI 컴포넌트
 │   │   ├── hooks/                    # React 훅

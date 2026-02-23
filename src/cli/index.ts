@@ -8,6 +8,7 @@ import { runTeam } from './team.js';
 import { runMcpServer } from '../mcp/stdio-server.js';
 import { createTelegramBot } from '../bot/telegram.js';
 import { createDiscordBot } from '../bot/discord.js';
+import { runDashboardSession } from '../dashboard/runtime.js';
 
 function parseValue(value: string): unknown {
   if (value === 'true') return true;
@@ -58,7 +59,7 @@ function createProgram(): Command {
     .option('--agent <type>', 'agent type to use (architect, planner, executor, reviewer)')
     .option('--workers <count>', 'number of parallel workers', parseInt)
     .option('--model <model>', 'Gemini model to use')
-    .option('--no-dashboard', 'disable ASCII dashboard')
+    .option('--no-dashboard', 'disable TUI dashboard (plain CLI mode)')
     .option('--dashboard-style <style>', 'dashboard style: safe | retro')
     .option('--verbose', 'enable verbose logging')
     .option('--dry-run', 'show what would be done without executing');
@@ -89,14 +90,22 @@ function createProgram(): Command {
     .action(async (task: string[]) => {
       const globalOpts = program.opts();
       if (globalOpts.verbose) logger.setLevel('debug');
-      await runLaunch({
+      const launchOptions = {
         task: task.join(' '),
         model: globalOpts.model,
         dashboard: globalOpts.dashboard ?? true,
         dashboardStyle: globalOpts.dashboardStyle === 'retro' ? 'retro' : 'safe',
         verbose: globalOpts.verbose ?? false,
         dryRun: globalOpts.dryRun ?? false,
-      });
+      };
+      if (launchOptions.dashboard && !launchOptions.dryRun) {
+        await runDashboardSession({
+          command: 'launch',
+          run: () => runLaunch(launchOptions),
+        });
+        return;
+      }
+      await runLaunch(launchOptions);
     });
 
   program
@@ -111,6 +120,14 @@ function createProgram(): Command {
     .action(async (opts) => {
       const globalOpts = program.opts();
       if (globalOpts.verbose) logger.setLevel('debug');
+      const dashboardEnabled = globalOpts.dashboard ?? true;
+      if (dashboardEnabled && !opts.json) {
+        await runDashboardSession({
+          command: 'status',
+          keepOpenAfterRun: true,
+        });
+        return;
+      }
       await runTeam({
         subcommand: 'status',
         statusView: opts.agents
@@ -139,19 +156,37 @@ function createProgram(): Command {
     .action(async (task: string[]) => {
       const globalOpts = program.opts();
       if (globalOpts.verbose) logger.setLevel('debug');
-      await runTeam({
+      const teamOptions = {
         subcommand: 'start',
         task: task.join(' '),
         workers: globalOpts.workers,
         model: globalOpts.model,
         dashboard: globalOpts.dashboard ?? true,
-      });
+      };
+      if (teamOptions.dashboard) {
+        await runDashboardSession({
+          command: 'team-start',
+          run: () => runTeam(teamOptions),
+          keepOpenAfterRun: true,
+        });
+        return;
+      }
+      await runTeam(teamOptions);
     });
 
   teamCmd
     .command('status')
     .description('Show active agents and task pipeline')
     .action(async () => {
+      const globalOpts = program.opts();
+      const dashboardEnabled = globalOpts.dashboard ?? true;
+      if (dashboardEnabled) {
+        await runDashboardSession({
+          command: 'team-status',
+          keepOpenAfterRun: true,
+        });
+        return;
+      }
       await runTeam({ subcommand: 'status' });
     });
 

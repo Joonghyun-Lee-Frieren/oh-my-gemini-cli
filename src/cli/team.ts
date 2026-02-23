@@ -6,6 +6,7 @@ import { logger } from '../shared/logger.js';
 import { cacheManager } from '../context/cache-manager.js';
 import type { Agent, AgentType, Task } from '../agents/types.js';
 import { AgentStatus, TaskStatus, TaskPriority } from '../agents/types.js';
+import { estimateModelCostUsd } from '../dashboard/utils/cost-estimator.js';
 
 export interface TeamOptions {
   subcommand: 'start' | 'status' | 'shutdown';
@@ -81,16 +82,21 @@ async function startTeam(opts: TeamOptions): Promise<void> {
   const model = opts.model ?? settings.defaultModel;
   const workerCount = opts.workers ?? settings.maxWorkers;
 
+  const isTuiMode = opts.dashboard ?? false;
+  const out = (...args: string[]) => {
+    if (!isTuiMode) console.log(...args);
+  };
+
   if (!opts.task) {
     console.error('Error: task description is required for team start');
     process.exitCode = 1;
     return;
   }
 
-  console.log(`\nStarting multi-agent team`);
-  console.log(`  Model: ${model}`);
-  console.log(`  Workers: ${workerCount}`);
-  console.log(`  Task: ${opts.task}\n`);
+  out(`\nStarting multi-agent team`);
+  out(`  Model: ${model}`);
+  out(`  Workers: ${workerCount}`);
+  out(`  Task: ${opts.task}\n`);
 
   const agents: Agent[] = [];
   const agentTypes: AgentType[] = ['architect' as AgentType, 'planner' as AgentType, 'executor' as AgentType];
@@ -108,7 +114,9 @@ async function startTeam(opts: TeamOptions): Promise<void> {
   task.startedAt = Date.now();
 
   eventBus.emit('task:queued', { task });
-  eventBus.emit('task:started', { task, agentId: agents[0].id });
+  if (agents[0]) {
+    eventBus.emit('task:started', { task, agentId: agents[0].id });
+  }
 
   if (agents[0]) {
     agents[0].status = AgentStatus.Assigned;
@@ -121,13 +129,23 @@ async function startTeam(opts: TeamOptions): Promise<void> {
     startedAt: Date.now(),
   };
   saveTeamState(state);
+  const status = buildStatusPayload(state);
+  eventBus.emit('hud:metrics', {
+    tokenUsage: status.context.tokenUsage,
+    cacheHitRate: status.cache.hitRate,
+    costEstimate: estimateModelCostUsd({
+      model,
+      inputTokens: Math.ceil(status.context.tokenUsage * 0.4),
+      outputTokens: Math.ceil(status.context.tokenUsage * 0.6),
+    }),
+    model,
+    phase: 'running',
+  });
 
-  if (opts.dashboard) {
-    console.log('Dashboard: enabled (connect via `omg status`)\n');
-  }
+  if (opts.dashboard) logger.info('Dashboard session running');
 
-  console.log('Team is running. Use `omg team status` to check progress.');
-  console.log('Use `omg team shutdown` to stop all agents.\n');
+  out('Team is running. Use `omg team status` to check progress.');
+  out('Use `omg team shutdown` to stop all agents.\n');
 }
 
 interface StatusPayload {
