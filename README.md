@@ -18,7 +18,9 @@
   <strong>English</strong> | <a href="./docs/README_ko.md">한국어</a> | <a href="./docs/history.md">Changelog</a>
 </p>
 
----
+
+
+
 
 > "Claude Code's core competitiveness isn't the Opus or Sonnet engine. It's Claude Code itself. Surprisingly, Gemini works well too when attached to Claude Code."
 >
@@ -26,12 +28,16 @@
 
 *This project started from this insight: "What if we bring that harness to Gemini CLI?"*
 
----
+
+
+
 
 > Extends **[Gemini CLI](https://github.com/google-gemini/gemini-cli)** from a single-session tool into a
 > **context engineering powered multi-agent orchestration system**.
 
----
+
+
+
 
 ## Table of Contents
 
@@ -265,7 +271,7 @@ Real-time terminal dashboard built with Ink (React for CLI).
 
 ```
 +----------------------------------------------------------------------+
-| OmG  oh-my-gemini-cli   TIME 03:42   PARTY [####--] 4/6             |
+| OmG  oh-my-gemini-cli   TIME 03:42   PARTY [####--] 4/6              |
 +--------------------------------+-------------------------------------+
 | PARTY MEMBERS                  | QUEST LOG                           |
 | Active: 4 / Total: 6           | 2/7 quests cleared                  |
@@ -274,7 +280,7 @@ Real-time terminal dashboard built with Ink (React for CLI).
 | Exec#1    [gemini-flash] ATK   | [RUN  ] impl-token    -> Exec#2     |
 | Reviewer  [gemini-pro]   IDLE  | [WAIT ] code-review   -> Review     |
 +--------------------------------+-------------------------------------+
-| CACHE [#####-] 94% | TOKENS 12.4k/1M | COST -$0.03                  |
+| CACHE [#####-] 94% | TOKENS 12.4k/1M | COST -$0.03                   |
 +----------------------------------------------------------------------+
 ```
 

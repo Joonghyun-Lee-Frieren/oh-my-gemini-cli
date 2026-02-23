@@ -20,7 +20,7 @@
 
 
 
----
+
 
 > "Claude Code의 핵심 경쟁력은 Opus나 Sonnet 엔진이 아닙니다. Claude Code 그 자체예요. 놀랍지만 Gemini도 Claude Code를 붙이면 잘 돌아갑니다."
 >
@@ -30,14 +30,14 @@
 
 
 
----
 
 
 > **[Gemini CLI](https://github.com/google-gemini/gemini-cli)**를 단일 세션 도구에서
 > **컨텍스트 엔지니어링 기반의 멀티 에이전트 오케스트레이션 시스템**으로 확장합니다.
 
 
----
+
+
 
 ## 왜 oh-my-gemini-cli인가?
 
@@ -365,7 +365,7 @@ Ink (React for CLI) 기반의 실시간 터미널 대시보드입니다.
 
 ```
 +----------------------------------------------------------------------+
-| OmG  oh-my-gemini-cli   TIME 03:42   PARTY [####--] 4/6             |
+| OmG  oh-my-gemini-cli   TIME 03:42   PARTY [####--] 4/6              |
 +--------------------------------+-------------------------------------+
 | PARTY MEMBERS                  | QUEST LOG                           |
 | Active: 4 / Total: 6           | 2/7 quests cleared                  |
@@ -376,12 +376,12 @@ Ink (React for CLI) 기반의 실시간 터미널 대시보드입니다.
 | Exec#3    [gemini-flash] ATK   | [RUN  ] impl-routes    -> Exec#3    |
 | Reviewer  [gemini-pro]   IDLE  | [WAIT ] code-review    -> Review    |
 +--------------------------------+-------------------------------------+
-| BATTLE LOG                                                          |
-| [03:41] Exec#1 wrote oauth/callback.ts                              |
-| [03:42] Planner finished task decomposition (5 subtasks)            |
+| BATTLE LOG                                                           |
+| [03:41] Exec#1 wrote oauth/callback.ts                               |
+| [03:42] Planner finished task decomposition (5 subtasks)             |
 +----------------------------------------------------------------------+
-| CACHE [#####-] 94% | TOKENS 12.4k/1M | COST -$0.03                  |
-| A:quit B:pause X:resume Y:detail SELECT:tg-sync                     |
+| CACHE [#####-] 94% | TOKENS 12.4k/1M | COST -$0.03                   |
+| A:quit B:pause X:resume Y:detail SELECT:tg-sync                      |
 +----------------------------------------------------------------------+
 ```
 
