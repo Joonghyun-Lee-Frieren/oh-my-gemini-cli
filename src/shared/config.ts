@@ -6,6 +6,7 @@ export interface OmgSettings {
   defaultModel: string;
   maxWorkers: number;
   dashboard: boolean;
+  dashboardStyle: 'safe' | 'retro';
   verbose: boolean;
   geminiCliPath: string;
   promptsCacheEnabled: boolean;
@@ -26,6 +27,7 @@ const DEFAULT_SETTINGS: OmgSettings = {
   defaultModel: 'gemini-2.5-pro',
   maxWorkers: 3,
   dashboard: true,
+  dashboardStyle: 'safe',
   verbose: false,
   geminiCliPath: 'gemini',
   promptsCacheEnabled: true,

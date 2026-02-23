@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { Box, Text } from 'ink';
-import { retroColors } from '../theme.js';
+import { retroColors, type DashboardRenderMode } from '../theme.js';
+import { fitByWidth } from '../utils/display-width.js';
 
 interface HeaderProps {
   projectName?: string;
   version?: string;
   activeAgentCount: number;
   totalAgentCount?: number;
+  renderMode: DashboardRenderMode;
 }
 
 function formatGameTimer(ms: number): string {
@@ -22,6 +24,7 @@ function formatGameTimer(ms: number): string {
 export function Header({
   activeAgentCount,
   totalAgentCount = 6,
+  renderMode,
 }: HeaderProps) {
   const [elapsed, setElapsed] = useState(0);
   const [startTime] = useState(() => Date.now());
@@ -37,27 +40,25 @@ export function Header({
     return () => clearInterval(timer);
   }, []);
 
-  const partyDiamonds =
-    '♦'.repeat(activeAgentCount) + '○'.repeat(Math.max(0, totalAgentCount - activeAgentCount));
+  const partyGauge = renderMode === 'retro'
+    ? '♦'.repeat(activeAgentCount) + '○'.repeat(Math.max(0, totalAgentCount - activeAgentCount))
+    : '#'.repeat(activeAgentCount) + '-'.repeat(Math.max(0, totalAgentCount - activeAgentCount));
+  const innerWidth = 74;
+  const cursor = blink ? (renderMode === 'retro' ? '▸' : '>') : '';
+  const title = renderMode === 'retro' ? '◆ OMG ◆' : 'OMG';
+  const headerText = `${title} | TIME ${formatGameTimer(elapsed)} | PARTY [${partyGauge}] ${activeAgentCount}/${totalAgentCount} ${cursor}`;
+  const horizontal = renderMode === 'retro' ? '═' : '-';
+  const left = renderMode === 'retro' ? '╔' : '+';
+  const right = renderMode === 'retro' ? '╗' : '+';
+  const v = renderMode === 'retro' ? '║' : '|';
+  const topBottom = `${left}${horizontal.repeat(innerWidth)}${right}`;
+  const middle = `${v}${fitByWidth(headerText, innerWidth)}${v}`;
 
   return (
     <Box flexDirection="column">
-      <Text color={retroColors.purple}>╔══════════════════════════════════════════════════════════════════════════╗</Text>
-      <Text>
-        <Text color={retroColors.purple}>║ </Text>
-        <Text color={retroColors.pink} bold>◆ OMG ◆</Text>
-        <Text color={retroColors.dim}> │ </Text>
-        <Text color={retroColors.cyan}>⏱ TIME </Text>
-        <Text color={retroColors.white} bold>{formatGameTimer(elapsed)}</Text>
-        <Text color={retroColors.dim}> │ </Text>
-        <Text color={retroColors.gold}>PARTY </Text>
-        <Text color={retroColors.green}>{partyDiamonds}</Text>
-        <Text color={retroColors.slate}> {activeAgentCount}/{totalAgentCount}</Text>
-        <Text> </Text>
-        <Text color={retroColors.cyan} dimColor={!blink}>▸</Text>
-        <Text color={retroColors.purple}> ║</Text>
-      </Text>
-      <Text color={retroColors.purple}>╚══════════════════════════════════════════════════════════════════════════╝</Text>
+      <Text color={retroColors.purple}>{topBottom}</Text>
+      <Text color={retroColors.white}>{middle}</Text>
+      <Text color={retroColors.purple}>{topBottom}</Text>
     </Box>
   );
 }

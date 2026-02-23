@@ -1,8 +1,34 @@
 import React, { useState, useEffect } from 'react';
 import { Box, Text } from 'ink';
-import { retroColors } from '../theme.js';
+import { retroColors, type DashboardRenderMode } from '../theme.js';
 
-const frames = [
+const safeFrames = [
+  { lines: [{ text: '    . . .', color: retroColors.slate }] },
+  {
+    lines: [{ text: '  [ LOADING ]', color: retroColors.cyan }],
+  },
+  {
+    lines: [
+      { text: '  +----------------------------------+', color: retroColors.white },
+      { text: '  |      oh-my-gemini-cli            |', color: retroColors.pink },
+      { text: '  |      CONTEXT QUEST v0.1.1        |', color: retroColors.cyan },
+      { text: '  +----------------------------------+', color: retroColors.white },
+    ],
+  },
+  {
+    lines: [
+      { text: '  +----------------------------------+', color: retroColors.white },
+      { text: '  |      oh-my-gemini-cli            |', color: retroColors.pink },
+      { text: '  |      CONTEXT QUEST v0.1.1        |', color: retroColors.cyan },
+      { text: '  |                                  |', color: retroColors.white },
+      { text: '  |  Gemini thinks. OmG orchestrates.|', color: retroColors.gold },
+      { text: '  +----------------------------------+', color: retroColors.white },
+      { text: '       PRESS ANY KEY TO START', color: retroColors.slate },
+    ],
+  },
+];
+
+const retroFrames = [
   { lines: [{ text: '    · · ·', color: retroColors.slate }] },
   {
     lines: [{ text: '  ░▒▓█ LOADING █▓▒░', color: retroColors.cyan }],
@@ -21,7 +47,7 @@ const frames = [
       { text: '  ║  ◆ oh-my-gemini-cli ◆          ║', color: retroColors.pink },
       { text: '  ║  ░▒▓ CONTEXT QUEST v0.1.1 ▓▒░  ║', color: retroColors.cyan },
       { text: '  ║                                  ║', color: retroColors.white },
-      { text: '  ║  ★ Gemini thinks. OmG orchestrates. ★   ║', color: retroColors.gold },
+      { text: '  ║  Gemini thinks. OmG orchestrates. ║', color: retroColors.gold },
       { text: '  ╚══════════════════════════════════╝', color: retroColors.white },
       { text: '       PRESS ANY KEY TO START', color: retroColors.slate },
     ],
@@ -30,12 +56,14 @@ const frames = [
 
 interface AsciiArtProps {
   onComplete?: () => void;
+  renderMode: DashboardRenderMode;
 }
 
-export function AsciiArt({ onComplete }: AsciiArtProps) {
+export function AsciiArt({ onComplete, renderMode }: AsciiArtProps) {
   const [frameIdx, setFrameIdx] = useState(0);
   const [visible, setVisible] = useState(true);
   const [blink, setBlink] = useState(true);
+  const frames = renderMode === 'retro' ? retroFrames : safeFrames;
 
   useEffect(() => {
     if (frameIdx >= frames.length - 1) {

@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { Box, Text } from 'ink';
-import { retroColors, progressChars } from '../theme.js';
+import { retroColors, progressChars, type DashboardRenderMode } from '../theme.js';
 
 interface StatusBarProps {
   cacheHitRate?: number;
   tokenUsage?: number;
   costEstimate?: number;
+  renderMode: DashboardRenderMode;
 }
 
 function miniBar(percent: number, width: number = 6): string {
@@ -21,7 +22,7 @@ function formatTokens(n: number): string {
   return String(n);
 }
 
-export function StatusBar({ cacheHitRate = 0, tokenUsage = 0, costEstimate = 0 }: StatusBarProps) {
+export function StatusBar({ cacheHitRate = 0, tokenUsage = 0, costEstimate = 0, renderMode }: StatusBarProps) {
   const [blink, setBlink] = useState(true);
 
   useEffect(() => {
@@ -52,7 +53,7 @@ export function StatusBar({ cacheHitRate = 0, tokenUsage = 0, costEstimate = 0 }
         </Box>
         <Box gap={1}>
           <Text color={retroColors.dim}>
-            <Text color={blink ? retroColors.cyan : retroColors.dim}>▸</Text>
+            <Text color={blink ? retroColors.cyan : retroColors.dim}>{renderMode === 'retro' ? '▸' : '>'}</Text>
             {' '}
             <Text color={retroColors.pink}>A</Text>:quit{' '}
             <Text color={retroColors.pink}>B</Text>:pause{' '}

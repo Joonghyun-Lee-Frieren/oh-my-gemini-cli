@@ -1,11 +1,21 @@
 import React from 'react';
 import { Box, Text } from 'ink';
 import { AgentStatus, type Agent } from '../../agents/types.js';
-import { statusColors, statusIcons, statusLabels, agentSprites, retroColors, progressChars } from '../theme.js';
+import {
+  statusColors,
+  statusIconsByMode,
+  statusLabels,
+  agentSpritesByMode,
+  retroColors,
+  progressChars,
+  type DashboardRenderMode,
+} from '../theme.js';
 import { Spinner } from './spinner.js';
+import { fitByWidth, truncateByWidth } from '../utils/display-width.js';
 
 interface AgentPanelProps {
   agent: Agent;
+  renderMode: DashboardRenderMode;
 }
 
 function modelTag(model: string): { label: string; color: string } {
@@ -34,26 +44,29 @@ function hpColor(percent: number): string {
   return retroColors.red;
 }
 
-export function AgentPanel({ agent }: AgentPanelProps) {
+export function AgentPanel({ agent, renderMode }: AgentPanelProps) {
   const color = statusColors[agent.status];
-  const icon = statusIcons[agent.status];
+  const icon = statusIconsByMode[renderMode][agent.status];
   const label = statusLabels[agent.status];
-  const sprite = agentSprites[agent.type] ?? '?';
+  const sprite = agentSpritesByMode[renderMode][agent.type] ?? '?';
   const tag = modelTag(agent.config.model);
-  const taskDesc = agent.currentTask?.description ?? '';
+  const typeLabel = fitByWidth(agent.type, 12);
+  const modelLabel = fitByWidth(tag.label, 22);
+  const statusLabel = fitByWidth(label, 5);
+  const taskDesc = truncateByWidth(agent.currentTask?.description ?? '', 40);
 
   return (
     <Box flexDirection="row" gap={1}>
       <Text>{sprite}</Text>
       <Text color={color}>{icon}</Text>
       <Box width={12}>
-        <Text color={color} bold>{agent.type}</Text>
+        <Text color={color} bold>{typeLabel}</Text>
       </Box>
       <Box width={22}>
-        <Text color={tag.color}>{tag.label}</Text>
+        <Text color={tag.color}>{modelLabel}</Text>
       </Box>
       <Box width={5}>
-        <Text color={color} bold>{label}</Text>
+        <Text color={color} bold>{statusLabel}</Text>
       </Box>
       {agent.status === AgentStatus.Running ? (
         <>

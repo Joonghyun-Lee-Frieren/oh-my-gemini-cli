@@ -2,13 +2,14 @@ import React from 'react';
 import { Box, Text } from 'ink';
 import { AgentStatus, type Agent } from '../../agents/types.js';
 import { AgentPanel } from './agent-panel.js';
-import { retroColors } from '../theme.js';
+import { retroColors, type DashboardRenderMode } from '../theme.js';
 
 interface AgentGridProps {
   agents: Agent[];
+  renderMode: DashboardRenderMode;
 }
 
-export function AgentGrid({ agents }: AgentGridProps) {
+export function AgentGrid({ agents, renderMode }: AgentGridProps) {
   const activeCount = agents.filter((a) => a.status === AgentStatus.Running).length;
 
   return (
@@ -27,7 +28,7 @@ export function AgentGrid({ agents }: AgentGridProps) {
         ) : (
           agents.map((agent, i) => (
             <React.Fragment key={agent.id}>
-              <AgentPanel agent={agent} />
+              <AgentPanel agent={agent} renderMode={renderMode} />
               {i < agents.length - 1 && (
                 <Text color={retroColors.dim}>──────</Text>
               )}

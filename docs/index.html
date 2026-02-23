@@ -28,7 +28,7 @@
       --red: #f87171;
       --cyan: #22d3ee;
       --purple: #c084fc;
-      --font-mono: 'SF Mono', 'Cascadia Code', 'JetBrains Mono', 'Fira Code', Consolas, monospace;
+      --font-mono: 'SF Mono', 'Cascadia Mono', 'Cascadia Code', 'JetBrains Mono', 'Fira Code', 'D2Coding', 'NanumGothicCoding', 'Noto Sans Mono CJK KR', 'Noto Sans Mono', Consolas, monospace;
       --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
       --max-w: 1120px;
     }
@@ -234,6 +234,8 @@
       font-family: var(--font-mono);
       font-size: clamp(.6rem, 1.3vw, .8rem);
       line-height: 1.45;
+      font-variant-ligatures: none;
+      font-feature-settings: "liga" 0;
       overflow-x: auto;
       white-space: pre;
       color: var(--text);
@@ -466,42 +468,23 @@
           <span class="terminal-title">OmG — oh-my-gemini-cli</span>
           <span style="width:30px"></span>
         </div>
-        <div class="terminal-body"><span class="t-dim">┌─────────────────────────────────────────────────────────────────────┐</span>
-<span class="t-dim">│</span>                                                                     <span class="t-dim">│</span>
-<span class="t-dim">│</span>   <span class="t-accent">╔═══╗      ╔═══╗</span>                                                <span class="t-dim">│</span>
-<span class="t-dim">│</span>   <span class="t-accent">║   ║ ╔╗╔╗ ║   ║</span>  <span class="t-bright">oh-my-gemini-cli v0.1.3</span>                    <span class="t-dim">│</span>
-<span class="t-dim">│</span>   <span class="t-accent">║   ║ ║╚╝║ ║  ═╗</span>  <span class="t-dim">⏱ 00:03:42</span>    <span class="t-green">Agents: 4/6 active</span>           <span class="t-dim">│</span>
-<span class="t-dim">│</span>   <span class="t-accent">╚═══╝ ╚══╝ ╚═══╝</span>                                              <span class="t-dim">│</span>
-<span class="t-dim">├──────────────────────────────┬──────────────────────────────────────┤</span>
-<span class="t-dim">│</span>  <span class="t-bright">AGENTS</span>                      <span class="t-dim">│</span>  <span class="t-bright">TASK PIPELINE</span>                       <span class="t-dim">│</span>
-<span class="t-dim">│</span>                              <span class="t-dim">│</span>                                      <span class="t-dim">│</span>
-<span class="t-dim">│</span>  <span class="t-green">◉</span> Planner    <span class="t-purple">[Pro]</span>  <span class="t-accent">██████░</span> <span class="t-dim">│</span>  <span class="t-green">✓</span> analyze-auth     Planner   <span class="t-green">done</span>   <span class="t-dim">│</span>
-<span class="t-dim">│</span>    <span class="t-dim">"Analyzing auth module..."</span> <span class="t-dim">│</span>  <span class="t-green">✓</span> design-schema    Architect <span class="t-green">done</span>   <span class="t-dim">│</span>
-<span class="t-dim">│</span>                              <span class="t-dim">│</span>  <span class="t-yellow">●</span> implement-oauth  Exec #1   <span class="t-yellow">run</span>    <span class="t-dim">│</span>
-<span class="t-dim">│</span>  <span class="t-green">◉</span> Architect  <span class="t-purple">[Pro]</span>  <span class="t-accent">████░░░</span> <span class="t-dim">│</span>  <span class="t-yellow">●</span> implement-token  Exec #2   <span class="t-yellow">run</span>    <span class="t-dim">│</span>
-<span class="t-dim">│</span>    <span class="t-dim">"Designing DB schema..."</span>  <span class="t-dim">│</span>  <span class="t-yellow">●</span> implement-routes Exec #3   <span class="t-yellow">run</span>    <span class="t-dim">│</span>
-<span class="t-dim">│</span>                              <span class="t-dim">│</span>  <span class="t-dim">○</span> code-review      Reviewer  <span class="t-dim">queue</span>  <span class="t-dim">│</span>
-<span class="t-dim">│</span>  <span class="t-cyan">⟳</span> Executor#1 <span class="t-yellow">[Flash]</span> <span class="t-accent">██░░░░</span> <span class="t-dim">│</span>  <span class="t-dim">○</span> integration-test Debugger  <span class="t-dim">queue</span>  <span class="t-dim">│</span>
-<span class="t-dim">│</span>   <span class="t-dim">"Writing oauth/callback.ts"</span><span class="t-dim">│</span>                                      <span class="t-dim">│</span>
-<span class="t-dim">│</span>                              <span class="t-dim">│</span>                                      <span class="t-dim">│</span>
-<span class="t-dim">│</span>  <span class="t-cyan">⟳</span> Executor#2 <span class="t-yellow">[Flash]</span> <span class="t-accent">███░░░</span> <span class="t-dim">│</span>                                      <span class="t-dim">│</span>
-<span class="t-dim">│</span>    <span class="t-dim">"Writing token/refresh.ts"</span><span class="t-dim">│</span>                                      <span class="t-dim">│</span>
-<span class="t-dim">│</span>                              <span class="t-dim">│</span>                                      <span class="t-dim">│</span>
-<span class="t-dim">│</span>  <span class="t-cyan">⟳</span> Executor#3 <span class="t-yellow">[Flash]</span> <span class="t-accent">█░░░░░</span> <span class="t-dim">│</span>                                      <span class="t-dim">│</span>
-<span class="t-dim">│</span>    <span class="t-dim">"Writing routes/auth.ts"</span>  <span class="t-dim">│</span>                                      <span class="t-dim">│</span>
-<span class="t-dim">│</span>                              <span class="t-dim">│</span>                                      <span class="t-dim">│</span>
-<span class="t-dim">│</span>  <span class="t-dim">○</span> Reviewer   <span class="t-purple">[Pro]</span>   <span class="t-dim">queued</span> <span class="t-dim">│</span>                                      <span class="t-dim">│</span>
-<span class="t-dim">├──────────────────────────────┴──────────────────────────────────────┤</span>
-<span class="t-dim">│</span>  <span class="t-bright">LOG</span>                                                                <span class="t-dim">│</span>
-<span class="t-dim">│</span>  <span class="t-dim">03:41</span> <span class="t-cyan">[Exec#1]</span> ✎ Created oauth/callback.ts (42 lines)            <span class="t-dim">│</span>
-<span class="t-dim">│</span>  <span class="t-dim">03:42</span> <span class="t-cyan">[Exec#2]</span> ✎ Writing token/refresh.ts...                      <span class="t-dim">│</span>
-<span class="t-dim">│</span>  <span class="t-dim">03:42</span> <span class="t-green">[Planner]</span> <span class="t-green">✓</span> Task decomposition complete (5 subtasks)        <span class="t-dim">│</span>
-<span class="t-dim">│</span>  <span class="t-dim">03:42</span> <span class="t-green">[Arch]</span>    <span class="t-green">✓</span> Schema design finalized                         <span class="t-dim">│</span>
-<span class="t-dim">├─────────────────────────────────────────────────────────────────────┤</span>
-<span class="t-dim">│</span>  CTX Cache: <span class="t-green">94.2% hit</span> <span class="t-dim">│</span> Tokens: <span class="t-cyan">12.4k/1M</span> <span class="t-dim">│</span> Cost: <span class="t-yellow">$0.03</span>            <span class="t-dim">│</span>
-<span class="t-dim">├─────────────────────────────────────────────────────────────────────┤</span>
-<span class="t-dim">│</span>  <span class="t-dim">[q] quit  [p] pause  [r] resume  [d] detail  [t] telegram-sync</span>   <span class="t-dim">│</span>
-<span class="t-dim">└─────────────────────────────────────────────────────────────────────┘</span></div>
+        <div class="terminal-body"><span class="t-dim">+----------------------------------------------------------------------+</span>
+<span class="t-dim">|</span> OmG  oh-my-gemini-cli   TIME 03:42   PARTY [####--] 4/6             <span class="t-dim">|</span>
+<span class="t-dim">+--------------------------------+-------------------------------------+</span>
+<span class="t-dim">|</span> PARTY MEMBERS                  <span class="t-dim">|</span> QUEST LOG                           <span class="t-dim">|</span>
+<span class="t-dim">|</span> Active: 4 / Total: 6           <span class="t-dim">|</span> 2/7 quests cleared                  <span class="t-dim">|</span>
+<span class="t-dim">|</span> Planner   [gemini-pro]   ATK   <span class="t-dim">|</span> [DONE ] analyze-auth   -> Plan      <span class="t-dim">|</span>
+<span class="t-dim">|</span> Architect [gemini-pro]   ATK   <span class="t-dim">|</span> [RUN  ] impl-oauth    -> Exec#1     <span class="t-dim">|</span>
+<span class="t-dim">|</span> Exec#1    [gemini-flash] ATK   <span class="t-dim">|</span> [RUN  ] impl-token    -> Exec#2     <span class="t-dim">|</span>
+<span class="t-dim">|</span> Reviewer  [gemini-pro]   IDLE  <span class="t-dim">|</span> [WAIT ] code-review   -> Review     <span class="t-dim">|</span>
+<span class="t-dim">+--------------------------------+-------------------------------------+</span>
+<span class="t-dim">|</span> LOG                                                                  <span class="t-dim">|</span>
+<span class="t-dim">|</span> [03:41] Exec#1 wrote oauth/callback.ts                               <span class="t-dim">|</span>
+<span class="t-dim">|</span> [03:42] Planner finished task decomposition (5 subtasks)             <span class="t-dim">|</span>
+<span class="t-dim">+----------------------------------------------------------------------+</span>
+<span class="t-dim">|</span> CACHE [#####-] 94% | TOKENS 12.4k/1M | COST -$0.03                  <span class="t-dim">|</span>
+<span class="t-dim">|</span> [q] quit  [p] pause  [r] resume  [d] detail  [t] telegram-sync      <span class="t-dim">|</span>
+<span class="t-dim">+----------------------------------------------------------------------+</span></div>
       </div>
     </div>
   </section>

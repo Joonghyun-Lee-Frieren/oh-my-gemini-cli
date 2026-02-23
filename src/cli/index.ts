@@ -59,6 +59,7 @@ function createProgram(): Command {
     .option('--workers <count>', 'number of parallel workers', parseInt)
     .option('--model <model>', 'Gemini model to use')
     .option('--no-dashboard', 'disable ASCII dashboard')
+    .option('--dashboard-style <style>', 'dashboard style: safe | retro')
     .option('--verbose', 'enable verbose logging')
     .option('--dry-run', 'show what would be done without executing');
 
@@ -92,6 +93,7 @@ function createProgram(): Command {
         task: task.join(' '),
         model: globalOpts.model,
         dashboard: globalOpts.dashboard ?? true,
+        dashboardStyle: globalOpts.dashboardStyle === 'retro' ? 'retro' : 'safe',
         verbose: globalOpts.verbose ?? false,
         dryRun: globalOpts.dryRun ?? false,
       });

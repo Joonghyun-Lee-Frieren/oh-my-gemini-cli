@@ -8,6 +8,7 @@ export interface LaunchOptions {
   task: string;
   model?: string;
   dashboard: boolean;
+  dashboardStyle?: 'safe' | 'retro';
   verbose: boolean;
   dryRun: boolean;
 }
@@ -50,6 +51,7 @@ export async function runLaunch(opts: LaunchOptions): Promise<void> {
   const settings = loadSettings();
   const geminiCmd = settings.geminiCliPath;
   const args = buildGeminiArgs(opts, settings);
+  const dashboardStyle = opts.dashboardStyle === 'retro' ? 'retro' : settings.dashboardStyle;
 
   if (opts.dryRun) {
     console.log('Dry run — would execute:');
@@ -71,6 +73,7 @@ export async function runLaunch(opts: LaunchOptions): Promise<void> {
       ...process.env,
       OMG_ACTIVE: '1',
       OMG_DASHBOARD: opts.dashboard ? '1' : '0',
+      OMG_DASHBOARD_STYLE: dashboardStyle === 'retro' ? 'retro' : 'safe',
     },
   });
 

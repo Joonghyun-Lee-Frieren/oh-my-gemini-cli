@@ -9,14 +9,15 @@ import { StatusBar } from './components/status-bar.js';
 import { AsciiArt } from './components/ascii-art.js';
 import { useAgentStatus } from './hooks/use-agent-status.js';
 import { useTaskStream } from './hooks/use-task-stream.js';
-import { retroColors } from './theme.js';
+import { retroColors, normalizeDashboardRenderMode, type DashboardRenderMode } from './theme.js';
 
 interface DashboardAppProps {
   projectName?: string;
   version?: string;
+  renderMode?: DashboardRenderMode;
 }
 
-export function DashboardApp({ projectName, version }: DashboardAppProps) {
+export function DashboardApp({ projectName, version, renderMode }: DashboardAppProps) {
   const { exit } = useApp();
   const agents = useAgentStatus();
   const tasks = useTaskStream();
@@ -25,6 +26,7 @@ export function DashboardApp({ projectName, version }: DashboardAppProps) {
   const [cacheHitRate] = useState(0);
   const [tokenUsage] = useState(0);
   const [costEstimate] = useState(0);
+  const mode = normalizeDashboardRenderMode(renderMode ?? process.env.OMG_DASHBOARD_STYLE);
 
   const activeCount = agents.filter((a) => a.status === AgentStatus.Running).length;
 
@@ -60,7 +62,7 @@ export function DashboardApp({ projectName, version }: DashboardAppProps) {
   if (showIntro) {
     return (
       <Box flexDirection="column">
-        <AsciiArt onComplete={handleIntroComplete} />
+        <AsciiArt onComplete={handleIntroComplete} renderMode={mode} />
       </Box>
     );
   }
@@ -72,23 +74,25 @@ export function DashboardApp({ projectName, version }: DashboardAppProps) {
         version={version}
         activeAgentCount={activeCount}
         totalAgentCount={agents.length || 6}
+        renderMode={mode}
       />
 
       <Box flexDirection="row" flexGrow={1}>
         <Box flexDirection="column" flexGrow={1} flexBasis="60%">
-          <AgentGrid agents={agents} />
+          <AgentGrid agents={agents} renderMode={mode} />
         </Box>
         <Box flexDirection="column" flexGrow={1} flexBasis="40%">
-          <TaskList tasks={tasks} />
+          <TaskList tasks={tasks} renderMode={mode} />
         </Box>
       </Box>
 
-      <LogPanel maxLines={10} />
+      <LogPanel maxLines={10} renderMode={mode} />
 
       <StatusBar
         cacheHitRate={cacheHitRate}
         tokenUsage={tokenUsage}
         costEstimate={costEstimate}
+        renderMode={mode}
       />
 
       {paused && (
@@ -103,7 +107,7 @@ export function DashboardApp({ projectName, version }: DashboardAppProps) {
             <Text color={retroColors.purple}>╔══════════════════════════╗</Text>
             <Text color={retroColors.purple}>║                          ║</Text>
             <Text color={retroColors.purple}>
-              ║  <Text color={retroColors.gold} bold>  ⏸ GAME PAUSED ⏸  </Text>  ║
+              ║  <Text color={retroColors.gold} bold>{mode === 'retro' ? '  PAUSED - RETRO   ' : '   GAME PAUSED     '}</Text>  ║
             </Text>
             <Text color={retroColors.purple}>║                          ║</Text>
             <Text color={retroColors.purple}>

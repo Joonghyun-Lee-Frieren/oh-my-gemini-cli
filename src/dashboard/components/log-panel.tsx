@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Box, Text } from 'ink';
 import { eventBus } from '../../shared/event-bus.js';
-import { retroColors } from '../theme.js';
+import { retroColors, type DashboardRenderMode } from '../theme.js';
+import { truncateByWidth } from '../utils/display-width.js';
 
 interface LogEntry {
   timestamp: Date;
@@ -12,6 +13,7 @@ interface LogEntry {
 
 interface LogPanelProps {
   maxLines?: number;
+  renderMode: DashboardRenderMode;
 }
 
 function formatTime(date: Date): string {
@@ -27,14 +29,21 @@ const levelColors: Record<string, string> = {
   debug: retroColors.dim,
 };
 
-const levelIcons: Record<string, string> = {
-  info: '⚔️',
+const levelIconsSafe: Record<string, string> = {
+  info: '*',
+  warn: '!',
+  error: 'x',
+  debug: '.',
+};
+
+const levelIconsRetro: Record<string, string> = {
+  info: '⚔',
   warn: '⚠',
   error: '✘',
   debug: '…',
 };
 
-export function LogPanel({ maxLines = 10 }: LogPanelProps) {
+export function LogPanel({ maxLines = 10, renderMode }: LogPanelProps) {
   const [logs, setLogs] = useState<LogEntry[]>([]);
 
   useEffect(() => {
@@ -98,6 +107,7 @@ export function LogPanel({ maxLines = 10 }: LogPanelProps) {
   }, [maxLines]);
 
   const visible = logs.slice(-maxLines);
+  const levelIcons = renderMode === 'retro' ? levelIconsRetro : levelIconsSafe;
 
   return (
     <Box flexDirection="column" paddingX={1} height={maxLines + 3}>
@@ -108,11 +118,11 @@ export function LogPanel({ maxLines = 10 }: LogPanelProps) {
           <Text color={retroColors.dim} italic>Waiting for battle to begin...</Text>
         ) : (
           visible.map((entry, i) => (
-            <Text key={i} wrap="truncate">
+            <Text key={i}>
               <Text color={retroColors.dim}>[{formatTime(entry.timestamp)}]</Text>
               <Text> {levelIcons[entry.level] ?? '·'} </Text>
               <Text color={retroColors.pink}>{entry.agentId}</Text>
-              <Text color={levelColors[entry.level] ?? retroColors.white}> {entry.message}</Text>
+              <Text color={levelColors[entry.level] ?? retroColors.white}> {truncateByWidth(entry.message, 56)}</Text>
             </Text>
           ))
         )}
