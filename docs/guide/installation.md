@@ -35,7 +35,7 @@ gemini --version
 
 If Gemini CLI is not installed:
 ```bash
-npm install -g @anthropic-ai/gemini-cli
+npm install -g @google/gemini-cli
 # (Gemini CLI 미설치 시 위 명령어로 설치)
 ```
 
@@ -53,6 +53,18 @@ npm --version
 
 ## Step 1: Install oh-my-gemini-cli
 
+### Option A (Recommended): Install from GitHub
+
+Use this when npm registry package is unavailable.
+
+```bash
+npm install -g github:Joonghyun-Lee-Frieren/oh-my-gemini-cli#main
+```
+
+### Option B: Install from npm registry
+
+Use this when the package is published and accessible in your environment.
+
 ```bash
 npm install -g oh-my-gemini-cli
 ```
@@ -63,15 +75,16 @@ npm install -g oh-my-gemini-cli
 omg --version
 ```
 
-**Expected output**: `0.1.0` (or current version number).
+**Expected output**: `0.1.2` (or current version number).
 
 ### Troubleshooting Step 1
 
 | Problem | Solution |
 |---------|----------|
-| `EACCES` permission error | Use `sudo npm install -g oh-my-gemini-cli` or fix npm permissions: `npm config set prefix ~/.npm-global` |
+| `EACCES` permission error | Use `sudo npm install -g github:Joonghyun-Lee-Frieren/oh-my-gemini-cli#main` or fix npm permissions: `npm config set prefix ~/.npm-global` |
 | `command not found: omg` | Ensure npm global bin is in PATH. Run `npm config get prefix` and add `<prefix>/bin` to PATH |
-| Network error | Check internet connection. Try `npm install -g oh-my-gemini-cli --registry https://registry.npmjs.org/` |
+| `404 Not Found` for `oh-my-gemini-cli` | Install from GitHub: `npm install -g github:Joonghyun-Lee-Frieren/oh-my-gemini-cli#main` |
+| Network error | Check internet connection. Try `npm install -g github:Joonghyun-Lee-Frieren/oh-my-gemini-cli#main` |
 
 ---
 
@@ -246,7 +259,7 @@ When the dashboard appears, you should see:
 
 ```bash
 # Full install sequence
-npm install -g oh-my-gemini-cli    # Install
+npm install -g github:Joonghyun-Lee-Frieren/oh-my-gemini-cli#main  # Install
 cd /path/to/your/project           # Navigate to project
 omg setup                          # Setup
 omg doctor                         # Verify
@@ -270,7 +283,7 @@ omg help                           # Show help
 ```bash
 # Reinstall
 npm uninstall -g oh-my-gemini-cli
-npm install -g oh-my-gemini-cli
+npm install -g github:Joonghyun-Lee-Frieren/oh-my-gemini-cli#main
 ```
 
 #### Gemini CLI Authentication Failed

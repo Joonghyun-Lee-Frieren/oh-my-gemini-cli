@@ -34,6 +34,8 @@
   ],
   "scripts": {
     "build": "esbuild src/cli/index.ts --bundle --platform=node --target=node20 --format=esm --outdir=dist/cli --external:ink --external:react --external:telegraf --external:discord.js",
+    "prepare": "npm run build",
+    "prepack": "npm run build",
     "dev": "tsx src/cli/index.ts",
     "start": "node bin/omg.js",
     "test": "vitest run",

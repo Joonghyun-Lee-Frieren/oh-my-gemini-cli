@@ -4,6 +4,22 @@ All notable changes to oh-my-gemini-cli are documented here.
 
 ---
 
+## v0.1.3 — Installation Path Hardening (2026-02-23)
+
+**Safer onboarding.** Installation docs now prioritize a path that works even when npm registry package access is unavailable.
+
+### Installation & Docs
+- **GitHub install as primary path**: Updated Quick Start and installation docs to recommend `npm install -g github:Joonghyun-Lee-Frieren/oh-my-gemini-cli#main`
+- **Fallback path documented**: Kept npm registry install as optional when available
+- **Gemini CLI package fix**: Corrected prerequisite command from `@anthropic-ai/gemini-cli` to `@google/gemini-cli`
+- **404 troubleshooting**: Added explicit `404 Not Found` guidance and fallback command
+- Updated in: `README.md`, `docs/README_ko.md`, `docs/guide/installation.md`, `docs/index.html`
+
+### Packaging Reliability
+- Added `prepare` and `prepack` scripts in `package.json` to run build during install/pack flows
+
+---
+
 ## v0.1.2 — Model Display & Branding Polish (2026-02-22)
 
 **Better clarity.** Improved model name display and brand consistency.

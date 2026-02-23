@@ -352,7 +352,7 @@
   <!-- Nav -->
   <nav>
     <div class="container">
-      <div class="nav-brand"><span>omg</span> oh-my-gemini-cli</div>
+      <div class="nav-brand"><span>OmG</span> oh-my-gemini-cli</div>
       <div class="nav-links">
         <a href="#features">Features</a>
         <a href="#dashboard">Dashboard</a>
@@ -366,7 +366,7 @@
   <!-- Hero -->
   <header class="hero">
     <div class="container">
-      <div class="hero-badge"><span>●</span> v0.1.1 — now available</div>
+      <div class="hero-badge"><span>●</span> v0.1.3 — now available</div>
       <h1>oh-my-<span class="accent">gemini</span>-cli</h1>
       <p style="font-size: clamp(1.2rem, 3vw, 1.5rem); font-weight: 600; color: var(--text-bright); margin-bottom: 0.5rem; font-style: italic;">
         Gemini thinks. OmG orchestrates.
@@ -374,7 +374,7 @@
       <p class="tagline">Context Engineering powered multi-agent harness for Gemini CLI</p>
       <div class="install-box">
         <span class="prompt">$</span>
-        <code>npm install -g oh-my-gemini-cli</code>
+        <code>npm install -g github:Joonghyun-Lee-Frieren/oh-my-gemini-cli#main</code>
         <button onclick="copyInstall(this)" aria-label="Copy install command">Copy</button>
       </div>
       <div class="hero-links">
@@ -469,7 +469,7 @@
         <div class="terminal-body"><span class="t-dim">┌─────────────────────────────────────────────────────────────────────┐</span>
 <span class="t-dim">│</span>                                                                     <span class="t-dim">│</span>
 <span class="t-dim">│</span>   <span class="t-accent">╔═══╗      ╔═══╗</span>                                                <span class="t-dim">│</span>
-<span class="t-dim">│</span>   <span class="t-accent">║   ║ ╔╗╔╗ ║   ║</span>  <span class="t-bright">oh-my-gemini-cli v0.1.1</span>                    <span class="t-dim">│</span>
+<span class="t-dim">│</span>   <span class="t-accent">║   ║ ╔╗╔╗ ║   ║</span>  <span class="t-bright">oh-my-gemini-cli v0.1.3</span>                    <span class="t-dim">│</span>
 <span class="t-dim">│</span>   <span class="t-accent">║   ║ ║╚╝║ ║  ═╗</span>  <span class="t-dim">⏱ 00:03:42</span>    <span class="t-green">Agents: 4/6 active</span>           <span class="t-dim">│</span>
 <span class="t-dim">│</span>   <span class="t-accent">╚═══╝ ╚══╝ ╚═══╝</span>                                              <span class="t-dim">│</span>
 <span class="t-dim">├──────────────────────────────┬──────────────────────────────────────┤</span>
@@ -559,9 +559,9 @@
 
         <div class="step-card">
           <div class="step-num">01 — Install</div>
-          <h3>Install globally via npm</h3>
+          <h3>Install globally from GitHub via npm</h3>
           <pre><span class="comment"># Requires Node.js >= 20 and Gemini CLI</span>
-<span class="prompt">$</span> npm install -g oh-my-gemini-cli</pre>
+<span class="prompt">$</span> npm install -g github:Joonghyun-Lee-Frieren/oh-my-gemini-cli#main</pre>
         </div>
 
         <div class="step-card">
@@ -605,7 +605,7 @@
 
   <script>
     function copyInstall(btn) {
-      navigator.clipboard.writeText('npm install -g oh-my-gemini-cli').then(function() {
+      navigator.clipboard.writeText('npm install -g github:Joonghyun-Lee-Frieren/oh-my-gemini-cli#main').then(function() {
         btn.textContent = '✓';
         btn.classList.add('copied');
         setTimeout(function() {

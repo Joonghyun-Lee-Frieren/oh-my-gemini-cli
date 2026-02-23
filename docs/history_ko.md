@@ -4,6 +4,22 @@ oh-my-gemini-cli의 주요 변경사항을 기록합니다.
 
 ---
 
+## v0.1.3 — 설치 경로 안정화 (2026-02-23)
+
+**설치 성공률 강화.** npm 레지스트리 접근이 불안정한 환경에서도 바로 설치되도록 문서 기본 경로를 정리했습니다.
+
+### 설치 및 문서 정리
+- **GitHub 설치를 기본 경로로 전환**: Quick Start/설치 가이드를 `npm install -g github:Joonghyun-Lee-Frieren/oh-my-gemini-cli#main` 기준으로 정리
+- **npm 설치는 선택 경로로 유지**: 레지스트리 패키지가 사용 가능한 경우에만 선택적으로 안내
+- **Gemini CLI 패키지명 수정**: 사전 요구사항 명령을 `@anthropic-ai/gemini-cli`에서 `@google/gemini-cli`로 수정
+- **404 트러블슈팅 추가**: `404 Not Found` 발생 시 대체 설치 명령을 명확히 안내
+- 업데이트 대상: `README.md`, `docs/README_ko.md`, `docs/guide/installation.md`, `docs/index.html`
+
+### 패키징 신뢰성 개선
+- `package.json`에 `prepare`, `prepack` 스크립트 추가 (설치/패키징 과정에서 build 자동 수행)
+
+---
+
 ## v0.1.2 — 모델 표시 및 브랜딩 개선 (2026-02-22)
 
 **더 명확하게.** 모델명 표시 개선 및 브랜드 일관성 향상.

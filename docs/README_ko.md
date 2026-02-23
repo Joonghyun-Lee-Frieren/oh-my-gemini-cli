@@ -88,8 +88,11 @@ OmG는 포크가 아닌 애드온입니다. Gemini CLI의 네이티브 확장 �
 ### 설치
 
 ```bash
-# npm 전역 설치
-npm install -g oh-my-gemini-cli
+# 권장: npm 미배포 상태에서도 동작하는 GitHub 설치
+npm install -g github:Joonghyun-Lee-Frieren/oh-my-gemini-cli#main
+
+# 선택: npm 레지스트리 패키지가 사용 가능한 환경이면
+# npm install -g oh-my-gemini-cli
 
 # 프로젝트에 셋업
 omg setup
@@ -97,6 +100,15 @@ omg setup
 # 설치 상태 확인
 omg doctor
 ```
+
+> 참고: `npm install -g oh-my-gemini-cli`가 `404 Not Found`로 실패하면 위 GitHub 설치 명령을 사용하세요.
+
+### npm 배포 전환 체크리스트
+
+- npm 패키지 페이지와 `latest` dist-tag가 정상 공개되었는지 확인
+- 깨끗한 환경에서 `npm install -g oh-my-gemini-cli` 설치 성공 검증
+- 문서 기본 설치 명령을 GitHub 경로에서 npm 경로로 전환
+- 문제 해결 섹션에는 GitHub 설치 경로를 대체안으로 유지
 
 ### LLM을 통한 자동 설치
 
