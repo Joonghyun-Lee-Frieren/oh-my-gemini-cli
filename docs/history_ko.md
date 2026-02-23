@@ -4,6 +4,35 @@ oh-my-gemini-cli의 주요 변경사항을 기록합니다.
 
 ---
 
+## v0.1.4 — Gemini CLI 애드온 호환성 강화 (2026-02-23)
+
+**통합 우선 개선.** OmG가 Gemini CLI 애드온으로 실제 동작하도록 MCP 연결, 상태 출력, 명령 동작의 정합성을 집중 보완했습니다.
+
+### MCP 통합
+- `@modelcontextprotocol/sdk` 기반 실제 MCP stdio 진입점(`--mcp`) 추가
+- `--server <state|memory|context|orchestrator>` 서버별 실행 라우팅 추가
+- `omg setup`이 `~/.gemini/settings.json`에 4개 MCP 서버를 모두 등록하도록 수정
+- `omg doctor`가 필수 OmG MCP 서버 4종 등록 여부를 모두 검증하도록 수정
+
+### CLI / 커맨드 정합성
+- `omg status` 옵션 추가:
+  - `--agents`, `--tasks`, `--cache`, `--cache-history`, `--context`, `--json`
+- 커스텀 명령 템플릿에 맞춘 구조화 JSON 상태 출력 추가:
+  - 에이전트 요약, 작업 파이프라인 카운터, 캐시 필드(`hit_rate`, `hits`, `misses`), 컨텍스트 사용량
+- Gemini CLI 실행 인자 호환성을 위해 워커 호출 인자를 `--prompt`에서 `-p`로 조정
+
+### 설정/런타임 안정성
+- `src/shared/config.ts`에 레거시 모듈 호환용 `loadConfig()` 어댑터 추가
+- `omg config get/set`에서 점 표기 경로 키(예: `bot.telegram.token`) 지원
+- `omg bot telegram start`, `omg bot discord start`가 설정 기반으로 실제 봇 모듈을 기동하도록 연결
+
+### 문서 동기화
+- `README.md`, `docs/README_ko.md`를 코드 기준으로 정리:
+  - setup 단계의 4개 MCP 서버 등록 반영
+  - JSON 상태 조회 명령과 필드 설명 반영
+
+---
+
 ## v0.1.3 — 설치 경로 안정화 (2026-02-23)
 
 **설치 성공률 강화.** npm 레지스트리 접근이 불안정한 환경에서도 바로 설치되도록 문서 기본 경로를 정리했습니다.

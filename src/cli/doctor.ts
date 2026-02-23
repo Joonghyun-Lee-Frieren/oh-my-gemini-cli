@@ -90,13 +90,15 @@ function checkMcpServersRegistered(): CheckResult {
   try {
     const settings = JSON.parse(readFileSync(settingsPath, 'utf-8'));
     const servers = settings.mcpServers ?? {};
-    const hasOmg = 'omg-context' in servers;
+    const requiredServers = ['omg_state', 'omg_memory', 'omg_context', 'omg_orchestrator'];
+    const missing = requiredServers.filter((name) => !(name in servers));
+    const hasAll = missing.length === 0;
     return {
-      passed: hasOmg,
+      passed: hasAll,
       label: 'MCP servers registered',
-      detail: hasOmg
-        ? `omg-context registered (${Object.keys(servers).length} total servers)`
-        : 'omg-context not found in mcpServers',
+      detail: hasAll
+        ? `All OMG servers registered (${Object.keys(servers).length} total servers)`
+        : `Missing MCP servers: ${missing.join(', ')}`,
     };
   } catch {
     return { passed: false, label: 'MCP servers registered', detail: 'Failed to parse settings.json' };

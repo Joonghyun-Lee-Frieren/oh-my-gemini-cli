@@ -8,10 +8,14 @@ description = "프롬프트 캐시 적중률을 모니터링하고 분석합니�
 [command.args]
 history = { type = "boolean", default = false, description = "시간대별 캐시 적중률 이력 표시" }
 alert-threshold = { type = "number", default = 90, description = "경고 발생 기준 적중률 (%)" }
+lang = { type = "string", default = "ko", description = "출력 언어: ko 또는 en" }
+format = { type = "string", default = "compact", description = "출력 형식: compact 또는 detailed" }
 
 [prompt]
 text = """
 프롬프트 캐시의 현재 상태를 상세하게 분석하고 보고해주세요.
+출력 언어는 `{lang}` 값을 따르세요. (`ko`=한국어, `en`=English)
+출력 밀도는 `{format}` 값을 따르세요. (`compact`=짧게, `detailed`=자세히)
 
 ## 캐시 데이터
 
@@ -28,15 +32,15 @@ text = """
 ```
 📊 Cache Performance
 ━━━━━━━━━━━━━━━━━━━━━
-적중률:    {hit_rate}% {'✅' if >= 90 else '⚠️'}
+적중률:    {hit_rate}% (목표 {target_rate}%)
 적중 수:   {hits}
 미스 수:   {misses}
-목표:      ≥ 90%
+목표 대비: {ok_or_warning}
 ```
 
 ### 2. 캐시 레이어 분석
 
-각 레이어별 캐시 상태를 확인하세요:
+캐시 레이어 상세 값이 제공되지 않는 경우, 아래 표는 채우지 말고 "레이어별 수치 미제공"으로 명시하세요.
 
 | 레이어 | 토큰 수 | 캐시 상태 | 안정성 |
 |--------|---------|----------|--------|
@@ -56,8 +60,8 @@ text = """
 
 캐시 적중률에 따른 비용 분석:
 - 캐시 적중 시 비용: 기본 비용의 ~25%
-- 현재 적중률로 인한 절감액: ${savings}
-- 적중률 1% 개선 시 추가 절감: ${per_percent}
+- 현재 적중률로 인한 절감액: {savings_or_unavailable}
+- 적중률 1% 개선 시 추가 절감: {per_percent_or_unavailable}
 
 ### 5. 권장 조치
 
@@ -69,4 +73,37 @@ text = """
 캐시 적중률이 목표 이상이면:
 - ✅ 현재 상태를 유지하세요
 - 다음 점검 시점을 알려주세요
+
+반드시 입력 JSON의 실제 키만 사용하세요: `hit_rate`, `target_rate`, `hits`, `misses`.
+
+## 경고 문구 분기 규칙
+
+- `hit_rate < {alert-threshold}` 이면:
+  - `{lang}=ko`: "⚠️ 경고: 캐시 적중률이 임계값({alert-threshold}%) 미만입니다. 즉시 최적화를 권장합니다."
+  - `{lang}=en`: "⚠️ Warning: Cache hit rate is below threshold ({alert-threshold}%). Optimization is recommended now."
+- `hit_rate >= {alert-threshold}` 이면:
+  - `{lang}=ko`: "✅ 정상: 캐시 적중률이 임계값 이상입니다."
+  - `{lang}=en`: "✅ Healthy: Cache hit rate is above threshold."
+
+## 출력 템플릿 (언어 선택형)
+
+{lang}=ko:
+```
+📊 캐시 성능 보고서
+━━━━━━━━━━━━━━━━━━━
+적중률: {hit_rate}% (임계값: {alert-threshold}%)
+적중/미스: {hits}/{misses}
+판정: {ok_or_warning}
+권장 조치: {actions}
+```
+
+{lang}=en:
+```
+📊 Cache Performance Report
+━━━━━━━━━━━━━━━━━━━━━━━━━━
+Hit rate: {hit_rate}% (threshold: {alert-threshold}%)
+Hits/Misses: {hits}/{misses}
+Status: {ok_or_warning}
+Recommended actions: {actions}
+```
 """

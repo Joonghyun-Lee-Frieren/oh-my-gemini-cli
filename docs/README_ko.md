@@ -24,7 +24,7 @@
 
 > "Claude Code의 핵심 경쟁력은 Opus나 Sonnet 엔진이 아닙니다. Claude Code 그 자체예요. 놀랍지만 Gemini도 Claude Code를 붙이면 잘 돌아갑니다."
 >
-> — **신정규 (CEO of Lablup Inc.)**, *YouTube 인터뷰 중*
+> — **신정규 (CEO of Lablup Inc.)**, *YouTube 채널 인터뷰 중*
 
 *이 프로젝트는 위 통찰에서 시작되었습니다: "그렇다면 Gemini CLI에도 그 하네스를 입혀보자."*
 
@@ -709,6 +709,9 @@ omg team status             # 팀 상태 확인
 omg team shutdown           # 팀 종료
 omg status                  # 활성 에이전트/캐시 상태
 omg status --cache          # 캐시 적중률 상세
+omg status --agents --json  # 에이전트 상태 JSON
+omg status --tasks --json   # 작업 파이프라인 JSON
+omg status --context --json # 컨텍스트 사용량 JSON
 omg config set <key> <val>  # 설정 변경
 omg config get <key>        # 설정 조회
 omg bot telegram start      # Telegram 봇 시작
@@ -726,6 +729,16 @@ omg help                    # 도움말
 --verbose          # 상세 로그
 --dry-run          # 실제 실행 없이 계획만 표시
 ```
+
+### Status JSON 필드
+
+`omg status --json` 출력은 다음 섹션으로 구성됩니다.
+
+- `agents`: `active`, `total`, 에이전트 목록
+- `tasks`: `done`, `running`, `queued`, `failed`, 작업 목록
+- `cache`: `hit_rate`, `hits`, `misses`, `target_rate`
+- `cache_history`: 최근 캐시 스냅샷 목록
+- `context`: `used`, `limit`, `percentage`, `compaction_threshold`
 
 ---
 

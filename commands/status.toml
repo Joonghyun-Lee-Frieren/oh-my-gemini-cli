@@ -7,35 +7,41 @@ description = "OMG 에이전트 상태 및 시스템 현황을 조회합니다"
 
 [command.args]
 detail = { type = "boolean", default = false, description = "상세 정보 포함 여부" }
+lang = { type = "string", default = "ko", description = "출력 언어: ko 또는 en" }
+format = { type = "string", default = "compact", description = "출력 형식: compact 또는 detailed" }
+alert-threshold = { type = "number", default = 90, description = "경고 임계 캐시 적중률 (%)" }
 
 [prompt]
 text = """
 현재 oh-my-gemini-cli 시스템의 상태를 종합적으로 확인하고 보고해주세요.
+출력 언어는 `{lang}` 값을 따르세요. (`ko`=한국어, `en`=English)
+출력 밀도는 `{format}` 값을 따르세요. (`compact`=짧게, `detailed`=자세히)
 
 ## 확인 항목
 
 ### 1. 에이전트 상태
 !{omg status --agents --json}
 
-활성 에이전트 목록과 각 에이전트의 현재 작업, 진행률을 요약해주세요.
+위 JSON에서 `active`, `total`, `agents[]`를 사용해 활성 에이전트 목록과 현재 작업/진행률을 요약해주세요.
 
 ### 2. 작업 파이프라인
 !{omg status --tasks --json}
 
-현재 작업 큐의 상태를 요약해주세요:
-- 완료된 작업, 진행 중인 작업, 대기 중인 작업 수
+위 JSON에서 `done`, `running`, `queued`, `failed`, `tasks[]`를 사용해 현재 작업 상태를 요약해주세요:
+- 완료/진행/대기/실패 작업 수
 - 실패한 작업이 있다면 원인 요약
 
 ### 3. 캐시 적중률
 !{omg status --cache --json}
 
-캐시 상태를 확인하고 목표 적중률(90%) 대비 현재 상태를 보고해주세요.
+위 JSON에서 `hit_rate`, `target_rate`, `hits`, `misses`를 사용해 캐시 상태를 보고해주세요.
 적중률이 낮다면 원인과 개선 방안을 제시해주세요.
 
 ### 4. 리소스 사용량
-- 컨텍스트 윈도우 사용률
-- 세션 시작 이후 사용된 토큰 수
-- 예상 비용
+!{omg status --context --json}
+
+위 JSON에서 `used`, `limit`, `percentage`를 사용해 컨텍스트 윈도우 사용량을 보고해주세요.
+비용은 숫자 근거가 없으면 "추정 불가"로 명시하세요.
 
 ## 출력 형식
 
@@ -45,12 +51,48 @@ text = """
 📊 OMG Status Report
 ━━━━━━━━━━━━━━━━━━━━
 🤖 Agents: {active}/{total} active
-📋 Tasks:  {done}/{total} done, {running} running, {queued} queued
+📋 Tasks:  {done}/{total} done, {running} running, {queued} queued, {failed} failed
 💾 Cache:  {hit_rate}% hit rate (target: >90%)
 📦 Tokens: {used}/{limit} ({percentage}%)
-💰 Cost:   ${cost} (session)
+💰 Cost:   {cost_or_unavailable}
 ⏱️ Uptime: {duration}
 ```
 
 문제가 발견되면 ⚠️ 경고와 함께 권장 조치를 제시해주세요.
+데이터가 없는 값은 추측하지 말고 "N/A"로 표기하세요.
+
+## 경고 문구 분기 규칙
+
+- `hit_rate < {alert-threshold}` 이면:
+  - `{lang}=ko`: "⚠️ 경고: 캐시 적중률이 임계값({alert-threshold}%) 미만입니다."
+  - `{lang}=en`: "⚠️ Warning: Cache hit rate is below threshold ({alert-threshold}%)."
+- `hit_rate >= {alert-threshold}` 이면:
+  - `{lang}=ko`: "✅ 정상: 캐시 적중률이 임계값 이상입니다."
+  - `{lang}=en`: "✅ Healthy: Cache hit rate is above threshold."
+
+## 출력 템플릿 (언어 선택형)
+
+{lang}=ko:
+```
+📊 OMG 상태 보고서
+━━━━━━━━━━━━━━━━━━
+🤖 Agents: {active}/{total} active
+📋 Tasks:  {done}/{total} done, {running} running, {queued} queued, {failed} failed
+💾 Cache:  {hit_rate}% (임계값: {alert-threshold}%)
+📦 Tokens: {used}/{limit} ({percentage}%)
+💰 Cost:   {cost_or_unavailable}
+⏱️ Uptime: {duration}
+```
+
+{lang}=en:
+```
+📊 OMG Status Report
+━━━━━━━━━━━━━━━━━━━━
+🤖 Agents: {active}/{total} active
+📋 Tasks:  {done}/{total} done, {running} running, {queued} queued, {failed} failed
+💾 Cache:  {hit_rate}% (threshold: {alert-threshold}%)
+📦 Tokens: {used}/{limit} ({percentage}%)
+💰 Cost:   {cost_or_unavailable}
+⏱️ Uptime: {duration}
+```
 """

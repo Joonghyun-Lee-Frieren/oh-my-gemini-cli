@@ -8,10 +8,15 @@ description = "컨텍스트 캐시를 분석하고 최적화합니다"
 [command.args]
 aggressive = { type = "boolean", default = false, description = "적극적 최적화 모드 (대화 컴팩션 포함)" }
 dry-run = { type = "boolean", default = false, description = "실제 변경 없이 분석 결과만 표시" }
+lang = { type = "string", default = "ko", description = "출력 언어: ko 또는 en" }
+format = { type = "string", default = "compact", description = "출력 형식: compact 또는 detailed" }
+alert-threshold = { type = "number", default = 90, description = "경고 임계 캐시 적중률 (%)" }
 
 [prompt]
 text = """
 현재 세션의 컨텍스트 캐시 상태를 분석하고 최적화 방안을 실행해주세요.
+출력 언어는 `{lang}` 값을 따르세요. (`ko`=한국어, `en`=English)
+출력 밀도는 `{format}` 값을 따르세요. (`compact`=짧게, `detailed`=자세히)
 
 ## 분석 데이터
 
@@ -26,9 +31,9 @@ text = """
 ### Step 1: 현재 상태 진단
 
 다음 지표를 확인하세요:
-- **캐시 적중률**: 90% 이상이 목표입니다
+- **캐시 적중률**: `hit_rate`와 `target_rate` 비교
 - **접두사 안정성**: 시스템 프롬프트와 도구 정의가 변경되지 않았는지
-- **컨텍스트 사용률**: 전체 윈도우 대비 사용 비율
+- **컨텍스트 사용률**: `percentage` 기준으로 위험 구간 판단
 
 ### Step 2: 문제점 식별
 
@@ -54,4 +59,36 @@ text = """
 - 예상 비용 절감
 
 ⚠️ 접두사를 변경하는 최적화는 절대 수행하지 마세요. 캐시 무효화가 발생합니다.
+실제 자동 최적화 실행이 불가능하면, "권장 실행 절차"만 출력하고 임의 변경은 하지 마세요.
+
+## 경고 문구 분기 규칙
+
+- `hit_rate < {alert-threshold}`:
+  - `{lang}=ko`: "⚠️ 경고: 임계값({alert-threshold}%) 미만입니다. 즉시 최적화 절차를 실행하세요."
+  - `{lang}=en`: "⚠️ Warning: Below threshold ({alert-threshold}%). Execute optimization steps now."
+- `hit_rate >= {alert-threshold}`:
+  - `{lang}=ko`: "✅ 정상: 임계값 이상입니다. 현재 전략을 유지하세요."
+  - `{lang}=en`: "✅ Healthy: Above threshold. Keep the current strategy."
+
+## 출력 템플릿 (언어 선택형)
+
+{lang}=ko:
+```
+🛠 OMG 최적화 보고서
+━━━━━━━━━━━━━━━━━━━
+현재 상태: {status}
+핵심 지표: cache={hit_rate}%, context={percentage}%
+권장 조치: {top_actions}
+예상 효과: {expected_impact}
+```
+
+{lang}=en:
+```
+🛠 OMG Optimization Report
+━━━━━━━━━━━━━━━━━━━━━━━━
+Current state: {status}
+Key metrics: cache={hit_rate}%, context={percentage}%
+Recommended actions: {top_actions}
+Expected impact: {expected_impact}
+```
 """

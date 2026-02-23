@@ -97,12 +97,33 @@ export async function runSetup(opts: SetupOptions): Promise<void> {
         }
 
         const mcpServers = (settings.mcpServers ?? {}) as Record<string, unknown>;
-        if (!mcpServers['omg-context']) {
-          mcpServers['omg-context'] = {
+        const desiredServers: Record<string, unknown> = {
+          omg_state: {
             command: 'npx',
-            args: ['-y', 'oh-my-gemini-cli', '--mcp'],
+            args: ['-y', 'oh-my-gemini-cli', '--mcp', '--server', 'state'],
+            description: 'oh-my-gemini-cli state MCP server',
+          },
+          omg_memory: {
+            command: 'npx',
+            args: ['-y', 'oh-my-gemini-cli', '--mcp', '--server', 'memory'],
+            description: 'oh-my-gemini-cli memory MCP server',
+          },
+          omg_context: {
+            command: 'npx',
+            args: ['-y', 'oh-my-gemini-cli', '--mcp', '--server', 'context'],
             description: 'oh-my-gemini-cli context engineering MCP server',
-          };
+          },
+          omg_orchestrator: {
+            command: 'npx',
+            args: ['-y', 'oh-my-gemini-cli', '--mcp', '--server', 'orchestrator'],
+            description: 'oh-my-gemini-cli orchestrator MCP server',
+          },
+        };
+
+        for (const [name, config] of Object.entries(desiredServers)) {
+          if (!mcpServers[name]) {
+            mcpServers[name] = config;
+          }
         }
         settings.mcpServers = mcpServers;
 

@@ -4,6 +4,35 @@ All notable changes to oh-my-gemini-cli are documented here.
 
 ---
 
+## v0.1.4 — Gemini CLI Add-on Compatibility Pass (2026-02-23)
+
+**Integration first.** Focused on making OmG behave as a practical Gemini CLI add-on with aligned MCP wiring, status outputs, and command behavior.
+
+### MCP Integration
+- Added a real MCP stdio server entrypoint (`--mcp`) using `@modelcontextprotocol/sdk`
+- Added per-server launch routing with `--server <state|memory|context|orchestrator>`
+- `omg setup` now registers all 4 MCP servers in `~/.gemini/settings.json`
+- `omg doctor` now validates all required OmG MCP server registrations
+
+### CLI / Command Alignment
+- Added `omg status` options:
+  - `--agents`, `--tasks`, `--cache`, `--cache-history`, `--context`, `--json`
+- Added structured JSON status payloads aligned with custom command templates:
+  - agent summary, task pipeline counters, cache fields (`hit_rate`, `hits`, `misses`), context usage
+- Switched agent worker prompt arg from `--prompt` to `-p` for Gemini CLI invocation compatibility
+
+### Config and Runtime Robustness
+- Added backward-compatible `loadConfig()` adapter in `src/shared/config.ts` for legacy modules
+- Upgraded `omg config get/set` to support dotted key paths (e.g. `bot.telegram.token`)
+- Implemented `omg bot telegram start` and `omg bot discord start` to boot bot modules from config
+
+### Documentation Sync
+- Updated README and Korean README for:
+  - 4 MCP server registration in setup
+  - JSON-capable status commands and output field descriptions
+
+---
+
 ## v0.1.3 — Installation Path Hardening (2026-02-23)
 
 **Safer onboarding.** Installation docs now prioritize a path that works even when npm registry package access is unavailable.

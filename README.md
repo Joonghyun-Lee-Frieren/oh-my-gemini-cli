@@ -22,7 +22,7 @@
 
 > "Claude Code's core competitiveness isn't the Opus or Sonnet engine. It's Claude Code itself. Surprisingly, Gemini works well too when attached to Claude Code."
 >
-> — **Jeongkyu Shin (CEO of Lablup Inc.)**, *from a YouTube interview*
+> — **Jeongkyu Shin (CEO of Lablup Inc.)**, *from a YouTube Channel interview*
 
 *This project started from this insight: "What if we bring that harness to Gemini CLI?"*
 
@@ -405,6 +405,9 @@ omg team status             # Team status
 omg team shutdown           # Stop team
 omg status                  # Agent/cache status
 omg status --cache          # Cache hit details
+omg status --agents --json  # Agent status in JSON
+omg status --tasks --json   # Task pipeline in JSON
+omg status --context --json # Context usage in JSON
 omg config set <key> <val>  # Set config
 omg config get <key>        # Get config
 omg bot telegram start      # Start Telegram bot
@@ -422,6 +425,16 @@ omg help                    # Show help
 --verbose          # verbose logs
 --dry-run          # plan only, no execution
 ```
+
+### Status JSON fields
+
+`omg status --json` returns:
+
+- `agents`: active/total and agent list
+- `tasks`: done/running/queued/failed counters and task list
+- `cache`: `hit_rate`, `hits`, `misses`, and target rate
+- `cache_history`: recent cache snapshots
+- `context`: `used`, `limit`, `percentage`, and compaction threshold
 
 ---
 
@@ -466,7 +479,7 @@ oh-my-gemini-cli/
 | 2 | Install prompts to `~/.gemini/prompts/` or `.gemini/prompts/` |
 | 3 | Install workflow skills |
 | 4 | Install custom commands to `~/.gemini/commands/` |
-| 5 | Register MCP server in `settings.json` (`omg-context`) |
+| 5 | Register MCP servers in `settings.json` (`omg_state`, `omg_memory`, `omg_context`, `omg_orchestrator`) |
 | 6 | Generate project `GEMINI.md` |
 | 7 | Generate default `omg-settings.json` |
 

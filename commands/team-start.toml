@@ -9,10 +9,15 @@ description = "멀티 에이전트 팀을 구성하고 작업을 병렬 실행�
 workers = { type = "number", default = 4, description = "최대 동시 실행 에이전트 수 (1-6)" }
 plan-only = { type = "boolean", default = false, description = "계획 수립만 하고 실행하지 않음" }
 agents = { type = "string", default = "", description = "사용할 에이전트 조합 (예: architect,executor,reviewer)" }
+lang = { type = "string", default = "ko", description = "출력 언어: ko 또는 en" }
+format = { type = "string", default = "compact", description = "출력 형식: compact 또는 detailed" }
+alert-threshold = { type = "number", default = 90, description = "경고 임계 캐시 적중률 (%)" }
 
 [prompt]
 text = """
 멀티 에이전트 팀을 구성하여 사용자의 작업을 분석하고 실행해주세요.
+출력 언어는 `{lang}` 값을 따르세요. (`ko`=한국어, `en`=English)
+출력 밀도는 `{format}` 값을 따르세요. (`compact`=짧게, `detailed`=자세히)
 
 ## 팀 구성 절차
 
@@ -45,17 +50,56 @@ text = """
 
 ### Phase 4: 결과 보고
 
+아래 데이터로 실제 상태를 수집하세요:
+!{omg status --agents --json}
+!{omg status --tasks --json}
+!{omg status --cache --json}
+
 ```
 🏁 팀 실행 완료
 ━━━━━━━━━━━━━━━━
 📋 작업: {total}개 중 {done}개 완료
-🤖 에이전트: {agents} 사용
+🤖 에이전트: {active}/{agents_total} active
 ⏱️ 소요: {time} (순차 예상: {sequential_time})
 💾 캐시 적중률: {hit_rate}%
 📁 변경 파일: {file_count}개
 ```
 
 변경된 파일 목록과 각 에이전트의 작업 결과를 요약해주세요.
+데이터가 부족하면 숫자를 추측하지 말고 N/A로 표기하세요.
+
+## 경고 문구 분기 규칙
+
+- `hit_rate < {alert-threshold}`:
+  - `{lang}=ko`: "⚠️ 경고: 팀 실행 중 캐시 적중률이 임계값({alert-threshold}%) 미만입니다."
+  - `{lang}=en`: "⚠️ Warning: During team execution, cache hit rate is below threshold ({alert-threshold}%)."
+- `hit_rate >= {alert-threshold}`:
+  - `{lang}=ko`: "✅ 정상: 팀 실행 캐시 상태가 임계값 이상입니다."
+  - `{lang}=en`: "✅ Healthy: Team execution cache is above threshold."
+
+## 출력 템플릿 (언어 선택형)
+
+{lang}=ko:
+```
+🏁 팀 실행 보고서
+━━━━━━━━━━━━━━━━
+📋 Tasks: {done}/{total} done, {running} running, {queued} queued, {failed} failed
+🤖 Agents: {active}/{agents_total} active
+💾 Cache: {hit_rate}% (임계값: {alert-threshold}%)
+📁 Changed files: {file_count}
+⏱️ Duration: {time}
+```
+
+{lang}=en:
+```
+🏁 Team Execution Report
+━━━━━━━━━━━━━━━━━━━━━━━
+📋 Tasks: {done}/{total} done, {running} running, {queued} queued, {failed} failed
+🤖 Agents: {active}/{agents_total} active
+💾 Cache: {hit_rate}% (threshold: {alert-threshold}%)
+📁 Changed files: {file_count}
+⏱️ Duration: {time}
+```
 
 ## 안전 규칙
 

@@ -126,7 +126,7 @@ export class AgentWorker {
 
       const args = [
         '--model', model,
-        '--prompt', task.description,
+        '-p', task.description,
       ];
 
       this.process = spawn(config.gemini_cli_path, args, {

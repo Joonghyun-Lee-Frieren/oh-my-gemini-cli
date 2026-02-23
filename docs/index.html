@@ -366,7 +366,7 @@
   <!-- Hero -->
   <header class="hero">
     <div class="container">
-      <div class="hero-badge"><span>●</span> v0.1.3 — now available</div>
+      <div class="hero-badge"><span>●</span> v0.1.4 — now available</div>
       <h1>oh-my-<span class="accent">gemini</span>-cli</h1>
       <p style="font-size: clamp(1.2rem, 3vw, 1.5rem); font-weight: 600; color: var(--text-bright); margin-bottom: 0.5rem; font-style: italic;">
         Gemini thinks. OmG orchestrates.
@@ -390,7 +390,7 @@
         </p>
         <div style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.9rem; color: var(--text-dim);">
           <span style="color: var(--accent);">— Jeongkyu Shin, CEO of Lablup Inc.</span>
-          <span>(from a YouTube interview)</span>
+          <span>(from a YouTube Channel interview)</span>
         </div>
         <p style="margin-top: 1rem; font-size: 0.9rem; color: var(--text-dim); border-top: 1px solid rgba(129,140,248,0.1); padding-top: 1rem;">
           This project started from this insight: What if we bring that harness to Gemini CLI?
@@ -419,7 +419,7 @@
         <div class="feature-card">
           <div class="feature-icon fi-context">◈</div>
           <h3>Context Engineering</h3>
-          <p>Prompt caching optimization based on prefix stability, tool invariance, and cache-safe compaction. Monitor cache hit rates like uptime.</p>
+          <p>Prompt caching optimization based on prefix stability, tool invariance, and cache-safe compaction. Includes JSON status telemetry for cache/context monitoring.</p>
         </div>
 
         <div class="feature-card">
@@ -431,7 +431,7 @@
         <div class="feature-card">
           <div class="feature-icon fi-models">⟡</div>
           <h3>Dual Model Strategy</h3>
-          <p>Gemini Pro for planning and architecture. Gemini Flash for fast code generation. Automatic routing based on task type.</p>
+          <p>Gemini Pro for planning and architecture. Gemini Flash for fast code generation. Automatic routing based on task type with MCP-compatible orchestration hooks.</p>
         </div>
 
         <div class="feature-card">
@@ -582,7 +582,10 @@
           <div class="step-num">04 — Run</div>
           <h3>Launch with multi-agent team</h3>
           <pre><span class="comment"># Start a multi-agent session</span>
-<span class="prompt">$</span> omg team "Implement OAuth auth"</pre>
+<span class="prompt">$</span> omg team "Implement OAuth auth"
+
+<span class="comment"># Machine-readable status</span>
+<span class="prompt">$</span> omg status --cache --json</pre>
         </div>
 
       </div>

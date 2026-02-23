@@ -5,6 +5,48 @@ import { runSetup } from './setup.js';
 import { runDoctor } from './doctor.js';
 import { runLaunch } from './launch.js';
 import { runTeam } from './team.js';
+import { runMcpServer } from '../mcp/stdio-server.js';
+import { createTelegramBot } from '../bot/telegram.js';
+import { createDiscordBot } from '../bot/discord.js';
+
+function parseValue(value: string): unknown {
+  if (value === 'true') return true;
+  if (value === 'false') return false;
+  if (value === 'null') return null;
+  if (value === 'undefined') return undefined;
+  const num = Number(value);
+  if (!Number.isNaN(num) && value.trim() !== '') return num;
+  try {
+    return JSON.parse(value);
+  } catch {
+    return value;
+  }
+}
+
+function getByPath(obj: Record<string, unknown>, path: string): unknown {
+  const keys = path.split('.');
+  let current: unknown = obj;
+  for (const key of keys) {
+    if (typeof current !== 'object' || current === null || !(key in (current as Record<string, unknown>))) {
+      return undefined;
+    }
+    current = (current as Record<string, unknown>)[key];
+  }
+  return current;
+}
+
+function setByPath(obj: Record<string, unknown>, path: string, value: unknown): void {
+  const keys = path.split('.');
+  let current = obj;
+  for (let i = 0; i < keys.length - 1; i++) {
+    const key = keys[i];
+    if (typeof current[key] !== 'object' || current[key] === null) {
+      current[key] = {};
+    }
+    current = current[key] as Record<string, unknown>;
+  }
+  current[keys[keys.length - 1]] = value;
+}
 
 function createProgram(): Command {
   const version = getPackageVersion();
@@ -58,10 +100,30 @@ function createProgram(): Command {
   program
     .command('status')
     .description('Show current agent and task status')
-    .action(async () => {
+    .option('--agents', 'show only agents section')
+    .option('--tasks', 'show only tasks section')
+    .option('--cache', 'show only cache section')
+    .option('--context', 'show only context section')
+    .option('--cache-history', 'show only cache history section')
+    .option('--json', 'render JSON output for automation')
+    .action(async (opts) => {
       const globalOpts = program.opts();
       if (globalOpts.verbose) logger.setLevel('debug');
-      await runTeam({ subcommand: 'status' });
+      await runTeam({
+        subcommand: 'status',
+        statusView: opts.agents
+          ? 'agents'
+          : opts.tasks
+            ? 'tasks'
+            : opts.cache
+              ? 'cache'
+              : opts.context
+                ? 'context'
+                : opts.cacheHistory
+                  ? 'cache-history'
+                  : 'all',
+        json: opts.json ?? false,
+      });
     });
 
   const teamCmd = program
@@ -110,23 +172,72 @@ function createProgram(): Command {
       }
       if (value === undefined) {
         const settings = loadSettings();
-        const val = (settings as Record<string, unknown>)[key];
-        console.log(val !== undefined ? String(val) : `Unknown key: ${key}`);
+        const val = getByPath(settings as Record<string, unknown>, key);
+        if (val === undefined) {
+          console.log(`Unknown key: ${key}`);
+          return;
+        }
+        if (typeof val === 'object' && val !== null) {
+          console.log(JSON.stringify(val, null, 2));
+          return;
+        }
+        console.log(String(val));
         return;
       }
       const settings = loadSettings();
-      (settings as Record<string, unknown>)[key] = value;
-      saveSettings(settings);
-      console.log(`Set ${key} = ${value}`);
+      const parsedValue = parseValue(value);
+      setByPath(settings as unknown as Record<string, unknown>, key, parsedValue);
+      saveSettings(settings as ReturnType<typeof loadSettings>);
+      console.log(`Set ${key} = ${JSON.stringify(parsedValue)}`);
     });
 
   program
     .command('bot')
     .description('Start a bot integration (Telegram, Discord)')
     .argument('<platform>', 'platform: telegram or discord')
-    .action((platform: string) => {
-      console.log(`Bot integration for ${platform} is not yet implemented.`);
-      console.log('Stay tuned for future releases!');
+    .argument('[action]', 'action: start or stop', 'start')
+    .action(async (platform: string, action: string) => {
+      const settings = loadSettings() as unknown as Record<string, unknown>;
+      const botSettings = (settings.bot ?? {}) as Record<string, unknown>;
+
+      if (action !== 'start') {
+        console.log(`Unsupported action: ${action}. Only "start" is currently available.`);
+        return;
+      }
+
+      if (platform === 'telegram') {
+        const telegram = (botSettings.telegram ?? {}) as Record<string, unknown>;
+        const token = String(telegram.token ?? '');
+        const chatId = String(telegram.chat_id ?? telegram.chatId ?? '');
+        if (!token || !chatId) {
+          console.log('Telegram bot config is missing.');
+          console.log('Set both `bot.telegram.token` and `bot.telegram.chat_id` with `omg config set`.');
+          return;
+        }
+        const bot = createTelegramBot({ token, chatId });
+        await bot.start();
+        console.log('Telegram bot started. Press Ctrl+C to stop.');
+        await new Promise<void>(() => {});
+        return;
+      }
+
+      if (platform === 'discord') {
+        const discord = (botSettings.discord ?? {}) as Record<string, unknown>;
+        const token = String(discord.token ?? '');
+        const channelId = String(discord.channel_id ?? discord.channelId ?? '');
+        if (!token || !channelId) {
+          console.log('Discord bot config is missing.');
+          console.log('Set both `bot.discord.token` and `bot.discord.channel_id` with `omg config set`.');
+          return;
+        }
+        const bot = createDiscordBot({ token, channelId });
+        await bot.start();
+        console.log('Discord bot started. Press Ctrl+C to stop.');
+        await new Promise<void>(() => {});
+        return;
+      }
+
+      console.log(`Unsupported platform: ${platform}. Use "telegram" or "discord".`);
     });
 
   program
@@ -141,6 +252,15 @@ function createProgram(): Command {
 }
 
 export async function main(): Promise<void> {
+  const argv = process.argv.slice(2);
+  const isMcpMode = argv.includes('--mcp');
+  if (isMcpMode) {
+    const serverArgIdx = argv.findIndex((arg) => arg === '--server');
+    const targetServer = serverArgIdx >= 0 ? argv[serverArgIdx + 1] : undefined;
+    await runMcpServer(targetServer);
+    return;
+  }
+
   const program = createProgram();
   await program.parseAsync(process.argv);
 }
