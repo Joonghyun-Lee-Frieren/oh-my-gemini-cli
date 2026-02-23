@@ -64,9 +64,81 @@
       color: var(--text-bright);
     }
     .nav-brand span { color: var(--accent) }
-    .nav-links { display: flex; gap: 1.5rem; font-size: .875rem }
+    .nav-toggle {
+      display: none;
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text-dim);
+      border-radius: 8px;
+      padding: .3rem .5rem;
+      font: inherit;
+      line-height: 1;
+      cursor: pointer;
+    }
+    .nav-toggle:hover,
+    .nav-toggle:focus-visible {
+      color: var(--text);
+      border-color: var(--accent);
+      outline: none;
+    }
+    .nav-links { display: flex; align-items: center; gap: 1.5rem; font-size: .875rem }
     .nav-links a { color: var(--text-dim) }
     .nav-links a:hover { color: var(--text) }
+    .desktop-only { display: inline-flex }
+    .mobile-only { display: none }
+    .nav-dropdown {
+      position: relative;
+    }
+    .nav-dropbtn {
+      background: transparent;
+      border: 0;
+      padding: 0;
+      color: var(--text-dim);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: .35rem;
+      user-select: none;
+      font: inherit;
+    }
+    .nav-dropbtn:hover,
+    .nav-dropdown:focus-within .nav-dropbtn {
+      color: var(--text);
+    }
+    .nav-dropdown-menu {
+      position: absolute;
+      top: calc(100% + .55rem);
+      right: 0;
+      min-width: 230px;
+      max-width: 320px;
+      padding: .5rem;
+      display: none;
+      grid-template-columns: 1fr;
+      gap: .35rem;
+      background: rgba(18,18,26,.98);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      box-shadow: 0 12px 30px rgba(0,0,0,.35);
+      z-index: 200;
+    }
+    .nav-dropdown:hover .nav-dropdown-menu,
+    .nav-dropdown:focus-within .nav-dropdown-menu {
+      display: grid;
+    }
+    .nav-dropdown-menu a {
+      color: var(--text-dim);
+      border: 1px solid transparent;
+      border-radius: 8px;
+      padding: .4rem .55rem;
+      white-space: nowrap;
+    }
+    .nav-dropdown-menu a:hover,
+    .nav-dropdown-menu a:focus-visible {
+      color: var(--text);
+      border-color: var(--accent);
+      outline: none;
+      background: rgba(79,70,229,.1);
+    }
 
     /* ── Hero ── */
     .hero {
@@ -133,6 +205,30 @@
     .install-box button.copied { color: var(--green); border-color: var(--green) }
 
     .hero-links { display: flex; justify-content: center; gap: 1rem; margin-top: 1.5rem }
+    .docs-language-links {
+      margin-top: 1rem;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: .6rem;
+      font-size: .85rem;
+      color: var(--text-dim);
+    }
+    .docs-language-links .label {
+      color: var(--text-dim);
+      margin-right: .2rem;
+    }
+    .docs-language-links a {
+      color: var(--text-dim);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: .2rem .55rem;
+      background: rgba(18,18,26,.6);
+    }
+    .docs-language-links a:hover {
+      color: var(--text);
+      border-color: var(--accent);
+    }
     .btn {
       display: inline-flex; align-items: center; gap: .5rem;
       padding: .65rem 1.5rem;
@@ -341,11 +437,42 @@
     /* ── Responsive ── */
     @media (max-width: 640px) {
       .hero { padding: 8rem 0 3rem }
-      .nav-links { gap: 1rem }
+      nav .container {
+        height: auto;
+        min-height: 56px;
+        flex-wrap: wrap;
+        padding-top: .55rem;
+        padding-bottom: .55rem;
+      }
+      .nav-toggle { display: inline-flex; align-items: center; justify-content: center }
+      .nav-links {
+        width: 100%;
+        display: none;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: .55rem;
+        font-size: .86rem;
+        padding: .65rem 0 .2rem;
+      }
+      .nav-links.is-open { display: flex }
+      .nav-links .nav-dropdown-menu {
+        position: static;
+        display: grid;
+        min-width: 0;
+        max-width: none;
+        width: 100%;
+        margin-top: .3rem;
+      }
+      .desktop-only { display: none }
+      .mobile-only { display: inline-flex }
       .features-grid { grid-template-columns: 1fr }
       .quickstart-grid { grid-template-columns: 1fr }
       .terminal-body { font-size: .55rem }
       .install-box { flex-wrap: wrap; justify-content: center }
+      .docs-language-links {
+        margin-top: 1.1rem;
+        justify-content: flex-start;
+      }
     }
   </style>
 </head>
@@ -355,11 +482,30 @@
   <nav>
     <div class="container">
       <div class="nav-brand"><span>OmG</span> oh-my-gemini-cli</div>
-      <div class="nav-links">
+      <button class="nav-toggle" type="button" aria-label="Toggle navigation" aria-expanded="false" aria-controls="main-nav-links">☰</button>
+      <div id="main-nav-links" class="nav-links">
         <a href="#features">Features</a>
         <a href="#dashboard">Dashboard</a>
         <a href="#remote">Remote</a>
         <a href="#quickstart">Quick Start</a>
+        <div class="nav-dropdown desktop-only">
+          <button class="nav-dropbtn" type="button" aria-haspopup="true">Docs ▾</button>
+          <div class="nav-dropdown-menu" role="menu" aria-label="Documentation languages">
+            <a role="menuitem" href="../README.md">English</a>
+            <a role="menuitem" href="./README_ko.md">한국어</a>
+            <a role="menuitem" href="./README_ja.md">日本語</a>
+            <a role="menuitem" href="./README_zh.md">中文</a>
+            <a role="menuitem" href="./README_es.md">Español</a>
+            <a role="menuitem" href="./README_pt.md">Português</a>
+            <a role="menuitem" href="./README_fr.md">Français</a>
+            <a role="menuitem" href="./README_nl.md">Nederlands</a>
+            <a role="menuitem" href="./README_pl.md">Polski</a>
+            <a role="menuitem" href="./README_uk.md">Українська</a>
+            <a role="menuitem" href="./README_ru.md">Русский</a>
+            <a role="menuitem" href="./README_de.md">Deutsch</a>
+          </div>
+        </div>
+        <a class="mobile-only" href="#docs-languages">Docs</a>
         <a href="https://github.com/Joonghyun-Lee-Frieren/oh-my-gemini-cli">GitHub</a>
       </div>
     </div>
@@ -384,6 +530,21 @@
         <a href="https://github.com/Joonghyun-Lee-Frieren/oh-my-gemini-cli" class="btn btn-secondary">
           GitHub →
         </a>
+      </div>
+      <div id="docs-languages" class="docs-language-links" aria-label="Documentation language links">
+        <span class="label">Docs:</span>
+        <a href="../README.md">English</a>
+        <a href="./README_ko.md">한국어</a>
+        <a href="./README_ja.md">日本語</a>
+        <a href="./README_zh.md">中文</a>
+        <a href="./README_es.md">Español</a>
+        <a href="./README_pt.md">Português</a>
+        <a href="./README_fr.md">Français</a>
+        <a href="./README_nl.md">Nederlands</a>
+        <a href="./README_pl.md">Polski</a>
+        <a href="./README_uk.md">Українська</a>
+        <a href="./README_ru.md">Русский</a>
+        <a href="./README_de.md">Deutsch</a>
       </div>
 
       <div style="margin-top: 4rem; max-width: 700px; margin-left: auto; margin-right: auto; text-align: left; background: rgba(129,140,248,0.08); border: 1px solid rgba(129,140,248,0.2); border-radius: 12px; padding: 1.5rem;">
@@ -600,6 +761,32 @@
         }, 2000);
       });
     }
+
+    (function setupMobileNav() {
+      var toggle = document.querySelector('.nav-toggle');
+      var links = document.getElementById('main-nav-links');
+      if (!toggle || !links) return;
+
+      function closeMenu() {
+        links.classList.remove('is-open');
+        toggle.setAttribute('aria-expanded', 'false');
+      }
+
+      toggle.addEventListener('click', function() {
+        var isOpen = links.classList.toggle('is-open');
+        toggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+      });
+
+      links.querySelectorAll('a').forEach(function(link) {
+        link.addEventListener('click', function() {
+          if (window.innerWidth <= 640) closeMenu();
+        });
+      });
+
+      window.addEventListener('resize', function() {
+        if (window.innerWidth > 640) closeMenu();
+      });
+    })();
   </script>
 
 </body>

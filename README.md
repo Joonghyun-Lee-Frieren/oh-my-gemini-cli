@@ -19,7 +19,7 @@
 </p>
 
 <p align="center">
-  <strong>English</strong> | <a href="./docs/README_ko.md">한국어</a> | <a href="./docs/history.md">Changelog</a>
+  <strong>English</strong> | <a href="./docs/README_ko.md">한국어</a> | <a href="./docs/README_ja.md">日本語</a> | <a href="./docs/README_zh.md">中文</a> | <a href="./docs/README_es.md">Español</a> | <a href="./docs/README_pt.md">Português</a> | <a href="./docs/README_fr.md">Français</a> | <a href="./docs/README_nl.md">Nederlands</a> | <a href="./docs/README_pl.md">Polski</a> | <a href="./docs/README_uk.md">Українська</a> | <a href="./docs/README_ru.md">Русский</a> | <a href="./docs/README_de.md">Deutsch</a> | <a href="./docs/history.md">Changelog</a>
 </p>
 
 
