@@ -23,22 +23,24 @@ cd oh-my-gemini-cli
 
 ## Step 2: Install as Gemini Extension
 
-Inside Gemini CLI, run:
+Run from your terminal (non-interactive mode):
 
-```text
-/extensions install /absolute/path/to/oh-my-gemini-cli
-```
-
-Windows example:
-
-```text
-/extensions install C:\workspace_vibe\oh-my-gemini-cli
+```bash
+gemini extensions install https://github.com/Joonghyun-Lee-Frieren/oh-my-gemini-cli
 ```
 
 ## Step 3: Verify Extension Loaded
 
+Inside Gemini interactive mode:
+
 ```text
-/extensions
+/extensions list
+```
+
+Or from terminal:
+
+```bash
+gemini extensions list
 ```
 
 You should see `oh-my-gemini-cli` in the extension list.
@@ -79,12 +81,12 @@ If your environment blocks extension-level settings, enable it in your Gemini se
 
 1. Pull latest repository changes.
 2. Restart Gemini CLI.
-3. Re-run `/extensions` to confirm latest metadata is loaded.
+3. Re-run `gemini extensions list` to confirm latest metadata is loaded.
 
 ## Uninstall
 
-From Gemini CLI:
+From terminal:
 
-```text
-/extensions uninstall oh-my-gemini-cli
+```bash
+gemini extensions uninstall oh-my-gemini-cli
 ```

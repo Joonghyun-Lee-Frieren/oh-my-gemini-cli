@@ -1,6 +1,15 @@
 # oh-my-gemini-cli (OmG)
 
-Extension-first multi-agent workflow pack for Gemini CLI.
+Context-engineering-powered multi-agent workflow pack for Gemini CLI.
+
+> "Claude Code's core competitiveness isn't the Opus or Sonnet engine. It's Claude Code itself. Surprisingly, Gemini works well too when attached to Claude Code."
+>
+> — Jeongkyu Shin (CEO of Lablup Inc.), from a YouTube interview
+
+This project started from that observation:
+"What if we bring that harness model to Gemini CLI?"
+
+OmG extends Gemini CLI from a single-session assistant into a structured, role-driven engineering workflow.
 
 OmG is now implemented as a native Gemini CLI extension using the official extension model:
 
@@ -12,25 +21,31 @@ OmG is now implemented as a native Gemini CLI extension using the official exten
 
 ## Install
 
-1. Clone this repository.
-2. Open Gemini CLI in your project.
-3. Install the extension from local path:
+Install from GitHub URL using the official extensions command:
 
-```text
-/extensions install /absolute/path/to/oh-my-gemini-cli
-```
-
-Windows example:
-
-```text
-/extensions install C:\workspace_vibe\oh-my-gemini-cli
+```bash
+gemini extensions install https://github.com/Joonghyun-Lee-Frieren/oh-my-gemini-cli
 ```
 
 Optional verification:
 
 ```text
-/extensions
+/extensions list
 ```
+
+Non-interactive verification:
+
+```bash
+gemini extensions list
+```
+
+Note: extension install/update commands run in terminal mode (`gemini extensions ...`), not inside interactive slash-command mode.
+
+## Why OmG
+
+- Complex work needs repeatable structure, not just a bigger context window.
+- Role-based delegation improves quality on planning, implementation, review, and debugging.
+- Cache-safe context discipline keeps long sessions stable and cheaper.
 
 ## Use
 
@@ -82,7 +97,7 @@ oh-my-gemini-cli/
 This repository no longer relies on `omg setup` as the primary onboarding path.
 
 - Old flow: global package install + setup copier
-- New flow: direct extension install via `/extensions install ...`
+- New flow: direct extension install via `gemini extensions install ...`
 
 Legacy runtime code under `src/` is kept in-repo, but the extension behavior now comes from manifest-driven loading.
 
