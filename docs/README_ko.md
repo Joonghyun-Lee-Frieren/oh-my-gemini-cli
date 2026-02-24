@@ -80,7 +80,7 @@ gemini extensions list
 - `omg-researcher`
 - `omg-quick`
 
-이 확장은 `gemini-extension.json`에서 `experimental.enableAgents`를 기본 활성화합니다.
+서브 에이전트는 확장의 `agents/` 정의를 통해 제공됩니다.
 
 ## 프로젝트 구조
 
@@ -114,3 +114,4 @@ oh-my-gemini-cli/
 ## 라이선스
 
 MIT
+

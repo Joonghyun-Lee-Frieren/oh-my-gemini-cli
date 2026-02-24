@@ -1,4 +1,4 @@
-# oh-my-gemini-cli Extension Installation Guide
+﻿# oh-my-gemini-cli Extension Installation Guide
 
 This guide follows the official Gemini CLI Extensions workflow.
 
@@ -63,19 +63,9 @@ If agent delegation is needed:
 /omg:team "Implement a small feature with planning and review"
 ```
 
-## Optional: Agent Setting Check
+## Note
 
-OmG requests:
-
-```json
-{
-  "experimental": {
-    "enableAgents": true
-  }
-}
-```
-
-If your environment blocks extension-level settings, enable it in your Gemini settings manually.
+No extension-level setting override is required for installation.
 
 ## Upgrade
 

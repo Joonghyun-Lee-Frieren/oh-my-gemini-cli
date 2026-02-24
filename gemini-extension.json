@@ -8,9 +8,5 @@
   "homepage": "https://github.com/Joonghyun-Lee-Frieren/oh-my-gemini-cli",
   "sourceUrl": "https://github.com/Joonghyun-Lee-Frieren/oh-my-gemini-cli",
   "contextFileName": "GEMINI.md",
-  "settings": {
-    "experimental": {
-      "enableAgents": true
-    }
-  }
+  "settings": []
 }

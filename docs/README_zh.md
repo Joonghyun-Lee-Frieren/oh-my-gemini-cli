@@ -80,7 +80,7 @@ gemini extensions list
 - `omg-researcher`
 - `omg-quick`
 
-此扩展在 `gemini-extension.json` 中默认开启了 `experimental.enableAgents`。
+子代理通过扩展的 `agents/` 定义提供。
 
 ## 项目结构
 
@@ -114,3 +114,4 @@ oh-my-gemini-cli/
 ## 许可证
 
 MIT
+

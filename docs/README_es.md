@@ -80,7 +80,7 @@ Están definidos con namespace en `commands/omg/*.toml`:
 - `omg-researcher`
 - `omg-quick`
 
-`gemini-extension.json` habilita `experimental.enableAgents` por defecto para esta extensión.
+Los subagentes se ofrecen mediante las definiciones `agents/` de la extensión.
 
 ## Estructura del proyecto
 
@@ -114,3 +114,4 @@ El código runtime heredado en `src/` se mantiene en el repositorio, pero el com
 ## Licencia
 
 MIT
+

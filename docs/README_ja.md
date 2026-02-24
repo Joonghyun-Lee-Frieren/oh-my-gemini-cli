@@ -80,7 +80,7 @@ gemini extensions list
 - `omg-researcher`
 - `omg-quick`
 
-この拡張では `gemini-extension.json` で `experimental.enableAgents` をデフォルト有効化しています。
+サブエージェントは拡張の `agents/` 定義として提供されます。
 
 ## プロジェクト構成
 
@@ -114,3 +114,4 @@ oh-my-gemini-cli/
 ## ライセンス
 
 MIT
+
