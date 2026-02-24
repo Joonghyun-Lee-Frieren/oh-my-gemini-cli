@@ -1,5 +1,8 @@
 # oh-my-gemini-cli (OmG)
 
+Landing Page: [joonghyun-lee-frieren.github.io/oh-my-gemini-cli](https://joonghyun-lee-frieren.github.io/oh-my-gemini-cli/) | History: [docs/history.md](docs/history.md)
+Languages: [Korean](docs/README_ko.md) | [Japanese](docs/README_ja.md) | [French](docs/README_fr.md) | [Chinese](docs/README_zh.md) | [Spanish](docs/README_es.md)
+
 Context-engineering-powered multi-agent workflow pack for Gemini CLI.
 
 > "Claude Code's core competitiveness isn't the Opus or Sonnet engine. It's Claude Code itself. Surprisingly, Gemini works well too when attached to Claude Code."
