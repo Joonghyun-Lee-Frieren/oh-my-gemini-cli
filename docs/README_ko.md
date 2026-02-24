@@ -1,60 +1,66 @@
-# oh-my-gemini-cli (OmG)
+﻿# oh-my-gemini-cli (OmG)
 
-Gemini CLI용 컨텍스트 엔지니어링 기반 멀티 에이전트 워크플로우 확장입니다.
+This language README is synchronized with the English version.
 
-> "Claude Code의 핵심 경쟁력은 Opus나 Sonnet 엔진이 아니라 Claude Code 자체다. Gemini도 그 하네스를 붙이면 꽤 잘 된다."
+Context-engineering-powered multi-agent workflow pack for Gemini CLI.
+
+> "Claude Code's core competitiveness isn't the Opus or Sonnet engine. It's Claude Code itself. Surprisingly, Gemini works well too when attached to Claude Code."
 >
-> — 신정규 (Lablup Inc. CEO), 유튜브 인터뷰
+> - Jeongkyu Shin (CEO of Lablup Inc.), from a YouTube interview
 
-이 프로젝트는 위 관찰에서 시작했습니다.  
-"그 하네스를 Gemini CLI에도 가져오면 어떨까?"
+This project started from that observation:
+"What if we bring that harness model to Gemini CLI?"
 
-현재 OmG는 Gemini CLI 공식 Extensions 방식으로 구현되어 있습니다.
+OmG extends Gemini CLI from a single-session assistant into a structured, role-driven engineering workflow.
 
-- `gemini-extension.json` 매니페스트
-- `agents/` 서브 에이전트
-- `commands/` 슬래시 커맨드
-- `skills/` 스킬
-- `context/` 공통 컨텍스트
+OmG is implemented as a native Gemini CLI extension using the official extension model:
 
-## 설치
+- `gemini-extension.json` manifest
+- `agents/` for sub-agents
+- `commands/` for slash commands
+- `skills/` for reusable workflows
+- `context/` for shared project context
 
-공식 확장 설치 방식(터미널 모드):
+## Install
+
+Install from GitHub URL using the official extensions command:
 
 ```bash
 gemini extensions install https://github.com/Joonghyun-Lee-Frieren/oh-my-gemini-cli
 ```
 
-설치 확인:
+Optional verification in interactive mode:
 
 ```text
 /extensions list
 ```
 
-또는:
+Non-interactive verification:
 
 ```bash
 gemini extensions list
 ```
 
-참고: 설치/업데이트/삭제는 `gemini extensions ...` 명령으로 실행합니다.
+Note: extension install/update commands run in terminal mode (`gemini extensions ...`), not inside interactive slash-command mode.
 
-## 왜 OmG인가
+## Why OmG
 
-- 복잡한 작업에는 큰 컨텍스트 창만으로는 부족하고 구조화된 역할 분리가 필요합니다.
-- 계획, 구현, 리뷰, 디버깅을 역할 단위로 분리하면 품질과 속도를 동시에 올리기 쉽습니다.
-- 캐시 친화적인 컨텍스트 운영으로 장기 세션의 안정성과 비용 효율을 개선할 수 있습니다.
+- Complex work needs repeatable structure, not just a bigger context window.
+- Role-based delegation improves quality on planning, implementation, review, and debugging.
+- Cache-safe context discipline keeps long sessions stable and cheaper.
 
-## 사용
+## Use
 
-### 커맨드
+### Commands
+
+These are namespaced from `commands/omg/*.toml`:
 
 - `/omg:status`
 - `/omg:team`
 - `/omg:optimize`
 - `/omg:cache`
 
-### 스킬
+### Skills
 
 - `$plan`
 - `$execute`
@@ -62,7 +68,7 @@ gemini extensions list
 - `$research`
 - `$context-optimize`
 
-### 서브 에이전트
+### Sub-agents
 
 - `omg-architect`
 - `omg-planner`
@@ -72,8 +78,37 @@ gemini extensions list
 - `omg-researcher`
 - `omg-quick`
 
-## 문서
+`gemini-extension.json` enables `experimental.enableAgents` by default for this extension.
 
-- 영문 README: `../README.md`
-- 설치 가이드: `./guide/installation.md`
-- 변경 이력: `./history.md`
+## Project Structure
+
+```text
+oh-my-gemini-cli/
+|- gemini-extension.json
+|- agents/
+|- commands/
+|  |- omg/
+|- skills/
+|- context/
+|- docs/
+`- LICENSE
+```
+
+## Migration Notes
+
+This repository no longer relies on `omg setup` as the primary onboarding path.
+
+- Old flow: global package install plus setup copier
+- New flow: direct extension install via `gemini extensions install ...`
+
+Legacy runtime code under `src/` is kept in-repo, but extension behavior now comes from manifest-driven loading.
+
+## Docs
+
+- English README: `../README.md`
+- Installation guide: `./guide/installation.md`
+- Changelog: `./history.md`
+
+## License
+
+MIT

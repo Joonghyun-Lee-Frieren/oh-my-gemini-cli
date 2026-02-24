@@ -1,665 +1,301 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>oh-my-gemini-cli — Context Engineering Powered Multi-Agent Harness for Gemini CLI</title>
-  <meta name="description" content="Transform Gemini CLI into a context-engineering powered multi-agent orchestration system. Multi-agent teams, ASCII dashboard, prompt caching, and more.">
-  <meta property="og:title" content="oh-my-gemini-cli">
-  <meta property="og:description" content="Context Engineering powered multi-agent harness for Gemini CLI">
-  <meta property="og:type" content="website">
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>✦</text></svg>">
+  <title>oh-my-gemini-cli | Extension-first workflow pack for Gemini CLI</title>
+  <meta name="description" content="oh-my-gemini-cli is an extension-first, context-engineering-powered multi-agent workflow pack for Gemini CLI.">
   <style>
-    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-
     :root {
-      --bg: #0a0a0f;
-      --bg-card: #12121a;
-      --bg-terminal: #0d0d14;
-      --border: #1e1e2e;
-      --border-glow: #4f46e5;
-      --text: #e2e8f0;
-      --text-dim: #64748b;
-      --text-bright: #f8fafc;
-      --accent: #818cf8;
-      --accent-bright: #a5b4fc;
-      --green: #34d399;
-      --yellow: #fbbf24;
-      --red: #f87171;
-      --cyan: #22d3ee;
-      --purple: #c084fc;
-      --font-mono: 'SF Mono', 'Cascadia Mono', 'Cascadia Code', 'JetBrains Mono', 'Fira Code', 'D2Coding', 'NanumGothicCoding', 'Noto Sans Mono CJK KR', 'Noto Sans Mono', Consolas, monospace;
-      --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      --max-w: 1120px;
+      --bg: #0b1020;
+      --panel: #131a2d;
+      --panel-2: #0f1528;
+      --border: #223052;
+      --text: #e7ecff;
+      --muted: #a8b3d6;
+      --accent: #6ea8ff;
+      --accent-2: #8de2c5;
+      --max: 1040px;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      --sans: Inter, Segoe UI, Arial, sans-serif;
     }
 
-    html { scroll-behavior: smooth }
-
+    * { box-sizing: border-box; }
     body {
-      font-family: var(--font-sans);
-      background: var(--bg);
+      margin: 0;
+      background: radial-gradient(circle at 20% 0%, #182747, var(--bg) 45%);
       color: var(--text);
-      line-height: 1.6;
-      -webkit-font-smoothing: antialiased;
+      font-family: var(--sans);
+      line-height: 1.55;
     }
 
-    a { color: var(--accent); text-decoration: none; transition: color .2s }
-    a:hover { color: var(--accent-bright) }
+    .wrap { max-width: var(--max); margin: 0 auto; padding: 0 20px; }
 
-    .container { max-width: var(--max-w); margin: 0 auto; padding: 0 1.5rem }
-
-    /* ── Nav ── */
-    nav {
-      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-      background: rgba(10,10,15,.85);
-      backdrop-filter: blur(12px);
-      border-bottom: 1px solid var(--border);
-    }
-    nav .container {
-      display: flex; align-items: center; justify-content: space-between;
-      height: 56px;
-    }
-    .nav-brand {
-      font-family: var(--font-mono); font-weight: 700; font-size: .95rem;
-      color: var(--text-bright);
-    }
-    .nav-brand span { color: var(--accent) }
-    .nav-toggle {
-      display: none;
-      background: transparent;
+    header { padding: 72px 0 44px; }
+    .badge {
+      display: inline-block;
       border: 1px solid var(--border);
-      color: var(--text-dim);
+      background: rgba(255,255,255,0.03);
+      color: var(--muted);
+      border-radius: 999px;
+      padding: 6px 10px;
+      font-size: 12px;
+    }
+
+    h1 {
+      margin: 14px 0 8px;
+      font-size: clamp(30px, 5vw, 48px);
+      line-height: 1.1;
+    }
+
+    .tagline { margin: 0 0 16px; color: var(--muted); max-width: 760px; }
+
+    .quote {
+      margin-top: 22px;
+      border: 1px solid var(--border);
+      background: linear-gradient(180deg, rgba(110,168,255,0.10), rgba(110,168,255,0.03));
+      border-radius: 12px;
+      padding: 16px;
+    }
+    .quote p { margin: 0 0 8px; }
+    .quote small { color: var(--muted); }
+
+    .install {
+      margin-top: 22px;
+      border: 1px solid var(--border);
+      background: var(--panel-2);
+      border-radius: 10px;
+      padding: 12px;
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .install code {
+      font-family: var(--mono);
+      color: var(--accent-2);
+      word-break: break-word;
+    }
+    .btn {
+      border: 1px solid var(--border);
+      background: #1a2442;
+      color: var(--text);
       border-radius: 8px;
-      padding: .3rem .5rem;
-      font: inherit;
-      line-height: 1;
+      padding: 7px 11px;
+      font-size: 13px;
       cursor: pointer;
     }
-    .nav-toggle:hover,
-    .nav-toggle:focus-visible {
-      color: var(--text);
-      border-color: var(--accent);
-      outline: none;
-    }
-    .nav-links { display: flex; align-items: center; gap: 1.5rem; font-size: .875rem }
-    .nav-links a { color: var(--text-dim) }
-    .nav-links a:hover { color: var(--text) }
+    .btn:hover { border-color: var(--accent); }
 
-    /* ── Hero ── */
-    .hero {
-      padding: 10rem 0 5rem;
-      text-align: center;
-      position: relative;
-      overflow: hidden;
-    }
-    .hero::before {
-      content: '';
-      position: absolute;
-      top: -40%; left: 50%; transform: translateX(-50%);
-      width: 600px; height: 600px;
-      background: radial-gradient(circle, rgba(79,70,229,.12) 0%, transparent 70%);
-      pointer-events: none;
-    }
-    .hero-badge {
-      display: inline-block;
-      padding: .35rem .9rem;
-      border-radius: 999px;
-      border: 1px solid var(--border);
-      background: var(--bg-card);
-      font-size: .8rem;
-      color: var(--text-dim);
-      margin-bottom: 1.5rem;
-    }
-    .hero-badge span { color: var(--green) }
-    .hero h1 {
-      font-family: var(--font-mono);
-      font-size: clamp(2rem, 5vw, 3.5rem);
-      font-weight: 800;
-      color: var(--text-bright);
-      letter-spacing: -.02em;
-      margin-bottom: .75rem;
-    }
-    .hero h1 .accent { color: var(--accent) }
-    .hero .tagline {
-      font-size: clamp(1rem, 2.5vw, 1.25rem);
-      color: var(--text-dim);
-      max-width: 600px;
-      margin: 0 auto 2.5rem;
-    }
-
-    .install-box {
-      display: inline-flex; align-items: center; gap: .75rem;
-      background: var(--bg-terminal);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: .75rem 1rem .75rem 1.25rem;
-      font-family: var(--font-mono);
-      font-size: .95rem;
-      margin-bottom: 1rem;
-      position: relative;
-    }
-    .install-box .prompt { color: var(--green) }
-    .install-box code { color: var(--text-bright) }
-    .install-box button {
-      background: var(--bg-card); border: 1px solid var(--border);
-      color: var(--text-dim); border-radius: 6px;
-      padding: .4rem .6rem; cursor: pointer; font-size: .8rem;
-      transition: all .2s;
-    }
-    .install-box button:hover { color: var(--text); border-color: var(--accent) }
-    .install-box button.copied { color: var(--green); border-color: var(--green) }
-
-    .hero-links { display: flex; justify-content: center; gap: 1rem; margin-top: 1.5rem }
-    .btn {
-      display: inline-flex; align-items: center; gap: .5rem;
-      padding: .65rem 1.5rem;
-      border-radius: 8px;
-      font-size: .9rem; font-weight: 600;
-      transition: all .2s;
-    }
-    .btn-primary {
-      background: var(--accent); color: #fff;
-    }
-    .btn-primary:hover { background: #6366f1; color: #fff }
-    .btn-secondary {
-      background: var(--bg-card); color: var(--text);
-      border: 1px solid var(--border);
-    }
-    .btn-secondary:hover { border-color: var(--accent); color: var(--accent-bright) }
-
-    /* ── Section ── */
-    section { padding: 5rem 0 }
-    .section-label {
-      font-family: var(--font-mono); font-size: .8rem;
-      color: var(--accent); text-transform: uppercase;
-      letter-spacing: .1em; margin-bottom: .5rem;
-    }
-    .section-title {
-      font-size: clamp(1.5rem, 3vw, 2rem);
-      font-weight: 700; color: var(--text-bright);
-      margin-bottom: 1rem;
-    }
-    .section-desc {
-      color: var(--text-dim); max-width: 600px; margin-bottom: 3rem;
-    }
-
-    /* ── Features Grid ── */
-    .features-grid {
+    .grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 1.25rem;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 12px;
+      margin: 18px 0 0;
     }
-    .feature-card {
-      background: var(--bg-card);
+    .card {
       border: 1px solid var(--border);
+      background: var(--panel);
       border-radius: 12px;
-      padding: 1.75rem;
-      transition: border-color .3s, transform .3s;
+      padding: 14px;
     }
-    .feature-card:hover {
-      border-color: var(--border-glow);
-      transform: translateY(-2px);
-    }
-    .feature-icon {
-      width: 40px; height: 40px;
-      display: flex; align-items: center; justify-content: center;
-      border-radius: 10px;
-      font-size: 1.2rem;
-      margin-bottom: 1rem;
-    }
-    .fi-agents { background: rgba(129,140,248,.12); color: var(--accent) }
-    .fi-context { background: rgba(52,211,153,.12); color: var(--green) }
-    .fi-dashboard { background: rgba(34,211,238,.12); color: var(--cyan) }
-    .fi-models { background: rgba(251,191,36,.12); color: var(--yellow) }
-    .fi-external { background: rgba(192,132,252,.12); color: var(--purple) }
-    .fi-bots { background: rgba(248,113,113,.12); color: var(--red) }
-    .feature-card h3 {
-      font-size: 1rem; font-weight: 600;
-      color: var(--text-bright); margin-bottom: .5rem;
-    }
-    .feature-card p { font-size: .875rem; color: var(--text-dim); line-height: 1.5 }
+    .card h3 { margin: 0 0 6px; font-size: 16px; }
+    .card p { margin: 0; color: var(--muted); font-size: 14px; }
 
-    /* ── Terminal Preview ── */
-    .terminal-section { padding: 5rem 0 }
-    .terminal-window {
-      background: var(--bg-terminal);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      overflow: hidden;
-      max-width: 900px;
-      margin: 0 auto;
-    }
-    .terminal-bar {
-      display: flex; align-items: center; gap: .5rem;
-      padding: .75rem 1rem;
-      background: rgba(18,18,26,.8);
-      border-bottom: 1px solid var(--border);
-    }
-    .terminal-dot {
-      width: 10px; height: 10px; border-radius: 50%;
-    }
-    .terminal-dot.r { background: #f87171 }
-    .terminal-dot.y { background: #fbbf24 }
-    .terminal-dot.g { background: #34d399 }
-    .terminal-title {
-      flex: 1; text-align: center;
-      font-family: var(--font-mono); font-size: .75rem;
-      color: var(--text-dim);
-    }
-    .terminal-body {
-      padding: 1.25rem 1.5rem;
-      font-family: var(--font-mono);
-      font-size: clamp(.6rem, 1.3vw, .8rem);
-      line-height: 1.45;
-      font-variant-ligatures: none;
-      font-feature-settings: "liga" 0;
-      overflow-x: auto;
-      white-space: pre;
-      color: var(--text);
-    }
-    .terminal-body .t-dim { color: var(--text-dim) }
-    .terminal-body .t-accent { color: var(--accent) }
-    .terminal-body .t-green { color: var(--green) }
-    .terminal-body .t-yellow { color: var(--yellow) }
-    .terminal-body .t-cyan { color: var(--cyan) }
-    .terminal-body .t-red { color: var(--red) }
-    .terminal-body .t-purple { color: var(--purple) }
-    .terminal-body .t-bright { color: var(--text-bright) }
+    section { padding: 26px 0; }
+    h2 { margin: 0 0 12px; font-size: 24px; }
 
-    /* ── Quick Start ── */
-    .quickstart { padding: 5rem 0 }
-    .quickstart-grid {
-      display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 1.25rem;
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 12px;
     }
-    .step-card {
-      background: var(--bg-card);
+    .step {
       border: 1px solid var(--border);
+      background: var(--panel);
       border-radius: 12px;
-      padding: 1.75rem;
+      padding: 14px;
     }
-    .step-num {
-      font-family: var(--font-mono);
-      font-size: .75rem; font-weight: 700;
+    .step .num {
       color: var(--accent);
-      margin-bottom: .75rem;
+      font-family: var(--mono);
+      font-size: 12px;
+      margin-bottom: 6px;
     }
-    .step-card h3 {
-      font-size: 1rem; color: var(--text-bright);
-      margin-bottom: .75rem;
-    }
-    .step-card pre {
-      background: var(--bg-terminal);
+    pre {
+      margin: 10px 0 0;
       border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: .75rem 1rem;
-      font-family: var(--font-mono);
-      font-size: .8rem;
+      border-radius: 10px;
+      background: #0a1020;
+      color: #cde1ff;
+      font-family: var(--mono);
+      font-size: 12px;
+      padding: 10px;
       overflow-x: auto;
-      color: var(--text);
     }
-    .step-card pre .prompt { color: var(--green) }
-    .step-card pre .comment { color: var(--text-dim) }
 
-    /* ── Footer ── */
+    .lists {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 12px;
+    }
+    ul { margin: 8px 0 0 18px; color: var(--muted); }
+
     footer {
-      padding: 3rem 0;
+      padding: 30px 0 40px;
+      color: var(--muted);
       border-top: 1px solid var(--border);
-      text-align: center;
+      margin-top: 24px;
     }
-    .footer-links {
-      display: flex; justify-content: center; gap: 2rem;
-      margin-bottom: 1.5rem; font-size: .875rem;
-    }
-    .footer-copy {
-      font-size: .8rem; color: var(--text-dim);
-    }
+    footer a { color: var(--accent); text-decoration: none; margin-right: 10px; }
 
-    /* ── Remote Control ── */
-    .remote-control {
-      padding: 5rem 0;
-    }
-    .chat-interface {
-      max-width: 380px; 
-      margin: 2rem auto 0;
-      background: var(--bg); border: 1px solid var(--border);
-      border-radius: 20px; overflow: hidden;
-      box-shadow: 0 20px 40px rgba(0,0,0,.3);
-    }
-    .chat-header {
-      padding: 1rem; background: var(--bg-terminal);
-      border-bottom: 1px solid var(--border);
-      display: flex; align-items: center; gap: .75rem;
-    }
-    .chat-avatar {
-      width: 32px; height: 32px; border-radius: 50%;
-      background: var(--accent); display: flex; align-items: center; justify-content: center;
-      color: #fff; font-size: .9rem;
-    }
-    .chat-body { padding: 1.5rem; display: flex; flex-direction: column; gap: 1rem; }
-    .chat-bubble {
-      padding: .75rem 1rem; border-radius: 12px;
-      font-size: .85rem; max-width: 85%; line-height: 1.4;
-    }
-    .chat-bubble.user {
-      align-self: flex-end; background: var(--accent); color: #fff;
-      border-bottom-right-radius: 2px;
-    }
-    .chat-bubble.bot {
-      align-self: flex-start; background: var(--bg-terminal); color: var(--text);
-      border: 1px solid var(--border);
-      border-bottom-left-radius: 2px;
-    }
-    .chat-bubble .meta {
-      display: block; font-size: .7rem; margin-top: .4rem; opacity: .7;
-    }
-
-    /* ── Responsive ── */
-    @media (max-width: 640px) {
-      .hero { padding: 8rem 0 3rem }
-      nav .container {
-        height: auto;
-        min-height: 56px;
-        flex-wrap: wrap;
-        padding-top: .55rem;
-        padding-bottom: .55rem;
-      }
-      .nav-toggle { display: inline-flex; align-items: center; justify-content: center }
-      .nav-links {
-        width: 100%;
-        display: none;
-        flex-direction: column;
-        align-items: flex-start;
-        gap: .55rem;
-        font-size: .86rem;
-        padding: .65rem 0 .2rem;
-      }
-      .nav-links.is-open { display: flex }
-      .features-grid { grid-template-columns: 1fr }
-      .quickstart-grid { grid-template-columns: 1fr }
-      .terminal-body { font-size: .55rem }
-      .install-box { flex-wrap: wrap; justify-content: center }
+    @media (max-width: 540px) {
+      header { padding-top: 56px; }
     }
   </style>
 </head>
 <body>
+  <header>
+    <div class="wrap">
+      <span class="badge">Extensions-first release v0.2.0</span>
+      <h1>oh-my-gemini-cli</h1>
+      <p class="tagline">Context-engineering-powered multi-agent workflow pack for Gemini CLI.</p>
 
-  <!-- Nav -->
-  <nav>
-    <div class="container">
-      <div class="nav-brand"><span>OmG</span> oh-my-gemini-cli</div>
-      <button class="nav-toggle" type="button" aria-label="Toggle navigation" aria-expanded="false" aria-controls="main-nav-links">☰</button>
-      <div id="main-nav-links" class="nav-links">
-        <a href="#features">Features</a>
-        <a href="#dashboard">Dashboard</a>
-        <a href="#remote">Remote</a>
-        <a href="#quickstart">Quick Start</a>
-        <a href="https://github.com/Joonghyun-Lee-Frieren/oh-my-gemini-cli">GitHub</a>
+      <div class="install">
+        <code id="installCmd">gemini extensions install https://github.com/Joonghyun-Lee-Frieren/oh-my-gemini-cli</code>
+        <button class="btn" id="copyBtn" type="button">Copy</button>
       </div>
-    </div>
-  </nav>
 
-  <!-- Hero -->
-  <header class="hero">
-    <div class="container">
-      <div class="hero-badge"><span>●</span> v0.1.4 — now available</div>
-      <h1>oh-my-<span class="accent">gemini-cli</span></h1>
-      <p style="font-size: clamp(1.2rem, 3vw, 1.5rem); font-weight: 600; color: var(--text-bright); margin-bottom: 0.5rem; font-style: italic;">
-        Gemini thinks. OmG orchestrates.
-      </p>
-      <p class="tagline">Context Engineering powered multi-agent harness for Gemini CLI</p>
-      <div class="install-box">
-        <span class="prompt">$</span>
-        <code>npm install -g github:Joonghyun-Lee-Frieren/oh-my-gemini-cli#main</code>
-        <button onclick="copyInstall(this)" aria-label="Copy install command">Copy</button>
-      </div>
-      <div class="hero-links">
-        <a href="#quickstart" class="btn btn-primary">Get Started</a>
-        <a href="https://github.com/Joonghyun-Lee-Frieren/oh-my-gemini-cli" class="btn btn-secondary">
-          GitHub →
-        </a>
-      </div>
-      <div style="margin-top: 4rem; max-width: 700px; margin-left: auto; margin-right: auto; text-align: left; background: rgba(129,140,248,0.08); border: 1px solid rgba(129,140,248,0.2); border-radius: 12px; padding: 1.5rem;">
-        <p style="font-size: 1.1rem; color: var(--text-bright); font-style: italic; margin-bottom: 1rem; line-height: 1.6;">
-          "Claude Code's core competitiveness isn't the Opus or Sonnet engine. It's Claude Code itself. Surprisingly, Gemini works well too when attached to Claude Code."
-        </p>
-        <div style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.9rem; color: var(--text-dim);">
-          <span style="color: var(--accent);">— Jeongkyu Shin, CEO of Lablup Inc.</span>
-          <span>(from a YouTube Channel interview)</span>
-        </div>
-        <p style="margin-top: 1rem; font-size: 0.9rem; color: var(--text-dim); border-top: 1px solid rgba(129,140,248,0.1); padding-top: 1rem;">
-          This project started from this insight: What if we bring that harness to Gemini CLI?
-        </p>
+      <div class="quote">
+        <p>"Claude Code's core competitiveness isn't the Opus or Sonnet engine. It's Claude Code itself. Surprisingly, Gemini works well too when attached to Claude Code."</p>
+        <small>Jeongkyu Shin (CEO of Lablup Inc.), from a YouTube interview</small>
+        <p style="margin-top:10px;">This project started from that observation: "What if we bring that harness model to Gemini CLI?"</p>
       </div>
     </div>
   </header>
 
-  <!-- Features -->
-  <section id="features">
-    <div class="container">
-      <p class="section-label">Features</p>
-      <h2 class="section-title">Everything you need for agent orchestration</h2>
-      <p class="section-desc">
-        OmG extends Gemini CLI from a single-session tool into a full multi-agent
-        orchestration system — without forking. It uses only native extension points.
-      </p>
-      <div class="features-grid">
-
-        <div class="feature-card">
-          <div class="feature-icon fi-agents">⊚</div>
-          <h3>Multi-Agent Orchestration</h3>
-          <p>Spawn up to 6 concurrent agents — Architect, Planner, Executor, Reviewer, Debugger, and Researcher — working in parallel on your tasks.</p>
+  <section>
+    <div class="wrap">
+      <h2>Core Model</h2>
+      <div class="grid">
+        <div class="card">
+          <h3>Native Extension</h3>
+          <p>Implemented with official Gemini CLI extension primitives, centered on <code>gemini-extension.json</code>.</p>
         </div>
-
-        <div class="feature-card">
-          <div class="feature-icon fi-context">◈</div>
-          <h3>Context Engineering</h3>
-          <p>Prompt caching optimization based on prefix stability, tool invariance, and cache-safe compaction. Includes JSON status telemetry for cache/context monitoring.</p>
+        <div class="card">
+          <h3>Role-based Agents</h3>
+          <p>Architect, planner, executor, reviewer, debugger, researcher, and quick-fix roles.</p>
         </div>
-
-        <div class="feature-card">
-          <div class="feature-icon fi-dashboard">▦</div>
-          <h3>ASCII Dashboard</h3>
-          <p>Real-time terminal UI built with Ink (React for CLI). See all agents, task pipelines, logs, and cache stats at a glance.</p>
+        <div class="card">
+          <h3>Reusable Skills</h3>
+          <p>Plan, execute, team, research, and context optimization workflows.</p>
         </div>
-
-        <div class="feature-card">
-          <div class="feature-icon fi-models">⟡</div>
-          <h3>Dual Model Strategy</h3>
-          <p>Gemini Pro for planning and architecture. Gemini Flash for fast code generation. Automatic routing based on task type with MCP-compatible orchestration hooks.</p>
-        </div>
-
-        <div class="feature-card">
-          <div class="feature-icon fi-external">⬡</div>
-          <h3>External LLM Support</h3>
-          <p>Connect Claude, GPT, and other models via OAuth or API key. Mix and match models for different agent roles.</p>
-        </div>
-
-        <div class="feature-card">
-          <div class="feature-icon fi-bots">⊕</div>
-          <h3>Telegram / Discord Control</h3>
-          <p>Monitor and control your agent sessions remotely. Get notifications on completion, errors, and review requests.</p>
-        </div>
-
-      </div>
-    </div>
-  </section>
-
-  <!-- Dashboard Preview -->
-  <section id="dashboard" class="terminal-section">
-    <div class="container">
-      <p class="section-label">Dashboard Preview</p>
-      <h2 class="section-title">Real-time TUI terminal dashboard</h2>
-      <p class="section-desc">
-        Every agent's status, task pipeline, and logs — all in your terminal.
-      </p>
-      <div class="terminal-window">
-        <div class="terminal-bar">
-          <span class="terminal-dot r"></span>
-          <span class="terminal-dot y"></span>
-          <span class="terminal-dot g"></span>
-          <span class="terminal-title">OmG — oh-my-gemini-cli</span>
-          <span style="width:30px"></span>
-        </div>
-        <div class="terminal-body"><span class="t-dim">+----------------------------------------------------------------------+</span>
-<span class="t-dim">|</span> OmG  oh-my-gemini-cli   TIME 03:42   PARTY [####--] 4/6              <span class="t-dim">|</span>
-<span class="t-dim">+--------------------------------+-------------------------------------+</span>
-<span class="t-dim">|</span> PARTY MEMBERS                  <span class="t-dim">|</span> QUEST LOG                           <span class="t-dim">|</span>
-<span class="t-dim">|</span> Active: 4 / Total: 6           <span class="t-dim">|</span> 2/7 quests cleared                  <span class="t-dim">|</span>
-<span class="t-dim">|</span> Planner   [gemini-pro]   ATK   <span class="t-dim">|</span> [DONE ] analyze-auth   -> Plan      <span class="t-dim">|</span>
-<span class="t-dim">|</span> Architect [gemini-pro]   ATK   <span class="t-dim">|</span> [RUN  ] impl-oauth    -> Exec#1     <span class="t-dim">|</span>
-<span class="t-dim">|</span> Exec#1    [gemini-flash] ATK   <span class="t-dim">|</span> [RUN  ] impl-token    -> Exec#2     <span class="t-dim">|</span>
-<span class="t-dim">|</span> Reviewer  [gemini-pro]   IDLE  <span class="t-dim">|</span> [WAIT ] code-review   -> Review     <span class="t-dim">|</span>
-<span class="t-dim">+--------------------------------+-------------------------------------+</span>
-<span class="t-dim">|</span> LOG                                                                  <span class="t-dim">|</span>
-<span class="t-dim">|</span> [03:41] Exec#1 wrote oauth/callback.ts                               <span class="t-dim">|</span>
-<span class="t-dim">|</span> [03:42] Planner finished task decomposition (5 subtasks)             <span class="t-dim">|</span>
-<span class="t-dim">+----------------------------------------------------------------------+</span>
-<span class="t-dim">|</span> CACHE [#####-] 94% | TOKENS 12.4k/1M | COST -$0.03                   <span class="t-dim">|</span>
-<span class="t-dim">|</span> [q] quit [p] pause [r] resume [tab] view [a/f] refresh [i] launch-input    <span class="t-dim">|</span>
-<span class="t-dim">+----------------------------------------------------------------------+</span></div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Remote Control -->
-  <section id="remote" class="remote-control">
-    <div class="container">
-      <p class="section-label">Remote Control</p>
-      <h2 class="section-title">Chat with your agents anywhere</h2>
-      <p class="section-desc">
-        Seamless integration with Telegram and Discord. Pause, resume, and monitor your agent team from your phone.
-      </p>
-
-      <div class="chat-interface">
-        <div class="chat-header">
-          <div class="chat-avatar">🤖</div>
-          <div style="font-size:.9rem; font-weight:600; color:var(--text-bright)">OmG Bot</div>
-        </div>
-        <div class="chat-body">
-          <div class="chat-bubble user">
-            /status
-            <span class="meta">10:42 AM</span>
-          </div>
-          <div class="chat-bubble bot">
-            <strong>[OmG Status]</strong><br>
-            Running: 4 agents<br>
-            Cache Hit: 94%<br>
-            <br>
-            🟢 Planner (Active)<br>
-            🟢 Architect (Active)<br>
-            🟡 Executor #1 (Working)<br>
-            <span class="meta">10:42 AM</span>
-          </div>
-          <div class="chat-bubble user">
-            /pause
-            <span class="meta">10:43 AM</span>
-          </div>
-           <div class="chat-bubble bot">
-            ⏸️ <strong>System Paused</strong><br>
-            All agents have been suspended. Use /resume to continue.
-            <span class="meta">10:43 AM</span>
-          </div>
+        <div class="card">
+          <h3>Namespaced Commands</h3>
+          <p>Consistent <code>/omg:*</code> command set for status, team flow, optimization, and cache checks.</p>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Quick Start -->
-  <section id="quickstart" class="quickstart">
-    <div class="container">
-      <p class="section-label">Quick Start</p>
-      <h2 class="section-title">Up and running in 60 seconds</h2>
-      <p class="section-desc">OmG is an add-on, not a fork. It uses only Gemini CLI's native extension points.</p>
-      <div class="quickstart-grid">
-
-        <div class="step-card">
-          <div class="step-num">01 — Install</div>
-          <h3>Install globally from GitHub via npm</h3>
-          <pre><span class="comment"># Requires Node.js >= 20 and Gemini CLI</span>
-<span class="prompt">$</span> npm install -g github:Joonghyun-Lee-Frieren/oh-my-gemini-cli#main</pre>
+  <section>
+    <div class="wrap">
+      <h2>Quick Start</h2>
+      <div class="steps">
+        <div class="step">
+          <div class="num">01 INSTALL (TERMINAL)</div>
+          <pre>gemini extensions install https://github.com/Joonghyun-Lee-Frieren/oh-my-gemini-cli</pre>
         </div>
+        <div class="step">
+          <div class="num">02 VERIFY</div>
+          <pre>gemini extensions list
 
-        <div class="step-card">
-          <div class="step-num">02 — Setup</div>
-          <h3>Initialize in your project</h3>
-          <pre><span class="comment"># Installs prompts, skills, commands, MCP servers</span>
-<span class="prompt">$</span> omg setup</pre>
+# or inside interactive mode
+/extensions list</pre>
         </div>
-
-        <div class="step-card">
-          <div class="step-num">03 — Verify</div>
-          <h3>Check everything is ready</h3>
-          <pre><span class="comment"># Diagnose installation status</span>
-<span class="prompt">$</span> omg doctor</pre>
+        <div class="step">
+          <div class="num">03 COMMANDS</div>
+          <pre>/omg:status
+/omg:team Implement OAuth auth
+/omg:optimize</pre>
         </div>
-
-        <div class="step-card">
-          <div class="step-num">04 — Run</div>
-          <h3>Launch with multi-agent team</h3>
-          <pre><span class="comment"># Start a multi-agent session</span>
-<span class="prompt">$</span> omg team "Implement OAuth auth"
-
-<span class="comment"># Machine-readable status</span>
-<span class="prompt">$</span> omg status --cache --json</pre>
+        <div class="step">
+          <div class="num">04 SKILLS</div>
+          <pre>$plan Build migration plan
+$execute Implement phase 1
+$team End-to-end feature delivery</pre>
         </div>
-
       </div>
     </div>
   </section>
 
-  <!-- Footer -->
+  <section>
+    <div class="wrap">
+      <h2>Available Interfaces</h2>
+      <div class="lists">
+        <div class="card">
+          <h3>Commands</h3>
+          <ul>
+            <li>/omg:status</li>
+            <li>/omg:team</li>
+            <li>/omg:optimize</li>
+            <li>/omg:cache</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Skills</h3>
+          <ul>
+            <li>$plan</li>
+            <li>$execute</li>
+            <li>$team</li>
+            <li>$research</li>
+            <li>$context-optimize</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Sub-agents</h3>
+          <ul>
+            <li>omg-architect</li>
+            <li>omg-planner</li>
+            <li>omg-executor</li>
+            <li>omg-reviewer</li>
+            <li>omg-debugger</li>
+            <li>omg-researcher</li>
+            <li>omg-quick</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <footer>
-    <div class="container">
-      <div class="footer-links">
+    <div class="wrap">
+      <p>
         <a href="https://github.com/Joonghyun-Lee-Frieren/oh-my-gemini-cli">GitHub</a>
-        <a href="https://www.npmjs.com/package/oh-my-gemini-cli">npm</a>
+        <a href="../README.md">English README</a>
+        <a href="./README_ko.md">Korean</a>
+        <a href="./README_ja.md">Japanese</a>
+        <a href="./README_fr.md">French</a>
+        <a href="./README_zh.md">Chinese</a>
+        <a href="./README_es.md">Spanish</a>
         <a href="./guide/installation.md">Installation Guide</a>
-        <a href="https://github.com/Joonghyun-Lee-Frieren/oh-my-gemini-cli/blob/main/LICENSE">MIT License</a>
-        <a href="mailto:kissdesty@gmail.com">Contact</a>
-      </div>
-      <p class="footer-copy">Built with Gemini and the open source community</p>
+      </p>
+      <p>Built for official Gemini CLI Extensions workflow.</p>
     </div>
   </footer>
 
   <script>
-    function copyInstall(btn) {
-      navigator.clipboard.writeText('npm install -g github:Joonghyun-Lee-Frieren/oh-my-gemini-cli#main').then(function() {
-        btn.textContent = '✓';
-        btn.classList.add('copied');
-        setTimeout(function() {
-          btn.textContent = 'Copy';
-          btn.classList.remove('copied');
-        }, 2000);
-      });
-    }
-
-    (function setupMobileNav() {
-      var toggle = document.querySelector('.nav-toggle');
-      var links = document.getElementById('main-nav-links');
-      if (!toggle || !links) return;
-
-      function closeMenu() {
-        links.classList.remove('is-open');
-        toggle.setAttribute('aria-expanded', 'false');
-      }
-
-      toggle.addEventListener('click', function() {
-        var isOpen = links.classList.toggle('is-open');
-        toggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
-      });
-
-      links.querySelectorAll('a').forEach(function(link) {
-        link.addEventListener('click', function() {
-          if (window.innerWidth <= 640) closeMenu();
+    (function () {
+      var cmd = document.getElementById('installCmd').textContent;
+      var btn = document.getElementById('copyBtn');
+      btn.addEventListener('click', function () {
+        navigator.clipboard.writeText(cmd).then(function () {
+          var prev = btn.textContent;
+          btn.textContent = 'Copied';
+          setTimeout(function () { btn.textContent = prev; }, 1500);
         });
-      });
-
-      window.addEventListener('resize', function() {
-        if (window.innerWidth > 640) closeMenu();
       });
     })();
   </script>
-
 </body>
 </html>
