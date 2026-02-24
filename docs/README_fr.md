@@ -1,59 +1,61 @@
 ﻿# oh-my-gemini-cli (OmG)
 
-This language README is synchronized with the English version.
+[Page d'accueil](https://joonghyun-lee-frieren.github.io/oh-my-gemini-cli/) | [Historique](./history.md)
 
-Context-engineering-powered multi-agent workflow pack for Gemini CLI.
+[English](../README.md) | [한국어](./README_ko.md) | [日本語](./README_ja.md) | [中文](./README_zh.md) | [Español](./README_es.md)
 
-> "Claude Code's core competitiveness isn't the Opus or Sonnet engine. It's Claude Code itself. Surprisingly, Gemini works well too when attached to Claude Code."
+Pack de workflows multi-agents, orienté ingénierie de contexte, pour Gemini CLI.
+
+> "L'avantage compétitif principal de Claude Code n'est ni Opus ni Sonnet. C'est Claude Code lui-même. De façon surprenante, Gemini fonctionne aussi très bien avec ce harnais."
 >
-> - Jeongkyu Shin (CEO of Lablup Inc.), from a YouTube interview
+> - Jeongkyu Shin (CEO de Lablup Inc.), interview YouTube
 
-This project started from that observation:
-"What if we bring that harness model to Gemini CLI?"
+Ce projet est né de cette idée :
+"Et si on apportait ce modèle de harnais à Gemini CLI ?"
 
-OmG extends Gemini CLI from a single-session assistant into a structured, role-driven engineering workflow.
+OmG transforme Gemini CLI, d'un assistant en session unique, en workflow d'ingénierie structuré par rôles.
 
-OmG is implemented as a native Gemini CLI extension using the official extension model:
+OmG est implémenté comme extension native Gemini CLI basée sur le modèle officiel.
 
-- `gemini-extension.json` manifest
-- `agents/` for sub-agents
-- `commands/` for slash commands
-- `skills/` for reusable workflows
-- `context/` for shared project context
+- manifeste `gemini-extension.json`
+- `agents/` pour les sous-agents
+- `commands/` pour les slash commands
+- `skills/` pour les workflows réutilisables
+- `context/` pour le contexte partagé
 
-## Install
+## Installation
 
-Install from GitHub URL using the official extensions command:
+Installez depuis l'URL GitHub avec la commande officielle des extensions :
 
 ```bash
 gemini extensions install https://github.com/Joonghyun-Lee-Frieren/oh-my-gemini-cli
 ```
 
-Optional verification in interactive mode:
+Vérification en mode interactif :
 
 ```text
 /extensions list
 ```
 
-Non-interactive verification:
+Vérification en mode non interactif :
 
 ```bash
 gemini extensions list
 ```
 
-Note: extension install/update commands run in terminal mode (`gemini extensions ...`), not inside interactive slash-command mode.
+Note : les commandes d'installation/mise à jour s'exécutent en mode terminal (`gemini extensions ...`), pas en mode slash interactif.
 
-## Why OmG
+## Pourquoi OmG
 
-- Complex work needs repeatable structure, not just a bigger context window.
-- Role-based delegation improves quality on planning, implementation, review, and debugging.
-- Cache-safe context discipline keeps long sessions stable and cheaper.
+- Les tâches complexes exigent une structure reproductible, pas seulement une grande fenêtre de contexte.
+- La délégation par rôle améliore la qualité sur la planification, l'implémentation, la revue et le débogage.
+- Une discipline de contexte compatible cache rend les longues sessions plus stables et moins coûteuses.
 
-## Use
+## Utilisation
 
-### Commands
+### Commandes
 
-These are namespaced from `commands/omg/*.toml`:
+Elles sont namespacées dans `commands/omg/*.toml` :
 
 - `/omg:status`
 - `/omg:team`
@@ -68,7 +70,7 @@ These are namespaced from `commands/omg/*.toml`:
 - `$research`
 - `$context-optimize`
 
-### Sub-agents
+### Sous-agents
 
 - `omg-architect`
 - `omg-planner`
@@ -78,9 +80,9 @@ These are namespaced from `commands/omg/*.toml`:
 - `omg-researcher`
 - `omg-quick`
 
-`gemini-extension.json` enables `experimental.enableAgents` by default for this extension.
+`gemini-extension.json` active `experimental.enableAgents` par défaut pour cette extension.
 
-## Project Structure
+## Structure du projet
 
 ```text
 oh-my-gemini-cli/
@@ -94,21 +96,21 @@ oh-my-gemini-cli/
 `- LICENSE
 ```
 
-## Migration Notes
+## Notes de migration
 
-This repository no longer relies on `omg setup` as the primary onboarding path.
+Ce dépôt n'utilise plus `omg setup` comme parcours principal d'onboarding.
 
-- Old flow: global package install plus setup copier
-- New flow: direct extension install via `gemini extensions install ...`
+- Ancien flux : installation globale du package + copie via setup
+- Nouveau flux : installation directe via `gemini extensions install ...`
 
-Legacy runtime code under `src/` is kept in-repo, but extension behavior now comes from manifest-driven loading.
+Le code runtime legacy dans `src/` reste présent, mais le comportement d'extension repose maintenant sur le chargement par manifeste.
 
-## Docs
+## Documentation
 
-- English README: `../README.md`
-- Installation guide: `./guide/installation.md`
-- Changelog: `./history.md`
+- [README anglais](../README.md)
+- [Guide d'installation](./guide/installation.md)
+- [Historique](./history.md)
 
-## License
+## Licence
 
 MIT

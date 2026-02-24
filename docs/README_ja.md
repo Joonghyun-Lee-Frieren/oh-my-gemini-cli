@@ -1,66 +1,68 @@
 ﻿# oh-my-gemini-cli (OmG)
 
-This language README is synchronized with the English version.
+[ランディングページ](https://joonghyun-lee-frieren.github.io/oh-my-gemini-cli/) | [変更履歴](./history.md)
 
-Context-engineering-powered multi-agent workflow pack for Gemini CLI.
+[English](../README.md) | [한국어](./README_ko.md) | [Français](./README_fr.md) | [中文](./README_zh.md) | [Español](./README_es.md)
 
-> "Claude Code's core competitiveness isn't the Opus or Sonnet engine. It's Claude Code itself. Surprisingly, Gemini works well too when attached to Claude Code."
+Gemini CLI 向けの、コンテキストエンジニアリング駆動マルチエージェント・ワークフローパックです。
+
+> "Claude Code の本当の競争力は Opus や Sonnet ではなく、Claude Code そのものだ。Gemini でも同じハーネスを付けると十分にうまく動く。"
 >
-> - Jeongkyu Shin (CEO of Lablup Inc.), from a YouTube interview
+> - シン・ジョンギュ（Lablup Inc. CEO）、YouTube インタビューより
 
-This project started from that observation:
-"What if we bring that harness model to Gemini CLI?"
+このプロジェクトは次の着想から始まりました。
+"このハーネスモデルを Gemini CLI に持ってきたらどうなるか？"
 
-OmG extends Gemini CLI from a single-session assistant into a structured, role-driven engineering workflow.
+OmG は Gemini CLI を単発セッションのツールから、構造化された役割分担型エンジニアリング・ワークフローへ拡張します。
 
-OmG is implemented as a native Gemini CLI extension using the official extension model:
+OmG は公式拡張モデルに基づくネイティブ Gemini CLI Extension として実装されています。
 
-- `gemini-extension.json` manifest
-- `agents/` for sub-agents
-- `commands/` for slash commands
-- `skills/` for reusable workflows
-- `context/` for shared project context
+- `gemini-extension.json` マニフェスト
+- `agents/` サブエージェント
+- `commands/` スラッシュコマンド
+- `skills/` 再利用可能なワークフロー
+- `context/` 共有コンテキスト
 
-## Install
+## インストール
 
-Install from GitHub URL using the official extensions command:
+公式拡張コマンドで GitHub URL からインストールします。
 
 ```bash
 gemini extensions install https://github.com/Joonghyun-Lee-Frieren/oh-my-gemini-cli
 ```
 
-Optional verification in interactive mode:
+対話モードで確認:
 
 ```text
 /extensions list
 ```
 
-Non-interactive verification:
+非対話モードで確認:
 
 ```bash
 gemini extensions list
 ```
 
-Note: extension install/update commands run in terminal mode (`gemini extensions ...`), not inside interactive slash-command mode.
+注意: インストール/更新コマンドは対話スラッシュモードではなく、ターミナルモード（`gemini extensions ...`）で実行します。
 
-## Why OmG
+## OmG を使う理由
 
-- Complex work needs repeatable structure, not just a bigger context window.
-- Role-based delegation improves quality on planning, implementation, review, and debugging.
-- Cache-safe context discipline keeps long sessions stable and cheaper.
+- 複雑な作業では、広いコンテキストだけでなく再現可能な構造が必要です。
+- 役割ベースの分担により、計画・実装・レビュー・デバッグの品質が上がります。
+- キャッシュ安定性を意識したコンテキスト運用で、長期セッションのコストと揺らぎを抑えられます。
 
-## Use
+## 使い方
 
-### Commands
+### コマンド
 
-These are namespaced from `commands/omg/*.toml`:
+`commands/omg/*.toml` で提供されます。
 
 - `/omg:status`
 - `/omg:team`
 - `/omg:optimize`
 - `/omg:cache`
 
-### Skills
+### スキル
 
 - `$plan`
 - `$execute`
@@ -68,7 +70,7 @@ These are namespaced from `commands/omg/*.toml`:
 - `$research`
 - `$context-optimize`
 
-### Sub-agents
+### サブエージェント
 
 - `omg-architect`
 - `omg-planner`
@@ -78,9 +80,9 @@ These are namespaced from `commands/omg/*.toml`:
 - `omg-researcher`
 - `omg-quick`
 
-`gemini-extension.json` enables `experimental.enableAgents` by default for this extension.
+この拡張では `gemini-extension.json` で `experimental.enableAgents` をデフォルト有効化しています。
 
-## Project Structure
+## プロジェクト構成
 
 ```text
 oh-my-gemini-cli/
@@ -94,21 +96,21 @@ oh-my-gemini-cli/
 `- LICENSE
 ```
 
-## Migration Notes
+## 移行メモ
 
-This repository no longer relies on `omg setup` as the primary onboarding path.
+このリポジトリは、`omg setup` を主要な初期設定フローとしては使いません。
 
-- Old flow: global package install plus setup copier
-- New flow: direct extension install via `gemini extensions install ...`
+- 旧フロー: グローバルパッケージのインストール + setup によるコピー
+- 新フロー: `gemini extensions install ...` による直接導入
 
-Legacy runtime code under `src/` is kept in-repo, but extension behavior now comes from manifest-driven loading.
+`src/` 配下のレガシー実行コードはリポジトリに残っていますが、拡張としての動作はマニフェスト読み込みベースに移行しています。
 
-## Docs
+## ドキュメント
 
-- English README: `../README.md`
-- Installation guide: `./guide/installation.md`
-- Changelog: `./history.md`
+- [英語 README](../README.md)
+- [インストールガイド](./guide/installation.md)
+- [変更履歴](./history.md)
 
-## License
+## ライセンス
 
 MIT

@@ -1,66 +1,68 @@
 ﻿# oh-my-gemini-cli (OmG)
 
-This language README is synchronized with the English version.
+[落地页](https://joonghyun-lee-frieren.github.io/oh-my-gemini-cli/) | [更新历史](./history.md)
 
-Context-engineering-powered multi-agent workflow pack for Gemini CLI.
+[English](../README.md) | [한국어](./README_ko.md) | [日本語](./README_ja.md) | [Français](./README_fr.md) | [Español](./README_es.md)
 
-> "Claude Code's core competitiveness isn't the Opus or Sonnet engine. It's Claude Code itself. Surprisingly, Gemini works well too when attached to Claude Code."
+面向 Gemini CLI 的、由上下文工程驱动的多代理工作流扩展包。
+
+> "Claude Code 的核心竞争力不是 Opus 或 Sonnet 引擎，而是 Claude Code 本身。令人意外的是，给 Gemini 加上同样的编排框架后也能很好地工作。"
 >
-> - Jeongkyu Shin (CEO of Lablup Inc.), from a YouTube interview
+> - 申正奎（Lablup Inc. CEO），YouTube 访谈
 
-This project started from that observation:
-"What if we bring that harness model to Gemini CLI?"
+本项目正是从这个观察出发：
+“如果把这套编排框架带到 Gemini CLI，会怎样？”
 
-OmG extends Gemini CLI from a single-session assistant into a structured, role-driven engineering workflow.
+OmG 将 Gemini CLI 从单会话助手扩展为结构化、角色驱动的工程工作流。
 
-OmG is implemented as a native Gemini CLI extension using the official extension model:
+OmG 以官方扩展模型实现为 Gemini CLI 原生扩展。
 
-- `gemini-extension.json` manifest
-- `agents/` for sub-agents
-- `commands/` for slash commands
-- `skills/` for reusable workflows
-- `context/` for shared project context
+- `gemini-extension.json` 清单
+- `agents/` 子代理
+- `commands/` 斜杠命令
+- `skills/` 可复用工作流
+- `context/` 共享上下文
 
-## Install
+## 安装
 
-Install from GitHub URL using the official extensions command:
+使用官方扩展命令从 GitHub URL 安装：
 
 ```bash
 gemini extensions install https://github.com/Joonghyun-Lee-Frieren/oh-my-gemini-cli
 ```
 
-Optional verification in interactive mode:
+交互模式验证：
 
 ```text
 /extensions list
 ```
 
-Non-interactive verification:
+非交互验证：
 
 ```bash
 gemini extensions list
 ```
 
-Note: extension install/update commands run in terminal mode (`gemini extensions ...`), not inside interactive slash-command mode.
+说明：安装/更新命令应在终端模式（`gemini extensions ...`）执行，而不是在交互式斜杠命令模式下执行。
 
-## Why OmG
+## 为什么选择 OmG
 
-- Complex work needs repeatable structure, not just a bigger context window.
-- Role-based delegation improves quality on planning, implementation, review, and debugging.
-- Cache-safe context discipline keeps long sessions stable and cheaper.
+- 复杂任务需要可复用的结构，而不仅是更大的上下文窗口。
+- 按角色分工可提高规划、实现、评审和调试阶段的质量。
+- 面向缓存稳定性的上下文策略可降低长会话成本并提升稳定性。
 
-## Use
+## 使用
 
-### Commands
+### 命令
 
-These are namespaced from `commands/omg/*.toml`:
+这些命令定义在 `commands/omg/*.toml`：
 
 - `/omg:status`
 - `/omg:team`
 - `/omg:optimize`
 - `/omg:cache`
 
-### Skills
+### 技能
 
 - `$plan`
 - `$execute`
@@ -68,7 +70,7 @@ These are namespaced from `commands/omg/*.toml`:
 - `$research`
 - `$context-optimize`
 
-### Sub-agents
+### 子代理
 
 - `omg-architect`
 - `omg-planner`
@@ -78,9 +80,9 @@ These are namespaced from `commands/omg/*.toml`:
 - `omg-researcher`
 - `omg-quick`
 
-`gemini-extension.json` enables `experimental.enableAgents` by default for this extension.
+此扩展在 `gemini-extension.json` 中默认开启了 `experimental.enableAgents`。
 
-## Project Structure
+## 项目结构
 
 ```text
 oh-my-gemini-cli/
@@ -94,21 +96,21 @@ oh-my-gemini-cli/
 `- LICENSE
 ```
 
-## Migration Notes
+## 迁移说明
 
-This repository no longer relies on `omg setup` as the primary onboarding path.
+本仓库不再将 `omg setup` 作为主要上手流程。
 
-- Old flow: global package install plus setup copier
-- New flow: direct extension install via `gemini extensions install ...`
+- 旧流程：全局安装包 + setup 复制
+- 新流程：通过 `gemini extensions install ...` 直接安装扩展
 
-Legacy runtime code under `src/` is kept in-repo, but extension behavior now comes from manifest-driven loading.
+`src/` 下的旧运行时代码仍保留在仓库中，但扩展行为已切换为基于清单的加载方式。
 
-## Docs
+## 文档
 
-- English README: `../README.md`
-- Installation guide: `./guide/installation.md`
-- Changelog: `./history.md`
+- [英文 README](../README.md)
+- [安装指南](./guide/installation.md)
+- [更新历史](./history.md)
 
-## License
+## 许可证
 
 MIT

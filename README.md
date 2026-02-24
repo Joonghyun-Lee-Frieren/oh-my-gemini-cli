@@ -1,20 +1,21 @@
-# oh-my-gemini-cli (OmG)
+﻿# oh-my-gemini-cli (OmG)
 
-Landing Page: [joonghyun-lee-frieren.github.io/oh-my-gemini-cli](https://joonghyun-lee-frieren.github.io/oh-my-gemini-cli/) | History: [docs/history.md](docs/history.md)
-Languages: [Korean](docs/README_ko.md) | [Japanese](docs/README_ja.md) | [French](docs/README_fr.md) | [Chinese](docs/README_zh.md) | [Spanish](docs/README_es.md)
+[Landing Page](https://joonghyun-lee-frieren.github.io/oh-my-gemini-cli/) | [History](docs/history.md)
+
+[한국어](docs/README_ko.md) | [日本語](docs/README_ja.md) | [Français](docs/README_fr.md) | [中文](docs/README_zh.md) | [Español](docs/README_es.md)
 
 Context-engineering-powered multi-agent workflow pack for Gemini CLI.
 
 > "Claude Code's core competitiveness isn't the Opus or Sonnet engine. It's Claude Code itself. Surprisingly, Gemini works well too when attached to Claude Code."
 >
-> — Jeongkyu Shin (CEO of Lablup Inc.), from a YouTube interview
+> - Jeongkyu Shin (CEO of Lablup Inc.), from a YouTube interview
 
 This project started from that observation:
 "What if we bring that harness model to Gemini CLI?"
 
 OmG extends Gemini CLI from a single-session assistant into a structured, role-driven engineering workflow.
 
-OmG is now implemented as a native Gemini CLI extension using the official extension model:
+OmG is implemented as a native Gemini CLI extension using the official extension model:
 
 - `gemini-extension.json` manifest
 - `agents/` for sub-agents
@@ -30,7 +31,7 @@ Install from GitHub URL using the official extensions command:
 gemini extensions install https://github.com/Joonghyun-Lee-Frieren/oh-my-gemini-cli
 ```
 
-Optional verification:
+Optional verification in interactive mode:
 
 ```text
 /extensions list
@@ -85,30 +86,30 @@ These are namespaced from `commands/omg/*.toml`:
 
 ```text
 oh-my-gemini-cli/
-├─ gemini-extension.json
-├─ agents/
-├─ commands/
-│  └─ omg/
-├─ skills/
-├─ context/
-├─ docs/
-└─ LICENSE
+|- gemini-extension.json
+|- agents/
+|- commands/
+|  |- omg/
+|- skills/
+|- context/
+|- docs/
+`- LICENSE
 ```
 
 ## Migration Notes
 
 This repository no longer relies on `omg setup` as the primary onboarding path.
 
-- Old flow: global package install + setup copier
+- Old flow: global package install plus setup copier
 - New flow: direct extension install via `gemini extensions install ...`
 
-Legacy runtime code under `src/` is kept in-repo, but the extension behavior now comes from manifest-driven loading.
+Legacy runtime code under `src/` is kept in-repo, but extension behavior now comes from manifest-driven loading.
 
 ## Docs
 
-- Korean README: `docs/README_ko.md`
-- Installation guide: `docs/guide/installation.md`
-- Changelog: `docs/history.md`
+- [Korean README](docs/README_ko.md)
+- [Installation Guide](docs/guide/installation.md)
+- [Changelog](docs/history.md)
 
 ## License
 
