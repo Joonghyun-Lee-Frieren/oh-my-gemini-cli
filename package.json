@@ -1,16 +1,14 @@
 {
   "name": "oh-my-gemini-cli",
-  "version": "0.1.2",
-  "description": "Context engineering powered multi-agent harness for Gemini CLI",
+  "version": "0.2.0",
+  "description": "Extension-first context engineering and multi-agent workflow pack for Gemini CLI.",
   "keywords": [
     "gemini",
     "gemini-cli",
-    "ai",
-    "agent",
-    "multi-agent",
-    "context-engineering",
-    "mcp",
-    "cli"
+    "extension",
+    "agents",
+    "skills",
+    "context-engineering"
   ],
   "homepage": "https://github.com/Joonghyun-Lee-Frieren/oh-my-gemini-cli",
   "repository": {
@@ -20,50 +18,14 @@
   "license": "MIT",
   "author": "Joonghyun-Lee-Frieren",
   "type": "module",
-  "bin": {
-    "omg": "./bin/omg.js"
-  },
-  "main": "./dist/cli/index.js",
   "files": [
-    "bin/",
-    "dist/",
-    "prompts/",
-    "skills/",
+    "gemini-extension.json",
+    "agents/",
     "commands/",
-    "templates/"
-  ],
-  "scripts": {
-    "build": "esbuild src/cli/index.ts --bundle --platform=node --target=node20 --format=esm --outdir=dist/cli --external:ink --external:react --external:telegraf --external:discord.js",
-    "prepare": "npm run build",
-    "prepack": "npm run build",
-    "dev": "tsx src/cli/index.ts",
-    "start": "node bin/omg.js",
-    "test": "vitest run",
-    "test:watch": "vitest",
-    "lint": "eslint src/",
-    "typecheck": "tsc --noEmit",
-    "clean": "rm -rf dist"
-  },
-  "dependencies": {
-    "@google/genai": "^1.0.0",
-    "@modelcontextprotocol/sdk": "^1.0.0",
-    "commander": "^13.0.0",
-    "discord.js": "^14.0.0",
-    "ink": "^5.2.0",
-    "ink-spinner": "^5.0.0",
-    "react": "^18.3.0",
-    "telegraf": "^4.16.0"
-  },
-  "devDependencies": {
-    "@types/node": "^22.0.0",
-    "@types/react": "^18.3.0",
-    "esbuild": "^0.24.0",
-    "eslint": "^9.0.0",
-    "tsx": "^4.0.0",
-    "typescript": "^5.7.0",
-    "vitest": "^3.0.0"
-  },
-  "engines": {
-    "node": ">=20.0.0"
-  }
+    "skills/",
+    "context/",
+    "README.md",
+    "docs/",
+    "LICENSE"
+  ]
 }

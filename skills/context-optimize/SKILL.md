@@ -1,133 +1,44 @@
-# $context-optimize — 컨텍스트 최적화 스킬
+---
+name = "context-optimize"
+description = "Improve context efficiency and cache stability for long or complex sessions."
+---
 
-현재 세션의 컨텍스트 윈도우 사용량을 분석하고 캐시 적중률을 최적화합니다.
+## Purpose
 
-## 트리거
+Use this skill when context is growing quickly or cache consistency drops.
 
-`$context-optimize` 키워드로 활성화됩니다.
+## Trigger
 
-```
-$context-optimize                    # 현재 세션 분석
-$context-optimize --aggressive       # 적극적 최적화
-$context-optimize --report           # 분석 보고서만 출력
-```
+- Conversation becomes long and repetitive
+- The model loses thread coherence
+- Frequent prompt restarts or unstable behavior appears
 
-## 사용 모델
+## Workflow
 
-**Gemini 3.1 Pro** — 컨텍스트 구조 분석에 적합합니다.
+1. Identify repeated, stale, or low-value context.
+2. Detect likely cache breakers (instruction churn, unstable prefixes).
+3. Propose cache-safe compaction and message hygiene rules.
+4. Produce an actionable operating checklist for next turns.
 
-## 왜 필요한가?
-
-장기 실행 에이전트 세션에서는 컨텍스트 윈도우가 점진적으로 채워집니다.
-최적화 없이 사용하면:
-
-- **캐시 적중률 하락** → 비용 증가, 지연 증가
-- **불필요한 토큰 낭비** → 유효 작업 공간 감소
-- **접두사 불안정** → 전체 캐시 무효화
-
-## 실행 프로세스
-
-### Step 1: 현재 상태 분석
-
-```
-컨텍스트 윈도우 분석:
-┌──────────────────────────────────────┐
-│ 시스템 프롬프트      │  3,200 tokens │ ████░░░░░░ (캐시됨)
-│ 도구 정의            │  8,500 tokens │ ████░░░░░░ (캐시됨)
-│ GEMINI.md           │  2,100 tokens │ ████░░░░░░ (캐시됨)
-│ 세션 컨텍스트        │ 15,000 tokens │ ████████░░
-│ 대화 메시지          │ 42,000 tokens │ ████████░░
-│ 도구 결과            │ 28,000 tokens │ ██████████
-├──────────────────────────────────────┤
-│ 총 사용량            │ 98,800 tokens │
-│ 남은 용량            │ 901,200 tokens│
-│ 캐시 적중률          │ 13.8%         │ ← 개선 필요
-└──────────────────────────────────────┘
-```
-
-### Step 2: 문제점 식별
-
-| 문제 유형 | 설명 | 영향 |
-|-----------|------|------|
-| **과대 도구 결과** | 파일 전체를 읽어 도구 결과가 비대 | 토큰 낭비 |
-| **중복 컨텍스트** | 같은 파일을 여러 번 읽음 | 토큰 낭비 |
-| **오래된 대화** | 더 이상 관련 없는 초기 대화 | 캐시 미스 유발 |
-| **접두사 변동** | 시스템 메시지 변경으로 캐시 무효화 | 비용 급증 |
-
-### Step 3: 최적화 실행
-
-#### 3a. 캐시 안전 컴팩션
-
-오래된 대화를 요약하되 캐시 접두사를 보존합니다:
-
-```
-최적화 전:
-  [시스템 프롬프트] → [도구 정의] → [GEMINI.md] → [메시지 1~50] → [새 메시지]
-                                                    ↑ 이 부분을 요약
-
-최적화 후:
-  [시스템 프롬프트] → [도구 정의] → [GEMINI.md] → [요약] → [최근 메시지 10개] → [새 메시지]
-  ↑ 캐시 접두사 유지                                ↑ 45,000 → 2,000 tokens
-```
-
-#### 3b. 도구 결과 최적화
-
-대용량 도구 결과를 압축합니다:
-- 파일 읽기 결과: 관련 섹션만 유지, 나머지 요약
-- 검색 결과: 상위 N개만 유지
-- 에러 출력: 스택 트레이스의 핵심 부분만 유지
-
-#### 3c. 접두사 안정화
-
-접두사를 변경하는 작업을 감지하고 차단합니다:
-- 시스템 프롬프트 수정 시도 → system-reminder로 대체
-- 도구 추가/제거 시도 → 경량 스텁으로 유지
-
-### Step 4: 결과 보고
+## Output Template
 
 ```markdown
-## 컨텍스트 최적화 결과
+## Context Health
+- ...
 
-### Before → After
-| 지표 | 최적화 전 | 최적화 후 | 변화 |
-|------|----------|----------|------|
-| 총 토큰 | 98,800 | 35,200 | -64.4% |
-| 캐시 적중률 | 13.8% | 89.5% | +75.7% |
-| 유효 작업 공간 | 901K | 965K | +7.1% |
-| 예상 비용 절감 | - | $2.40/hr | - |
+## Cache Risks
+- ...
 
-### 수행된 최적화
-1. ✅ 대화 컴팩션: 50개 메시지 → 1개 요약 (-43,000 tokens)
-2. ✅ 도구 결과 압축: 5개 파일 결과 정리 (-18,000 tokens)
-3. ✅ 중복 컨텍스트 제거 (-2,600 tokens)
+## Optimization Actions
+1. ...
+2. ...
+3. ...
 
-### 권장 사항
-- 대규모 파일 읽기 시 라인 범위를 지정하세요
-- 다음 컴팩션 시점: 약 30턴 후
+## Session Rules
+- ...
 ```
 
-## 자동 최적화 모드
+## Notes
 
-`omg-settings.json`에서 자동 최적화를 활성화할 수 있습니다:
-
-```json
-{
-  "context": {
-    "auto_optimize": true,
-    "optimize_threshold": 0.7,
-    "compaction_strategy": "cache-safe",
-    "cache_target_rate": 0.90
-  }
-}
-```
-
-- `optimize_threshold`: 윈도우 사용률이 이 값을 넘으면 자동 실행
-- `cache_target_rate`: 캐시 적중률 목표 (이하일 때 경고)
-
-## 컨텍스트 엔지니어링 원칙 요약
-
-1. **접두사 안정성**: 정적 콘텐츠를 앞에, 동적 콘텐츠를 뒤에
-2. **도구 집합 불변**: 도구를 추가/제거하지 않고 스텁으로 유지
-3. **모델 전환 금지**: 서브에이전트 패턴으로 대체
-4. **캐시 안전 컴팩션**: 접두사를 보존하면서 요약
-5. **system-reminder 활용**: 프롬프트 수정 대신 메시지로 업데이트
+- Keep stable instructions unchanged during a session.
+- Prefer summaries over re-sending raw large blocks.

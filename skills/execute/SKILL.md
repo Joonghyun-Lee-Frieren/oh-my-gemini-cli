@@ -1,89 +1,42 @@
-# $execute — 빠른 구현 스킬
+---
+name = "execute"
+description = "Implement a scoped task quickly and safely, then validate and summarize changes."
+---
 
-Gemini 3.1 Flash를 활용하여 계획된 작업 또는 명시적 구현 요청을 빠르게 실행합니다.
+## Purpose
 
-## 트리거
+Use this skill when the task is implementation-ready and requires code changes now.
 
-`$execute` 키워드로 활성화됩니다.
+## Trigger
 
-```
-$execute "login 페이지에 입력 검증 추가"
-$execute "TypeScript strict mode 적용"
-$execute plan:phase-1    # $plan 결과의 Phase 1을 실행
-```
+- User asks to implement, refactor, or fix code directly
+- A plan already exists and a specific phase is selected
 
-## 사용 모델
+## Workflow
 
-**Gemini 3.1 Flash** — 빠른 코드 생성에 최적화되어 있습니다.
+1. Confirm exact scope and acceptance criteria.
+2. Load only relevant files and preserve existing conventions.
+3. Implement the smallest viable diff.
+4. Run the most relevant checks/tests.
+5. Summarize changed files, validation, and remaining work.
 
-## 실행 프로세스
-
-### Step 1: 작업 해석
-
-- 사용자 요청 또는 `$plan` 결과에서 구현할 작업을 추출합니다
-- 변경이 필요한 파일을 식별합니다
-- 기존 코드 패턴을 빠르게 파악합니다
-
-### Step 2: 패턴 매칭
-
-변경 대상 파일의 기존 패턴을 확인합니다:
-- 네이밍 컨벤션 (camelCase, PascalCase 등)
-- import 스타일 (상대 경로 vs 절대 경로)
-- 에러 처리 패턴 (try-catch, Result 타입 등)
-- 테스트 패턴 (describe/it, test 등)
-
-### Step 3: 구현
-
-- 파일 생성/수정을 수행합니다
-- 기존 패턴을 일관되게 따릅니다
-- 최소한의 변경으로 요구사항을 충족합니다
-
-### Step 4: 검증
-
-- TypeScript 컴파일 확인 (`tsc --noEmit`)
-- 린트 통과 확인
-- 관련 테스트 실행
-
-### Step 5: 보고
+## Output Template
 
 ```markdown
-## 실행 완료
+## Scope
+- ...
 
-### 변경 사항
-| 파일 | 동작 | 설명 |
-|------|------|------|
-| `src/auth/validate.ts` | 생성 | 입력 검증 함수 |
-| `src/routes/login.ts` | 수정 | 검증 미들웨어 연결 |
-| `src/__tests__/validate.test.ts` | 생성 | 검증 테스트 3개 |
+## Files Changed
+- ...
 
-### 검증 결과
-- ✅ TypeScript 컴파일
-- ✅ ESLint
-- ✅ 테스트 (3/3 passed)
+## Validation
+- ...
+
+## Follow-ups
+- ...
 ```
 
-## 컨텍스트 엔지니어링 전략
+## Notes
 
-### Flash 모델 최적화
-
-Flash 모델은 빠르지만 컨텍스트 윈도우가 제한적입니다:
-- 작업에 **직접 관련된 파일만** 컨텍스트에 포함합니다
-- 대규모 파일은 **필요한 함수/클래스만** 부분 로드합니다
-- 불필요한 주석, 빈 줄을 건너뛰어 토큰을 절약합니다
-
-### 캐시 활용
-
-- 동일 세션 내 연속 실행 시 이전 작업의 캐시를 재사용합니다
-- 시스템 프롬프트와 도구 정의 접두사를 유지합니다
-
-## 연계 스킬
-
-- `$plan` 결과를 입력으로 받아 자동 실행할 수 있습니다
-- 실행 후 자동으로 Reviewer 에이전트에 리뷰를 요청할 수 있습니다
-- `$team`과 연계하여 병렬 실행이 가능합니다
-
-## 안전장치
-
-- 10개 이상의 파일을 동시에 변경하는 경우 사용자에게 확인을 요청합니다
-- 삭제 작업은 항상 사용자 확인 후 진행합니다
-- 설정 파일 (.env, config) 변경 시 경고를 표시합니다
+- Escalate to `omg-reviewer` for high-risk or cross-cutting changes.
+- Use `omg-debugger` immediately when checks fail.

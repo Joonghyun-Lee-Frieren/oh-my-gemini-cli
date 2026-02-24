@@ -1,0 +1,27 @@
+description = "Summarize current repository progress, risks, and next actions."
+prompt = """
+Create an OmG status report for the current project.
+
+User context:
+$ARGUMENTS
+
+Checklist:
+1. Inspect current repository state and changed files.
+2. Summarize completed work vs remaining work.
+3. Identify blockers and risk areas.
+4. Propose the next 1-3 concrete actions.
+
+Output format:
+## Snapshot
+- Objective:
+- Progress:
+- Outstanding work:
+
+## Risks
+- ...
+
+## Next Actions
+1. ...
+2. ...
+3. ...
+"""

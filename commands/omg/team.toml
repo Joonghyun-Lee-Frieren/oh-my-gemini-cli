@@ -1,0 +1,28 @@
+description = "Run an OmG multi-agent workflow for a complex task."
+prompt = """
+Coordinate the request with OmG agents.
+
+Task:
+$ARGUMENTS
+
+Execution protocol:
+1. Delegate planning to `omg-planner`.
+2. Delegate architecture concerns to `omg-architect` when needed.
+3. Delegate implementation steps to `omg-executor`.
+4. Run `omg-reviewer` for correctness and regression risk.
+5. If tests fail, invoke `omg-debugger`.
+6. Return a merged progress report.
+
+Final report format:
+## Team Plan
+- ...
+
+## Work Completed
+- ...
+
+## Validation
+- ...
+
+## Open Items
+- ...
+"""

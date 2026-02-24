@@ -1,0 +1,16 @@
+{
+  "$schema": "https://raw.githubusercontent.com/google-gemini/gemini-cli/main/packages/cli/schemas/gemini-extension.json",
+  "name": "oh-my-gemini-cli",
+  "version": "0.2.0",
+  "description": "Context engineering and multi-agent workflow extension for Gemini CLI.",
+  "author": "Joonghyun-Lee-Frieren",
+  "license": "MIT",
+  "homepage": "https://github.com/Joonghyun-Lee-Frieren/oh-my-gemini-cli",
+  "sourceUrl": "https://github.com/Joonghyun-Lee-Frieren/oh-my-gemini-cli",
+  "contextFileName": "GEMINI.md",
+  "settings": {
+    "experimental": {
+      "enableAgents": true
+    }
+  }
+}

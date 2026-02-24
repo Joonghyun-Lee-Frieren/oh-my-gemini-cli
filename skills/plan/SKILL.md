@@ -1,95 +1,48 @@
-# $plan — 전략적 계획 수립 스킬
+---
+name = "plan"
+description = "Create a phased implementation plan with risks, dependencies, and validation checkpoints."
+---
 
-Gemini 3.1 Pro를 활용하여 복잡한 작업에 대한 전략적 실행 계획을 수립합니다.
+## Purpose
 
-## 트리거
+Use this skill when the request is non-trivial and should be planned before editing code.
 
-`$plan` 키워드로 활성화됩니다.
+## Trigger
 
-```
-$plan "이 프로젝트를 마이크로서비스로 분리하는 계획을 세워줘"
-$plan "OAuth 인증 기능 구현 계획"
-```
+- User asks for strategy, roadmap, or migration plan
+- Scope touches multiple files or subsystems
+- Work needs sequencing or parallelization decisions
 
-## 사용 모델
+## Workflow
 
-**Gemini 3.1 Pro** — 깊은 추론 기반의 전략적 분석에 최적화되어 있습니다.
+1. Restate goals, constraints, and acceptance criteria.
+2. Inspect only the repository areas required for planning.
+3. Break work into phases and atomic tasks.
+4. Mark dependencies and parallelizable tasks.
+5. Add validation checkpoints and rollback notes.
 
-## 실행 프로세스
-
-### Phase 1: 컨텍스트 수집
-
-1. 프로젝트 구조를 탐색합니다 (디렉토리 트리, package.json, 설정 파일)
-2. `GEMINI.md`가 있다면 프로젝트 맥락을 파악합니다
-3. 작업과 관련된 핵심 파일을 식별합니다
-
-### Phase 2: 분석
-
-1. 현재 상태를 분석합니다 (as-is)
-2. 목표 상태를 정의합니다 (to-be)
-3. 갭(gap)을 식별합니다
-4. 리스크와 의존성을 파악합니다
-
-### Phase 3: 계획 수립
-
-1. 작업을 Phase별로 구분합니다
-2. 각 Phase 내 하위 작업을 정의합니다
-3. 작업 간 의존성과 병렬화 기회를 매핑합니다
-4. 마일스톤과 완료 기준을 설정합니다
-
-### Phase 4: 출력
-
-구조화된 실행 계획을 생성합니다:
+## Output Template
 
 ```markdown
-# 실행 계획: {제목}
+## Goal
+- ...
 
-## 목표
-{한 문장 요약}
+## Phase Plan
+1. Phase 1 - ...
+2. Phase 2 - ...
 
-## 현재 상태 분석
-{주요 발견 사항}
+## Task Breakdown
+1. ...
+2. ...
 
-## Phase 1: {단계명} (예상 소요: Xm)
-### 마일스톤: {완료 기준}
+## Risks
+- ...
 
-| # | 작업 | 에이전트 | 의존성 | 난이도 |
-|---|------|---------|--------|--------|
-| 1.1 | {작업} | Executor | - | ⭐⭐ |
-| 1.2 | {작업} | Executor | 1.1 | ⭐⭐⭐ |
-
-## Phase 2: {단계명} (예상 소요: Xm)
-...
-
-## 리스크 매트릭스
-
-| 리스크 | 확률 | 영향 | 완화 전략 |
-|--------|------|------|----------|
-
-## 병렬화 전략
-- {어떤 작업들이 병렬 실행 가능한지}
-
-## 전체 예상 소요 시간
-- 순차 실행: Xm
-- 병렬 실행 (N workers): Ym
+## Validation
+- ...
 ```
 
-## 컨텍스트 엔지니어링 전략
+## Notes
 
-### 접두사 안정성
-
-이 스킬은 Pro 모델의 캐시를 최대한 활용합니다:
-- 시스템 프롬프트와 도구 정의는 변경하지 않습니다
-- 프로젝트 컨텍스트를 읽기 전용으로 참조합니다
-- 동적 데이터(사용자 입력)는 프롬프트 끝에 배치합니다
-
-### 토큰 절약
-
-- 전체 파일 대신 **디렉토리 구조**와 **파일 헤더(import문)**만 우선 수집
-- 필요한 경우에만 전체 파일을 읽습니다
-- 계획 결과는 구조화된 형식으로 압축하여 다른 에이전트에 전달합니다
-
-## 연계 스킬
-
-- `$plan` 후 `$execute`로 즉시 실행할 수 있습니다
-- `$plan` 후 `$team`으로 멀티 에이전트 팀을 구성할 수 있습니다
+- Delegate architecture tradeoffs to `omg-architect` when needed.
+- Keep plans executable and testable, not abstract.
