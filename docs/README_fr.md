@@ -2,25 +2,22 @@
 
 [Page d'accueil](https://joonghyun-lee-frieren.github.io/oh-my-gemini-cli/) | [Historique](./history.md)
 
-[English](../README.md) | [???](./README_ko.md) | [???](./README_ja.md) | [??](./README_zh.md) | [Espa?ol](./README_es.md)
+[English](../README.md) | [한국어](./README_ko.md) | [日本語](./README_ja.md) | [中文](./README_zh.md) | [Español](./README_es.md)
 
-Extension de workflow multi-agents pour Gemini CLI, orient?e ing?nierie de contexte.
+Extension de workflow multi-agents pour Gemini CLI, orientée ingénierie de contexte.
 
-> "L'avantage comp?titif principal de Claude Code n'est ni Opus ni Sonnet. C'est Claude Code lui-m?me. De fa?on surprenante, Gemini fonctionne aussi tr?s bien avec ce harnais."
+> "L'avantage compétitif principal de Claude Code n'est ni Opus ni Sonnet. C'est Claude Code lui-même. De façon surprenante, Gemini fonctionne aussi très bien avec ce harnais."
 >
 > - Jeongkyu Shin (CEO de Lablup Inc.), interview YouTube
 
-Ce projet est n? de cette id?e :
-"Et si on apportait ce mod?le de harnais ? Gemini CLI ?"
+OmG transforme Gemini CLI, d'un assistant en session unique, en workflow d'ingénierie structuré par rôles.
 
-OmG transforme Gemini CLI, d'un assistant en session unique, en workflow d'ing?nierie structur? par r?les.
+## Nouveautés v0.3.0
 
-## Nouveaut?s v0.3.0
-
-- Pipeline d'?quipe par ?tapes : `team-plan -> team-prd -> team-exec -> team-verify -> team-fix`
-- Modes d'ex?cution : `balanced`, `speed`, `deep`, `autopilot`, `ralph`, `ultrawork`
+- Pipeline d'équipe par étapes : `team-plan -> team-prd -> team-exec -> team-verify -> team-fix`
+- Modes d'exécution : `balanced`, `speed`, `deep`, `autopilot`, `ralph`, `ultrawork`
 - Commandes de cycle de vie : `/omg:launch`, `/omg:checkpoint`, `/omg:stop`, `/omg:mode`
-- Nouveaux agents sp?cialis?s : `omg-product`, `omg-verifier`, `omg-consensus`
+- Nouveaux agents spécialisés : `omg-product`, `omg-verifier`, `omg-consensus`
 - Nouvelles skills : `$prd`, `$ralplan`, `$autopilot`, `$ralph`, `$ultrawork`, `$consensus`, `$mode`, `$cancel`
 
 ## Installation
@@ -37,24 +34,7 @@ gemini extensions install https://github.com/Joonghyun-Lee-Frieren/oh-my-gemini-
 gemini extensions list
 ```
 
-Note : les commandes d'installation/mise ? jour s'ex?cutent en mode terminal (`gemini extensions ...`), pas en mode slash interactif.
-
-## Pipeline par ?tapes
-
-1. `team-plan` : d?coupage des t?ches et d?pendances
-2. `team-prd` : verrouillage du p?rim?tre et des crit?res d'acceptation
-3. `team-exec` : impl?mentation du p?rim?tre valid?
-4. `team-verify` : validation des crit?res et des r?gressions
-5. `team-fix` : correction cibl?e des points en ?chec
-
-## Modes d'op?ration
-
-- `balanced` : mode ?quilibr? par d?faut
-- `speed` : priorit? ? la vitesse d'ex?cution
-- `deep` : priorit? ? la profondeur d'analyse et de validation
-- `autopilot` : boucle autonome d'ex?cution
-- `ralph` : orchestration stricte avec portes de qualit?
-- `ultrawork` : mode haut d?bit pour lots parall?lisables
+Note : les commandes d'installation/mise à jour s'exécutent en mode terminal (`gemini extensions ...`).
 
 ## Commandes principales
 
@@ -117,6 +97,7 @@ Note : les commandes d'installation/mise ? jour s'ex?cutent en mode terminal (`g
 
 - [README anglais](../README.md)
 - [Guide d'installation](./guide/installation.md)
+- [Context Engineering Guide (EN)](./guide/context-engineering.md)
 - [Historique](./history.md)
 
 ## Licence

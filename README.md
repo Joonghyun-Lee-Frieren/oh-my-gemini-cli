@@ -213,6 +213,7 @@ Legacy runtime code under `src/` remains in-repo for compatibility reference, bu
 
 - [Installation Guide](docs/guide/installation.md)
 - [Context Engineering Guide](docs/guide/context-engineering.md)
+- [Korean Context Engineering Guide](docs/guide/context-engineering_ko.md)
 - [History](docs/history.md)
 
 ## License

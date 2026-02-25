@@ -1,29 +1,26 @@
 # oh-my-gemini-cli (OmG)
 
-[P?gina de inicio](https://joonghyun-lee-frieren.github.io/oh-my-gemini-cli/) | [Historial](./history.md)
+[Página de inicio](https://joonghyun-lee-frieren.github.io/oh-my-gemini-cli/) | [Historial](./history.md)
 
-[English](../README.md) | [???](./README_ko.md) | [???](./README_ja.md) | [Fran?ais](./README_fr.md) | [??](./README_zh.md)
+[English](../README.md) | [한국어](./README_ko.md) | [日本語](./README_ja.md) | [Français](./README_fr.md) | [中文](./README_zh.md)
 
-Extensi?n de flujo de trabajo multiagente para Gemini CLI, basada en ingenier?a de contexto.
+Extensión de flujo de trabajo multiagente para Gemini CLI, basada en ingeniería de contexto.
 
-> "La ventaja competitiva central de Claude Code no es el motor Opus o Sonnet, sino Claude Code en s? mismo. Sorprendentemente, Gemini tambi?n funciona muy bien cuando se le conecta ese mismo arn?s."
+> "La ventaja competitiva central de Claude Code no es el motor Opus o Sonnet, sino Claude Code en sí mismo. Sorprendentemente, Gemini también funciona muy bien cuando se le conecta ese mismo arnés."
 >
 > - Jeongkyu Shin (CEO de Lablup Inc.), en una entrevista de YouTube
 
-Este proyecto comenz? con esa observaci?n:
-"?Qu? pasar?a si llevamos ese modelo de arn?s a Gemini CLI?"
-
-OmG ampl?a Gemini CLI de un asistente de sesi?n ?nica a un flujo de ingenier?a estructurado y orientado por roles.
+OmG amplía Gemini CLI de un asistente de sesión única a un flujo de ingeniería estructurado y orientado por roles.
 
 ## Novedades de v0.3.0
 
-- Nuevo pipeline por etapas: `team-plan -> team-prd -> team-exec -> team-verify -> team-fix`
-- Nuevos modos de operaci?n: `balanced`, `speed`, `deep`, `autopilot`, `ralph`, `ultrawork`
-- Nuevos comandos de ciclo de vida: `/omg:launch`, `/omg:checkpoint`, `/omg:stop`, `/omg:mode`
+- Pipeline por etapas: `team-plan -> team-prd -> team-exec -> team-verify -> team-fix`
+- Modos de operación: `balanced`, `speed`, `deep`, `autopilot`, `ralph`, `ultrawork`
+- Comandos de ciclo de vida: `/omg:launch`, `/omg:checkpoint`, `/omg:stop`, `/omg:mode`
 - Nuevos subagentes especializados: `omg-product`, `omg-verifier`, `omg-consensus`
 - Nuevas skills: `$prd`, `$ralplan`, `$autopilot`, `$ralph`, `$ultrawork`, `$consensus`, `$mode`, `$cancel`
 
-## Instalaci?n
+## Instalación
 
 ```bash
 gemini extensions install https://github.com/Joonghyun-Lee-Frieren/oh-my-gemini-cli
@@ -37,24 +34,7 @@ gemini extensions install https://github.com/Joonghyun-Lee-Frieren/oh-my-gemini-
 gemini extensions list
 ```
 
-Nota: los comandos de instalaci?n/actualizaci?n se ejecutan en modo terminal (`gemini extensions ...`), no dentro del modo interactivo de comandos slash.
-
-## Pipeline por etapas
-
-1. `team-plan`: descomposici?n de tareas y dependencias
-2. `team-prd`: bloqueo de alcance, no-objetivos y criterios de aceptaci?n
-3. `team-exec`: implementaci?n del alcance aprobado
-4. `team-verify`: verificaci?n de criterios y riesgos de regresi?n
-5. `team-fix`: correcci?n solo de fallos verificados
-
-## Modos de operaci?n
-
-- `balanced`: modo equilibrado por defecto
-- `speed`: prioridad a la velocidad de entrega
-- `deep`: prioridad a profundidad de dise?o y validaci?n
-- `autopilot`: ejecuci?n iterativa aut?noma
-- `ralph`: modo estricto con puertas de calidad
-- `ultrawork`: modo de alto rendimiento por lotes
+Nota: los comandos de instalación/actualización se ejecutan en modo terminal (`gemini extensions ...`).
 
 ## Comandos principales
 
@@ -78,7 +58,7 @@ Nota: los comandos de instalaci?n/actualizaci?n se ejecutan en modo terminal (`g
 - `/omg:checkpoint`
 - `/omg:stop`
 
-### Operaci?n
+### Operación
 
 - `/omg:status`
 - `/omg:optimize`
@@ -113,10 +93,11 @@ Nota: los comandos de instalaci?n/actualizaci?n se ejecutan en modo terminal (`g
 - `omg-researcher`
 - `omg-quick`
 
-## Documentaci?n
+## Documentación
 
-- [README en ingl?s](../README.md)
-- [Gu?a de instalaci?n](./guide/installation.md)
+- [README en inglés](../README.md)
+- [Guía de instalación](./guide/installation.md)
+- [Context Engineering Guide (EN)](./guide/context-engineering.md)
 - [Historial](./history.md)
 
 ## Licencia
