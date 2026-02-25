@@ -1,0 +1,32 @@
+description = "Create a compact checkpoint snapshot for long-running OmG sessions."
+prompt = """
+Create an OmG checkpoint snapshot.
+
+Context:
+$ARGUMENTS
+
+Protocol:
+1. Summarize objective, active stage, and current mode.
+2. Capture completed work and remaining TODOs.
+3. Capture key decisions and open risks.
+4. Provide a one-command resume hint.
+5. If filesystem tools are available, write/update `.omg/state/checkpoint.md`.
+
+Output format:
+## Checkpoint
+- objective:
+- mode:
+- stage:
+
+## Completed
+- ...
+
+## Remaining
+- ...
+
+## Risks
+- ...
+
+## Resume
+- ...
+"""

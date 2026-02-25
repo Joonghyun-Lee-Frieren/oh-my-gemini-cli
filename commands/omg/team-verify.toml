@@ -1,0 +1,33 @@
+description = "Stage 4/5: Verify implementation against acceptance criteria and regression risks."
+prompt = """
+Run OmG `team-verify`.
+
+Task:
+$ARGUMENTS
+
+Protocol:
+1. Delegate review to `omg-reviewer`.
+2. Delegate acceptance-gate checks to `omg-verifier`.
+3. Validate each acceptance criterion with evidence.
+4. Classify issues as blocker, major, or minor.
+5. Produce targeted fix list for `team-fix`.
+
+Output format:
+## Stage
+- team-verify
+
+## Acceptance Matrix
+| Criterion | Status (pass/fail/unknown) | Evidence | Owner |
+| --- | --- | --- | --- |
+
+## Review Findings
+- ...
+
+## Fix Backlog
+1. ...
+2. ...
+3. ...
+
+## Release Readiness
+- ...
+"""

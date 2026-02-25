@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -7,150 +7,322 @@
   <meta name="description" content="oh-my-gemini-cli is an extension-first, context-engineering-powered multi-agent workflow pack for Gemini CLI.">
   <style>
     :root {
-      --bg: #0b1020;
-      --panel: #131a2d;
-      --panel-2: #0f1528;
-      --border: #223052;
-      --text: #e7ecff;
-      --muted: #a8b3d6;
-      --accent: #6ea8ff;
-      --accent-2: #8de2c5;
-      --max: 1040px;
-      --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-      --sans: Inter, Segoe UI, Arial, sans-serif;
+      --bg: #f4f8f6;
+      --paper: #ffffff;
+      --ink: #152235;
+      --muted: #4d5d76;
+      --line: #d9e4e2;
+      --primary: #0d8a83;
+      --primary-soft: #d6f5f2;
+      --accent: #ff8b3d;
+      --accent-soft: #ffe7d7;
+      --max: 1120px;
+      --sans: "Space Grotesk", "IBM Plex Sans", "Segoe UI", sans-serif;
+      --mono: "IBM Plex Mono", "Cascadia Code", Consolas, monospace;
+      --shadow: 0 10px 30px rgba(18, 38, 63, 0.08);
+      --radius: 14px;
     }
 
     * { box-sizing: border-box; }
+
     body {
       margin: 0;
-      background: radial-gradient(circle at 20% 0%, #182747, var(--bg) 45%);
-      color: var(--text);
       font-family: var(--sans);
-      line-height: 1.55;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 0% 0%, #d6f5f2 0%, transparent 35%),
+        radial-gradient(circle at 100% 10%, #ffe7d7 0%, transparent 30%),
+        var(--bg);
+      line-height: 1.58;
     }
 
-    .wrap { max-width: var(--max); margin: 0 auto; padding: 0 20px; }
+    .wrap {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 0 20px;
+    }
 
-    header { padding: 72px 0 44px; }
     .badge {
       display: inline-block;
-      border: 1px solid var(--border);
-      background: rgba(255,255,255,0.03);
-      color: var(--muted);
+      padding: 6px 12px;
       border-radius: 999px;
-      padding: 6px 10px;
+      border: 1px solid var(--line);
+      background: var(--paper);
+      color: var(--muted);
       font-size: 12px;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    header {
+      padding: 64px 0 28px;
     }
 
     h1 {
-      margin: 14px 0 8px;
-      font-size: clamp(30px, 5vw, 48px);
-      line-height: 1.1;
+      margin: 14px 0 10px;
+      font-size: clamp(2rem, 4.8vw, 3.9rem);
+      line-height: 1.05;
+      letter-spacing: -0.02em;
     }
 
-    .tagline { margin: 0 0 16px; color: var(--muted); max-width: 760px; }
+    .tagline {
+      margin: 0;
+      max-width: 780px;
+      color: var(--muted);
+      font-size: clamp(1rem, 2.2vw, 1.15rem);
+    }
 
-    .quote {
-      margin-top: 22px;
-      border: 1px solid var(--border);
-      background: linear-gradient(180deg, rgba(110,168,255,0.10), rgba(110,168,255,0.03));
-      border-radius: 12px;
+    .hero-grid {
+      margin-top: 26px;
+      display: grid;
+      grid-template-columns: 1.3fr 1fr;
+      gap: 16px;
+    }
+
+    .panel {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
       padding: 16px;
+      animation: rise 0.6s ease both;
     }
-    .quote p { margin: 0 0 8px; }
-    .quote small { color: var(--muted); }
 
-    .install {
-      margin-top: 22px;
-      border: 1px solid var(--border);
-      background: var(--panel-2);
-      border-radius: 10px;
-      padding: 12px;
+    .install-row {
       display: flex;
       gap: 10px;
       align-items: center;
       flex-wrap: wrap;
-    }
-    .install code {
-      font-family: var(--mono);
-      color: var(--accent-2);
-      word-break: break-word;
-    }
-    .btn {
-      border: 1px solid var(--border);
-      background: #1a2442;
-      color: var(--text);
-      border-radius: 8px;
-      padding: 7px 11px;
-      font-size: 13px;
-      cursor: pointer;
-    }
-    .btn:hover { border-color: var(--accent); }
-
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
-      gap: 12px;
-      margin: 18px 0 0;
-    }
-    .card {
-      border: 1px solid var(--border);
-      background: var(--panel);
-      border-radius: 12px;
-      padding: 14px;
-    }
-    .card h3 { margin: 0 0 6px; font-size: 16px; }
-    .card p { margin: 0; color: var(--muted); font-size: 14px; }
-
-    section { padding: 26px 0; }
-    h2 { margin: 0 0 12px; font-size: 24px; }
-
-    .steps {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 12px;
-    }
-    .step {
-      border: 1px solid var(--border);
-      background: var(--panel);
-      border-radius: 12px;
-      padding: 14px;
-    }
-    .step .num {
-      color: var(--accent);
-      font-family: var(--mono);
-      font-size: 12px;
-      margin-bottom: 6px;
-    }
-    pre {
-      margin: 10px 0 0;
-      border: 1px solid var(--border);
+      margin-top: 8px;
+      background: #f8fbff;
+      border: 1px solid var(--line);
       border-radius: 10px;
-      background: #0a1020;
-      color: #cde1ff;
-      font-family: var(--mono);
-      font-size: 12px;
       padding: 10px;
-      overflow-x: auto;
     }
 
-    .lists {
+    code, pre {
+      font-family: var(--mono);
+    }
+
+    .install-row code {
+      color: #0b5f8f;
+      font-size: 13px;
+      word-break: break-all;
+    }
+
+    .btn {
+      border: 1px solid #b4cad8;
+      background: #f4f9ff;
+      color: #143550;
+      border-radius: 9px;
+      padding: 7px 11px;
+      cursor: pointer;
+      font-size: 13px;
+      font-family: var(--sans);
+    }
+
+    .btn:hover {
+      border-color: #0b5f8f;
+    }
+
+    .quote p { margin: 0 0 8px; }
+    .quote small { color: var(--muted); }
+
+    .stats {
+      margin-top: 18px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+      gap: 10px;
+    }
+
+    .stat {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 12px;
+      animation: rise 0.8s ease both;
+    }
+
+    .stat .n {
+      font-size: 1.45rem;
+      font-weight: 700;
+      margin-bottom: 4px;
+      color: #113c5a;
+    }
+
+    .stat .l {
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+
+    section {
+      padding: 20px 0;
+    }
+
+    h2 {
+      margin: 0 0 12px;
+      font-size: clamp(1.3rem, 2.2vw, 1.8rem);
+    }
+
+    .sub {
+      margin: -6px 0 12px;
+      color: var(--muted);
+    }
+
+    .two-col {
+      display: grid;
+      grid-template-columns: 1.15fr 1fr;
+      gap: 14px;
+    }
+
+    .diagram {
+      margin: 0;
+      overflow-x: auto;
+      background: #f6fffd;
+      border: 1px solid #cdebe7;
+      border-radius: 10px;
+      padding: 12px;
+      color: #0e4b60;
+      font-size: 12px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      animation: rise 0.8s ease both;
+    }
+
+    th, td {
+      text-align: left;
+      vertical-align: top;
+      padding: 11px 12px;
+      border-bottom: 1px solid #e7efee;
+      font-size: 0.94rem;
+    }
+
+    th {
+      background: #f0f8ff;
+      color: #194567;
+      font-size: 0.83rem;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    tr:last-child td { border-bottom: none; }
+
+    .chart {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      box-shadow: var(--shadow);
+      padding: 14px;
+    }
+
+    .bar {
+      margin: 10px 0;
+    }
+
+    .bar-label {
+      font-size: 0.86rem;
+      color: #1f4e72;
+      margin-bottom: 6px;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .bar-track {
+      height: 10px;
+      border-radius: 999px;
+      background: #edf3f2;
+      overflow: hidden;
+    }
+
+    .bar-fill {
+      height: 100%;
+      border-radius: 999px;
+      background: linear-gradient(90deg, var(--primary), #0ba6a0);
+      animation: sweep 1.2s ease both;
+      transform-origin: left center;
+    }
+
+    .bar-fill.flash {
+      background: linear-gradient(90deg, var(--accent), #ff6b3d);
+    }
+
+    .cards {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 12px;
+      gap: 11px;
     }
-    ul { margin: 8px 0 0 18px; color: var(--muted); }
+
+    .card {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 14px;
+      box-shadow: var(--shadow);
+      animation: rise 0.7s ease both;
+    }
+
+    .card h3 {
+      margin: 0 0 6px;
+      font-size: 1rem;
+      color: #0b4f6a;
+    }
+
+    .card p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.92rem;
+    }
 
     footer {
-      padding: 30px 0 40px;
-      color: var(--muted);
-      border-top: 1px solid var(--border);
       margin-top: 24px;
+      border-top: 1px solid var(--line);
+      padding: 24px 0 38px;
+      color: var(--muted);
     }
-    footer a { color: var(--accent); text-decoration: none; margin-right: 10px; }
 
-    @media (max-width: 540px) {
-      header { padding-top: 56px; }
+    .links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 10px;
+    }
+
+    .links a {
+      color: #0f5f8d;
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .links a:hover {
+      text-decoration: underline;
+    }
+
+    @keyframes rise {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes sweep {
+      from { transform: scaleX(0.08); }
+      to { transform: scaleX(1); }
+    }
+
+    @media (max-width: 920px) {
+      .hero-grid,
+      .two-col { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 640px) {
+      header { padding-top: 46px; }
+      th, td { font-size: 0.87rem; }
     }
   </style>
 </head>
@@ -161,38 +333,66 @@
       <h1>oh-my-gemini-cli</h1>
       <p class="tagline">Context-engineering-powered multi-agent workflow pack for Gemini CLI.</p>
 
-      <div class="install">
-        <code id="installCmd">gemini extensions install https://github.com/Joonghyun-Lee-Frieren/oh-my-gemini-cli</code>
-        <button class="btn" id="copyBtn" type="button">Copy</button>
+      <div class="hero-grid">
+        <div class="panel">
+          <h2 style="margin:0 0 6px;">Install</h2>
+          <p class="sub">Official Gemini Extensions command</p>
+          <div class="install-row">
+            <code id="installCmd">gemini extensions install https://github.com/Joonghyun-Lee-Frieren/oh-my-gemini-cli</code>
+            <button class="btn" id="copyBtn" type="button">Copy</button>
+          </div>
+          <pre class="diagram" style="margin-top:10px;">Verify:
+  gemini extensions list
+  /extensions list</pre>
+        </div>
+
+        <div class="panel quote">
+          <p>"Claude Code's core competitiveness isn't the Opus or Sonnet engine. It's Claude Code itself. Surprisingly, Gemini works well too when attached to Claude Code."</p>
+          <small>Jeongkyu Shin (CEO of Lablup Inc.), from a YouTube interview</small>
+          <p style="margin-top:10px;">OmG started from this question: "What if we bring that harness model to Gemini CLI?"</p>
+        </div>
       </div>
 
-      <div class="quote">
-        <p>"Claude Code's core competitiveness isn't the Opus or Sonnet engine. It's Claude Code itself. Surprisingly, Gemini works well too when attached to Claude Code."</p>
-        <small>Jeongkyu Shin (CEO of Lablup Inc.), from a YouTube interview</small>
-        <p style="margin-top:10px;">This project started from that observation: "What if we bring that harness model to Gemini CLI?"</p>
+      <div class="stats">
+        <div class="stat"><div class="n">7</div><div class="l">Sub-agents</div></div>
+        <div class="stat"><div class="n">5</div><div class="l">Reusable skills</div></div>
+        <div class="stat"><div class="n">4</div><div class="l">Namespaced commands</div></div>
+        <div class="stat"><div class="n">5</div><div class="l">Context layers</div></div>
       </div>
     </div>
   </header>
 
   <section>
-    <div class="wrap">
-      <h2>Core Model</h2>
-      <div class="grid">
-        <div class="card">
-          <h3>Native Extension</h3>
-          <p>Implemented with official Gemini CLI extension primitives, centered on <code>gemini-extension.json</code>.</p>
-        </div>
-        <div class="card">
-          <h3>Role-based Agents</h3>
-          <p>Architect, planner, executor, reviewer, debugger, researcher, and quick-fix roles.</p>
-        </div>
-        <div class="card">
-          <h3>Reusable Skills</h3>
-          <p>Plan, execute, team, research, and context optimization workflows.</p>
-        </div>
-        <div class="card">
-          <h3>Namespaced Commands</h3>
-          <p>Consistent <code>/omg:*</code> command set for status, team flow, optimization, and cache checks.</p>
+    <div class="wrap two-col">
+      <div>
+        <h2>System Diagram</h2>
+        <p class="sub">How user intent becomes a validated output</p>
+        <pre class="diagram">User Request
+    |
+Gemini CLI
+    |
+OmG Extension (gemini-extension.json)
+    |--- commands/omg/*.toml  -> command-driven orchestration
+    |--- skills/*/SKILL.md    -> reusable execution playbooks
+    |--- agents/*.md          -> role prompts and behavior contracts
+    |--- context/omg-core.md  -> shared context baseline
+    |
+Structured Result
+(plan / implementation / review / next actions)</pre>
+      </div>
+
+      <div>
+        <h2>Model Allocation</h2>
+        <p class="sub">Typical role split in multi-agent mode</p>
+        <div class="chart">
+          <div class="bar">
+            <div class="bar-label"><span>Planning &amp; Architecture (<code>gemini-3.1-pro</code>)</span><span>70%</span></div>
+            <div class="bar-track"><div class="bar-fill" style="width:70%"></div></div>
+          </div>
+          <div class="bar">
+            <div class="bar-label"><span>Execution &amp; Quick Fixes (<code>gemini-3.1-flash</code>)</span><span>30%</span></div>
+            <div class="bar-track"><div class="bar-fill flash" style="width:30%"></div></div>
+          </div>
         </div>
       </div>
     </div>
@@ -200,77 +400,182 @@
 
   <section>
     <div class="wrap">
-      <h2>Quick Start</h2>
-      <div class="steps">
-        <div class="step">
-          <div class="num">01 INSTALL (TERMINAL)</div>
-          <pre>gemini extensions install https://github.com/Joonghyun-Lee-Frieren/oh-my-gemini-cli</pre>
-        </div>
-        <div class="step">
-          <div class="num">02 VERIFY</div>
-          <pre>gemini extensions list
-
-# or inside interactive mode
-/extensions list</pre>
-        </div>
-        <div class="step">
-          <div class="num">03 COMMANDS</div>
-          <pre>/omg:status
-/omg:team Implement OAuth auth
-/omg:optimize</pre>
-        </div>
-        <div class="step">
-          <div class="num">04 SKILLS</div>
-          <pre>$plan Build migration plan
-$execute Implement phase 1
-$team End-to-end feature delivery</pre>
-        </div>
-      </div>
+      <h2>Capability Matrix</h2>
+      <p class="sub">What OmG adds over a plain single-session run</p>
+      <table>
+        <thead>
+          <tr>
+            <th>Work Need</th>
+            <th>Plain Session</th>
+            <th>OmG Extension</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Large feature planning</td>
+            <td>Manual prompt decomposition</td>
+            <td><code>$plan</code> and <code>omg-planner</code> with phased output format</td>
+          </tr>
+          <tr>
+            <td>Parallel role execution</td>
+            <td>Single-thread thinking</td>
+            <td><code>/omg:team</code> orchestrates planner/architect/executor/reviewer</td>
+          </tr>
+          <tr>
+            <td>Consistency in decisions</td>
+            <td>High drift risk across long chats</td>
+            <td>Shared baseline from <code>context/omg-core.md</code></td>
+          </tr>
+          <tr>
+            <td>Debug/review loop</td>
+            <td>Ad-hoc and easy to skip</td>
+            <td>Dedicated <code>omg-reviewer</code> + <code>omg-debugger</code> path</td>
+          </tr>
+          <tr>
+            <td>Command discoverability</td>
+            <td>No namespaced workflow surface</td>
+            <td>Stable <code>/omg:*</code> command namespace</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </section>
 
   <section>
     <div class="wrap">
-      <h2>Available Interfaces</h2>
-      <div class="lists">
+      <h2>Interface Catalog</h2>
+      <div class="cards" style="margin-bottom:10px;">
         <div class="card">
           <h3>Commands</h3>
-          <ul>
-            <li>/omg:status</li>
-            <li>/omg:team</li>
-            <li>/omg:optimize</li>
-            <li>/omg:cache</li>
-          </ul>
+          <p>Fast operational control points for status, orchestration, optimization, and cache checks.</p>
         </div>
         <div class="card">
           <h3>Skills</h3>
-          <ul>
-            <li>$plan</li>
-            <li>$execute</li>
-            <li>$team</li>
-            <li>$research</li>
-            <li>$context-optimize</li>
-          </ul>
+          <p>Reusable instruction packs for planning, execution, team orchestration, and research.</p>
         </div>
         <div class="card">
           <h3>Sub-agents</h3>
-          <ul>
-            <li>omg-architect</li>
-            <li>omg-planner</li>
-            <li>omg-executor</li>
-            <li>omg-reviewer</li>
-            <li>omg-debugger</li>
-            <li>omg-researcher</li>
-            <li>omg-quick</li>
-          </ul>
+          <p>Role-specialized behavior contracts to keep each step coherent and auditable.</p>
         </div>
       </div>
+      <table style="margin-bottom:10px;">
+        <thead>
+          <tr>
+            <th>Type</th>
+            <th>Name</th>
+            <th>Primary Use</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Command</td><td><code>/omg:status</code></td><td>Snapshot progress, risk, and next actions</td></tr>
+          <tr><td>Command</td><td><code>/omg:team</code></td><td>Run full multi-agent delivery loop</td></tr>
+          <tr><td>Command</td><td><code>/omg:optimize</code></td><td>Tune prompt/context quality and cost profile</td></tr>
+          <tr><td>Command</td><td><code>/omg:cache</code></td><td>Inspect cache/context behavior</td></tr>
+          <tr><td>Skill</td><td><code>$plan</code></td><td>Milestone-level decomposition</td></tr>
+          <tr><td>Skill</td><td><code>$execute</code></td><td>Implementation pass for a scoped slice</td></tr>
+          <tr><td>Skill</td><td><code>$team</code></td><td>End-to-end collaborative delivery</td></tr>
+          <tr><td>Skill</td><td><code>$research</code></td><td>Option comparison and tradeoff synthesis</td></tr>
+          <tr><td>Skill</td><td><code>$context-optimize</code></td><td>Signal-to-noise optimization in context</td></tr>
+        </tbody>
+      </table>
+      <table>
+        <thead>
+          <tr>
+            <th>Agent</th>
+            <th>Responsibility</th>
+            <th>Model Profile</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td><code>omg-architect</code></td><td>System boundaries and long-term design quality</td><td><code>gemini-3.1-pro</code></td></tr>
+          <tr><td><code>omg-planner</code></td><td>Task slicing, dependencies, execution order</td><td><code>gemini-3.1-pro</code></td></tr>
+          <tr><td><code>omg-executor</code></td><td>Code-level implementation and incremental delivery</td><td><code>gemini-3.1-flash</code></td></tr>
+          <tr><td><code>omg-reviewer</code></td><td>Regression checks and correctness review</td><td><code>gemini-3.1-pro</code></td></tr>
+          <tr><td><code>omg-debugger</code></td><td>Root cause analysis and fix strategy</td><td><code>gemini-3.1-pro</code></td></tr>
+          <tr><td><code>omg-researcher</code></td><td>Evidence gathering and decision support</td><td><code>gemini-3.1-pro</code></td></tr>
+          <tr><td><code>omg-quick</code></td><td>Small tactical edits</td><td><code>gemini-3.1-flash</code></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <h2>Operational Runbook</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Stage</th>
+            <th>Operator Command</th>
+            <th>Expected Output</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Install</td>
+            <td><code>gemini extensions install https://github.com/Joonghyun-Lee-Frieren/oh-my-gemini-cli</code></td>
+            <td>Extension registered as <code>oh-my-gemini-cli</code></td>
+          </tr>
+          <tr>
+            <td>Validate</td>
+            <td><code>gemini extensions list</code> or <code>/extensions list</code></td>
+            <td>Extension appears in active extension list</td>
+          </tr>
+          <tr>
+            <td>Start workflow</td>
+            <td><code>/omg:team Implement feature X with tests</code></td>
+            <td>Plan -> execute -> review progression summary</td>
+          </tr>
+          <tr>
+            <td>Observe state</td>
+            <td><code>/omg:status</code></td>
+            <td>Current progress, blockers, and next actions</td>
+          </tr>
+          <tr>
+            <td>Tune context</td>
+            <td><code>/omg:optimize</code> or <code>$context-optimize</code></td>
+            <td>Cleaner context with lower drift and better focus</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <h2>Troubleshooting Matrix</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Symptom</th>
+            <th>Likely Cause</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>settings.filter is not a function</code></td>
+            <td>Outdated CLI runtime or stale extension cache</td>
+            <td>Update Gemini CLI, uninstall extension, reinstall via extensions command</td>
+          </tr>
+          <tr>
+            <td><code>/omg:* not found</code></td>
+            <td>Extension not loaded in current process</td>
+            <td>Run <code>gemini extensions list</code> and restart session</td>
+          </tr>
+          <tr>
+            <td>Skills not triggering</td>
+            <td>Skill files not loaded in active extension context</td>
+            <td>Confirm <code>skills/*/SKILL.md</code> files and reload CLI</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </section>
 
   <footer>
     <div class="wrap">
-      <p>
+      <div class="links">
         <a href="https://github.com/Joonghyun-Lee-Frieren/oh-my-gemini-cli">GitHub</a>
         <a href="../README.md">English README</a>
         <a href="./README_ko.md">Korean</a>
@@ -278,9 +583,10 @@ $team End-to-end feature delivery</pre>
         <a href="./README_fr.md">French</a>
         <a href="./README_zh.md">Chinese</a>
         <a href="./README_es.md">Spanish</a>
+        <a href="./history.md">History</a>
         <a href="./guide/installation.md">Installation Guide</a>
-      </p>
-      <p>Built for official Gemini CLI Extensions workflow.</p>
+      </div>
+      <div>Built for official Gemini CLI Extensions workflow.</div>
     </div>
   </footer>
 
@@ -292,7 +598,7 @@ $team End-to-end feature delivery</pre>
         navigator.clipboard.writeText(cmd).then(function () {
           var prev = btn.textContent;
           btn.textContent = 'Copied';
-          setTimeout(function () { btn.textContent = prev; }, 1500);
+          setTimeout(function () { btn.textContent = prev; }, 1200);
         });
       });
     })();

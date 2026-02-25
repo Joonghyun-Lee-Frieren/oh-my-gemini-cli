@@ -1,109 +1,117 @@
-﻿# oh-my-gemini-cli (OmG)
+# oh-my-gemini-cli (OmG)
 
 [Page d'accueil](https://joonghyun-lee-frieren.github.io/oh-my-gemini-cli/) | [Historique](./history.md)
 
-[English](../README.md) | [한국어](./README_ko.md) | [日本語](./README_ja.md) | [中文](./README_zh.md) | [Español](./README_es.md)
+[English](../README.md) | [???](./README_ko.md) | [???](./README_ja.md) | [??](./README_zh.md) | [Espa?ol](./README_es.md)
 
-Pack de workflows multi-agents, orienté ingénierie de contexte, pour Gemini CLI.
+Extension de workflow multi-agents pour Gemini CLI, orient?e ing?nierie de contexte.
 
-> "L'avantage compétitif principal de Claude Code n'est ni Opus ni Sonnet. C'est Claude Code lui-même. De façon surprenante, Gemini fonctionne aussi très bien avec ce harnais."
+> "L'avantage comp?titif principal de Claude Code n'est ni Opus ni Sonnet. C'est Claude Code lui-m?me. De fa?on surprenante, Gemini fonctionne aussi tr?s bien avec ce harnais."
 >
 > - Jeongkyu Shin (CEO de Lablup Inc.), interview YouTube
 
-Ce projet est né de cette idée :
-"Et si on apportait ce modèle de harnais à Gemini CLI ?"
+Ce projet est n? de cette id?e :
+"Et si on apportait ce mod?le de harnais ? Gemini CLI ?"
 
-OmG transforme Gemini CLI, d'un assistant en session unique, en workflow d'ingénierie structuré par rôles.
+OmG transforme Gemini CLI, d'un assistant en session unique, en workflow d'ing?nierie structur? par r?les.
 
-OmG est implémenté comme extension native Gemini CLI basée sur le modèle officiel.
+## Nouveaut?s v0.3.0
 
-- manifeste `gemini-extension.json`
-- `agents/` pour les sous-agents
-- `commands/` pour les slash commands
-- `skills/` pour les workflows réutilisables
-- `context/` pour le contexte partagé
+- Pipeline d'?quipe par ?tapes : `team-plan -> team-prd -> team-exec -> team-verify -> team-fix`
+- Modes d'ex?cution : `balanced`, `speed`, `deep`, `autopilot`, `ralph`, `ultrawork`
+- Commandes de cycle de vie : `/omg:launch`, `/omg:checkpoint`, `/omg:stop`, `/omg:mode`
+- Nouveaux agents sp?cialis?s : `omg-product`, `omg-verifier`, `omg-consensus`
+- Nouvelles skills : `$prd`, `$ralplan`, `$autopilot`, `$ralph`, `$ultrawork`, `$consensus`, `$mode`, `$cancel`
 
 ## Installation
-
-Installez depuis l'URL GitHub avec la commande officielle des extensions :
 
 ```bash
 gemini extensions install https://github.com/Joonghyun-Lee-Frieren/oh-my-gemini-cli
 ```
 
-Vérification en mode interactif :
-
 ```text
 /extensions list
 ```
-
-Vérification en mode non interactif :
 
 ```bash
 gemini extensions list
 ```
 
-Note : les commandes d'installation/mise à jour s'exécutent en mode terminal (`gemini extensions ...`), pas en mode slash interactif.
+Note : les commandes d'installation/mise ? jour s'ex?cutent en mode terminal (`gemini extensions ...`), pas en mode slash interactif.
 
-## Pourquoi OmG
+## Pipeline par ?tapes
 
-- Les tâches complexes exigent une structure reproductible, pas seulement une grande fenêtre de contexte.
-- La délégation par rôle améliore la qualité sur la planification, l'implémentation, la revue et le débogage.
-- Une discipline de contexte compatible cache rend les longues sessions plus stables et moins coûteuses.
+1. `team-plan` : d?coupage des t?ches et d?pendances
+2. `team-prd` : verrouillage du p?rim?tre et des crit?res d'acceptation
+3. `team-exec` : impl?mentation du p?rim?tre valid?
+4. `team-verify` : validation des crit?res et des r?gressions
+5. `team-fix` : correction cibl?e des points en ?chec
 
-## Utilisation
+## Modes d'op?ration
 
-### Commandes
+- `balanced` : mode ?quilibr? par d?faut
+- `speed` : priorit? ? la vitesse d'ex?cution
+- `deep` : priorit? ? la profondeur d'analyse et de validation
+- `autopilot` : boucle autonome d'ex?cution
+- `ralph` : orchestration stricte avec portes de qualit?
+- `ultrawork` : mode haut d?bit pour lots parall?lisables
 
-Elles sont namespacées dans `commands/omg/*.toml` :
+## Commandes principales
+
+### Pipeline
+
+- `/omg:team`
+- `/omg:team-plan`
+- `/omg:team-prd`
+- `/omg:team-exec`
+- `/omg:team-verify`
+- `/omg:team-fix`
+
+### Mode / cycle de vie
+
+- `/omg:mode`
+- `/omg:autopilot`
+- `/omg:ralph`
+- `/omg:ultrawork`
+- `/omg:consensus`
+- `/omg:launch`
+- `/omg:checkpoint`
+- `/omg:stop`
+
+### Exploitation
 
 - `/omg:status`
-- `/omg:team`
 - `/omg:optimize`
 - `/omg:cache`
 
-### Skills
+## Skills
 
 - `$plan`
+- `$ralplan`
+- `$prd`
 - `$execute`
 - `$team`
+- `$autopilot`
+- `$ralph`
+- `$ultrawork`
+- `$consensus`
+- `$mode`
+- `$cancel`
 - `$research`
 - `$context-optimize`
 
-### Sous-agents
+## Sous-agents
 
 - `omg-architect`
 - `omg-planner`
+- `omg-product`
 - `omg-executor`
 - `omg-reviewer`
+- `omg-verifier`
 - `omg-debugger`
+- `omg-consensus`
 - `omg-researcher`
 - `omg-quick`
-
-Les sous-agents sont fournis via les définitions `agents/` de l'extension.
-
-## Structure du projet
-
-```text
-oh-my-gemini-cli/
-|- gemini-extension.json
-|- agents/
-|- commands/
-|  |- omg/
-|- skills/
-|- context/
-|- docs/
-`- LICENSE
-```
-
-## Notes de migration
-
-Ce dépôt n'utilise plus `omg setup` comme parcours principal d'onboarding.
-
-- Ancien flux : installation globale du package + copie via setup
-- Nouveau flux : installation directe via `gemini extensions install ...`
-
-Le code runtime legacy dans `src/` reste présent, mais le comportement d'extension repose maintenant sur le chargement par manifeste.
 
 ## Documentation
 
@@ -114,4 +122,3 @@ Le code runtime legacy dans `src/` reste présent, mais le comportement d'extens
 ## Licence
 
 MIT
-

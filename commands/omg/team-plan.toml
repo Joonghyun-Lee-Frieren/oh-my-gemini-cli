@@ -1,0 +1,31 @@
+description = "Stage 1/5: Build a staged engineering plan with dependencies and verification checkpoints."
+prompt = """
+Run OmG `team-plan`.
+
+Task:
+$ARGUMENTS
+
+Protocol:
+1. Delegate decomposition to `omg-planner`.
+2. Delegate architecture-sensitive risks to `omg-architect`.
+3. Build a phased task graph with owners and dependencies.
+4. Mark tasks as sequential or parallelizable.
+5. Define verification checkpoints per phase.
+
+Output format:
+## Stage
+- team-plan
+
+## Goal / Non-goals
+- ...
+
+## Task Graph
+| Task | Owner | Dependency | Parallelizable | Validation |
+| --- | --- | --- | --- | --- |
+
+## Risks
+- ...
+
+## Ready For team-prd
+- ...
+"""

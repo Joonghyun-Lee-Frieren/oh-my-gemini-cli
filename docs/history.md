@@ -2,30 +2,180 @@
 
 All notable changes to oh-my-gemini-cli are documented here.
 
----
+## Release Timeline
+
+| Version | Date | Theme | Outcome |
+| --- | --- | --- | --- |
+| `v0.3.0` | 2026-02-25 | Workflow and mode expansion | Added stage pipeline commands, autonomous modes, and lifecycle controls |
+| `v0.2.0` | 2026-02-24 | Extensions-first rebuild | OmG moved to Gemini CLI's official extension primitives |
+| `v0.1.4` | 2026-02-23 | Runtime integration hardening | MCP/server wiring and status observability improved |
+| `v0.1.3` | 2026-02-23 | Installation path stabilization | GitHub-based install flow documented as default path |
+| `v0.1.2` | 2026-02-22 | Model/branding consistency | `gemini-3.1-*` naming and OmG branding normalized |
+| `v0.1.1` | 2026-02-22 | Dashboard redesign | Retro game-style TUI and richer telemetry presentation |
+| `v0.1.0` | 2026-02-22 | Initial release | Multi-agent orchestration foundation shipped |
+
+## v0.3.0 - Workflow and Mode Expansion (2026-02-25)
+
+Added key orchestration capabilities inspired by production usage patterns from related repositories.
+
+### Added
+
+- Stage commands:
+  - `team-plan`
+  - `team-prd`
+  - `team-exec`
+  - `team-verify`
+  - `team-fix`
+- Mode/lifecycle commands:
+  - `autopilot`
+  - `ralph`
+  - `ultrawork`
+  - `consensus`
+  - `mode`
+  - `launch`
+  - `checkpoint`
+  - `stop`
+- New specialist agents:
+  - `omg-product`
+  - `omg-verifier`
+  - `omg-consensus`
+- New workflow skills:
+  - `$ralplan`
+  - `$prd`
+  - `$autopilot`
+  - `$ralph`
+  - `$ultrawork`
+  - `$consensus`
+  - `$mode`
+  - `$cancel`
+
+### Changed
+
+- `team` orchestration switched to stage-based lifecycle with verify/fix loops.
+- `status` report expanded to include mode and pipeline stage.
+- Core context updated with mode profiles, lifecycle state conventions, and safety rails.
+- Extension/package version bumped to `0.3.0`.
 
 ## v0.2.0 - Extensions-First Rebuild (2026-02-24)
 
 Reimplemented OmG around Gemini CLI's official Extensions model.
 
 ### Added
+
 - Root extension manifest: `gemini-extension.json`
-- Extension-first package metadata: `package.json`
-- Sub-agents in `agents/`
-- Shared context in `context/omg-core.md`
-- Namespaced commands in `commands/omg/`
+- Extension-first package metadata and files list in `package.json`
+- Sub-agent definitions in `agents/`
+- Shared extension context in `context/omg-core.md`
+- Namespaced extension commands in `commands/omg/`
 - Frontmatter-based skills in `skills/`
 
 ### Changed
-- Installation flow migrated to `/extensions install ...`
-- Documentation rewritten for extension-native usage
-- Korean README updated to extension structure
+
+- Installation flow migrated to `gemini extensions install <repo-url>`
+- Documentation rewritten for extension-native usage and command naming
+- Runtime entry shifted from setup scripts to manifest-driven loading
 
 ### Removed
+
 - Legacy root-level command templates that depended on `!{omg ...}` shell execution
 
----
+### Migration Summary
+
+| Before | After |
+| --- | --- |
+| Global package + setup copier | Native extension install via `gemini extensions` |
+| Script-first runtime bootstrap | Gemini extension manifest bootstrap |
+| Mixed onboarding instructions | Single extension-first install path |
+
+## v0.1.4 - Gemini CLI Runtime Integration Hardening (2026-02-23)
+
+### Added
+
+- MCP stdio entry support via `@modelcontextprotocol/sdk` (`--mcp`)
+- `--server <state|memory|context|orchestrator>` server-targeted execution
+- Extended `omg status` options (`--agents`, `--tasks`, `--cache`, `--cache-history`, `--context`, `--json`)
+
+### Changed
+
+- `omg setup` updated to register all 4 OmG MCP servers in `~/.gemini/settings.json`
+- `omg doctor` updated to validate all required OmG MCP server registrations
+- Prompt argument wiring adjusted for Gemini CLI compatibility (`-p` path)
+- Config loading unified via shared config module flow
+
+### Impact Matrix
+
+| Area | Effect |
+| --- | --- |
+| MCP interoperability | Better alignment with Gemini CLI runtime expectations |
+| Diagnostics | More reliable setup verification and status visibility |
+| Automation | Cleaner path for bot-driven execution workflows |
+
+## v0.1.3 - Installation Path Stabilization (2026-02-23)
+
+### Changed
+
+- GitHub install route promoted as the primary onboarding path
+- npm registry route kept as optional path
+- Gemini CLI package naming corrected in docs (`@google/gemini-cli`)
+- Troubleshooting section expanded for install-time `404` errors
+
+### Tooling
+
+- Added package lifecycle scripts (`prepare`, `prepack`) for build consistency
+
+## v0.1.2 - Model and Branding Consistency (2026-02-22)
+
+### Changed
+
+- Model references standardized to `gemini-3.1-pro` and `gemini-3.1-flash`
+- Agent label output updated to display full model names
+- Project brand text normalized from `OMG` to `OmG`
+- Tagline changed to: `Gemini thinks. OmG orchestrates.`
+
+## v0.1.1 - Retro Dashboard Refresh (2026-02-22)
+
+### Added
+
+- Retro game-style dashboard skin and status labels (`ATK`, `WIN`, `KO`, `ZZZ`, `RDY`)
+- Agent-specific sprite/icon representation in dashboard panels
+- HP/progress bars and party-style member display
+- Quest log and battle log visualization updates
+
+### Changed
+
+- Docs moved under `docs/` and linked from repository root README
+- Landing preview updated to match retro dashboard visuals
+
+## v0.1.0 - Initial Release (2026-02-22)
+
+### Added
+
+- Core CLI command surface (`setup`, `doctor`, `team`, `status`, `config`, `bot`, `update`)
+- Multi-agent orchestration primitives:
+  - Agent pool and worker lifecycle
+  - Task routing and priority queue
+  - Agent registry for architect/planner/executor/reviewer/debugger/researcher/quick roles
+- Context-engineering modules:
+  - Cache manager
+  - Context layering
+  - Compaction and prefix optimization
+- MCP server set:
+  - `omg_state`
+  - `omg_memory`
+  - `omg_context`
+  - `omg_orchestrator`
+- Initial docs set (`README`, guides, landing page)
+
+## Compatibility Notes
+
+| Component | Supported path in this repo |
+| --- | --- |
+| Gemini installation mode | `gemini extensions install ...` |
+| Extension metadata source | `gemini-extension.json` |
+| Command namespace | `/omg:*` |
+| Skill namespace | `$plan`, `$execute`, `$team`, `$research`, `$context-optimize` |
 
 ## Notes
 
-Earlier pre-extension CLI-focused history is available in git history before `v0.2.0`.
+- Historical details before `v0.1.0` are not tracked.
+- For commit-level details, inspect repository git history.

@@ -1,21 +1,38 @@
-description = "Run an OmG multi-agent workflow for a complex task."
+description = "Run the full OmG staged team pipeline for a complex task."
 prompt = """
 Coordinate the request with OmG agents.
 
 Task:
 $ARGUMENTS
 
-Execution protocol:
-1. Delegate planning to `omg-planner`.
-2. Delegate architecture concerns to `omg-architect` when needed.
-3. Delegate implementation steps to `omg-executor`.
-4. Run `omg-reviewer` for correctness and regression risk.
-5. If tests fail, invoke `omg-debugger`.
-6. Return a merged progress report.
+Execution protocol (staged):
+1. `team-plan`: Delegate decomposition to `omg-planner` and architecture checks to `omg-architect`.
+2. `team-prd`: Delegate scope lock and acceptance criteria to `omg-product`.
+3. `team-exec`: Delegate implementation slices to `omg-executor`.
+4. `team-verify`: Delegate validation to `omg-reviewer` and `omg-verifier`.
+5. `team-fix`: If verification fails, delegate root-cause and patches to `omg-debugger` + `omg-executor`.
+6. Repeat steps 3-5 until acceptance criteria pass or blockers are explicit.
+7. Return one merged lifecycle report.
+
+State handling:
+- If filesystem tools are available, update `.omg/state/workflow.md` with stage status and open blockers.
+- Keep verification evidence concise (tests, checks, reasoning).
 
 Final report format:
+## Pipeline Summary
+- Active mode:
+- Current stage:
+- Completion status:
+
 ## Team Plan
 - ...
+
+## Stage Results
+- team-plan:
+- team-prd:
+- team-exec:
+- team-verify:
+- team-fix:
 
 ## Work Completed
 - ...

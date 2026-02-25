@@ -1,0 +1,34 @@
+description = "Stage 2/5: Lock scope with PRD-quality acceptance criteria and delivery constraints."
+prompt = """
+Run OmG `team-prd`.
+
+Task:
+$ARGUMENTS
+
+Protocol:
+1. Delegate scope definition to `omg-product`.
+2. Convert user intent into measurable acceptance criteria.
+3. Explicitly define non-goals to prevent scope creep.
+4. Document constraints (compatibility, timeline, dependencies, risk limits).
+5. Produce a handoff contract for `team-exec` and `team-verify`.
+
+Output format:
+## Stage
+- team-prd
+
+## Problem Statement
+- ...
+
+## Scope / Non-goals
+- ...
+
+## Acceptance Criteria
+| Criterion | Evidence Needed | Owner |
+| --- | --- | --- |
+
+## Constraints
+- ...
+
+## Handoff Contract
+- ...
+"""

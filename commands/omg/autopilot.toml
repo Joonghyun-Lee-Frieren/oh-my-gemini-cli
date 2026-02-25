@@ -1,0 +1,34 @@
+description = "Run autonomous staged execution loops until acceptance passes or a blocker is reached."
+prompt = """
+Run OmG `autopilot` mode.
+
+Objective:
+$ARGUMENTS
+
+Autopilot protocol:
+1. Start with `team-plan` and `team-prd`.
+2. Execute iterative cycles of `team-exec -> team-verify -> team-fix`.
+3. After each cycle, evaluate done criteria and blocker status.
+4. Stop when all acceptance criteria pass, when blocked, or when max cycles are reached.
+5. Default max cycles: 5 (override only if user explicitly requests).
+
+State handling:
+- If filesystem tools are available, update `.omg/state/workflow.md` and `.omg/state/checkpoint.md`.
+- Include mode and cycle count in the state summary.
+
+Output format:
+## Mode
+- autopilot
+- max cycles:
+
+## Cycle Board
+| Cycle | Stage Result | Remaining TODO | Blockers |
+| --- | --- | --- | --- |
+
+## Completion Status
+- done criteria:
+- status:
+
+## Next Action
+- ...
+"""

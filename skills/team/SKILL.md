@@ -1,6 +1,6 @@
 ---
 name = "team"
-description = "Coordinate multiple OmG sub-agents to plan, implement, review, and debug a complex request."
+description = "Coordinate the full OmG stage pipeline across sub-agents for complex delivery (plan -> prd -> exec -> verify -> fix)."
 ---
 
 ## Purpose
@@ -15,12 +15,13 @@ Use this skill for complex work that benefits from role-based delegation.
 
 ## Workflow
 
-1. Delegate planning to `omg-planner`.
-2. Use `omg-architect` for design-sensitive decisions.
-3. Execute implementation with `omg-executor`.
-4. Review output with `omg-reviewer`.
-5. Invoke `omg-debugger` for failures.
-6. Merge results into one clear status report.
+1. Run `team-plan` with `omg-planner` and `omg-architect`.
+2. Run `team-prd` with `omg-product` to lock acceptance criteria.
+3. Run `team-exec` with `omg-executor`.
+4. Run `team-verify` with `omg-reviewer` and `omg-verifier`.
+5. If verify fails, run `team-fix` with `omg-debugger` and `omg-executor`.
+6. Repeat steps 3-5 until acceptance passes or blockers are explicit.
+7. Merge all stage outputs into one status report.
 
 ## Output Template
 
@@ -28,11 +29,12 @@ Use this skill for complex work that benefits from role-based delegation.
 ## Team Plan
 - ...
 
-## Delegation Log
-- planner: ...
-- architect: ...
-- executor: ...
-- reviewer: ...
+## Stage Log
+- team-plan: ...
+- team-prd: ...
+- team-exec: ...
+- team-verify: ...
+- team-fix: ...
 
 ## Final Result
 - ...
