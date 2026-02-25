@@ -58,6 +58,26 @@
       padding: 64px 0 28px;
     }
 
+    .hero-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    .top-actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      align-items: center;
+    }
+
+    .top-actions .btn-link {
+      white-space: nowrap;
+    }
+
     h1 {
       margin: 14px 0 10px;
       font-size: clamp(2rem, 4.8vw, 3.9rem);
@@ -154,13 +174,6 @@
       transform: scale(1.15);
     }
 
-    .cta-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-top: 10px;
-    }
-
     .btn-link {
       display: inline-flex;
       align-items: center;
@@ -174,9 +187,9 @@
     }
 
     .btn-gallery {
-      background: #fff4eb;
-      border-color: #ffc9a7;
-      color: #8c3b00;
+      background: #e7f4ff;
+      border-color: #9ac5e8;
+      color: #123c60;
     }
 
     .btn-github:hover {
@@ -186,9 +199,9 @@
     }
 
     .btn-gallery:hover {
-      border-color: #ffae79;
-      background: #ffe9da;
-      color: #7a3400;
+      border-color: #78abd4;
+      background: #d9edff;
+      color: #0f3352;
     }
 
     .interview-spotlight {
@@ -229,15 +242,11 @@
 
     .origin-note {
       margin: 12px 0 0;
-      padding: 9px 10px;
-      border: 1px solid #ffd3ad;
-      border-left: 4px solid #ffae6a;
-      border-radius: 8px;
-      background: #fff7ef;
-      color: #7a3e0f;
-      font-size: 0.91rem;
+      color: #1c4f7d;
+      font-size: 1.05rem;
       line-height: 1.45;
-      font-style: italic;
+      font-family: var(--sans);
+      font-weight: 700;
     }
 
     .stats {
@@ -430,18 +439,62 @@
     @media (max-width: 920px) {
       .hero-grid,
       .two-col { grid-template-columns: 1fr; }
+
+      .top-actions {
+        width: 100%;
+        justify-content: flex-end;
+      }
     }
 
     @media (max-width: 640px) {
       header { padding-top: 46px; }
       th, td { font-size: 0.87rem; }
+
+      .hero-top {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .top-actions {
+        width: 100%;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+      }
+
+      .top-actions .btn-link {
+        width: 100%;
+        justify-content: center;
+      }
+    }
+
+    @media (max-width: 460px) {
+      .top-actions {
+        grid-template-columns: 1fr;
+      }
     }
   </style>
 </head>
 <body>
   <header>
     <div class="wrap">
-      <span class="badge">Extensions-first release v0.3.0</span>
+      <div class="hero-top">
+        <span class="badge">Latest Release v0.3.0</span>
+        <div class="top-actions">
+          <a class="btn btn-link btn-github" href="https://github.com/Joonghyun-Lee-Frieren/oh-my-gemini-cli" target="_blank" rel="noreferrer noopener">
+            <svg class="btn-icon" viewBox="0 0 16 16" aria-hidden="true">
+              <path fill="currentColor" d="M8 0C3.58 0 0 3.67 0 8.2c0 3.62 2.29 6.69 5.47 7.77.4.08.55-.18.55-.4 0-.2-.01-.86-.01-1.56-2.01.38-2.53-.5-2.69-.95-.09-.23-.48-.95-.82-1.14-.28-.16-.68-.55-.01-.56.63-.01 1.08.59 1.23.84.72 1.25 1.87.9 2.33.69.07-.54.28-.9.5-1.11-1.78-.21-3.64-.92-3.64-4.08 0-.9.31-1.64.82-2.22-.08-.21-.36-1.05.08-2.18 0 0 .67-.22 2.2.85.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.07 2.2-.85 2.2-.85.44 1.13.16 1.97.08 2.18.51.58.82 1.31.82 2.22 0 3.17-1.87 3.87-3.66 4.08.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .22.15.48.55.4C13.71 14.89 16 11.82 16 8.2 16 3.67 12.42 0 8 0z"></path>
+            </svg>
+            <span>View on GitHub</span>
+          </a>
+          <a class="btn btn-link btn-gallery" href="https://geminicli.com/extensions/?name=Joonghyun-Lee-Frierenoh-my-gemini-cli" target="_blank" rel="noreferrer noopener">
+            <svg class="btn-icon" viewBox="0 0 16 16" aria-hidden="true">
+              <path fill="currentColor" d="M1.5 2A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-13zM1 3.5a.5.5 0 0 1 .5-.5H5v10H1.5a.5.5 0 0 1-.5-.5v-9zM6 3h4v10H6V3zm9 9.5a.5.5 0 0 1-.5.5H11V3h3.5a.5.5 0 0 1 .5.5v9z"></path>
+            </svg>
+            <span>View on Extensions Gallery</span>
+          </a>
+        </div>
+      </div>
       <h1>oh-my-gemini-cli</h1>
       <p class="tagline">Context-engineering-powered multi-agent workflow pack for Gemini CLI.</p>
 
@@ -458,20 +511,6 @@
               </svg>
               <span class="btn-label">Copy</span>
             </button>
-          </div>
-          <div class="cta-row">
-            <a class="btn btn-link btn-github" href="https://github.com/Joonghyun-Lee-Frieren/oh-my-gemini-cli" target="_blank" rel="noreferrer noopener">
-              <svg class="btn-icon" viewBox="0 0 16 16" aria-hidden="true">
-                <path fill="currentColor" d="M8 0C3.58 0 0 3.67 0 8.2c0 3.62 2.29 6.69 5.47 7.77.4.08.55-.18.55-.4 0-.2-.01-.86-.01-1.56-2.01.38-2.53-.5-2.69-.95-.09-.23-.48-.95-.82-1.14-.28-.16-.68-.55-.01-.56.63-.01 1.08.59 1.23.84.72 1.25 1.87.9 2.33.69.07-.54.28-.9.5-1.11-1.78-.21-3.64-.92-3.64-4.08 0-.9.31-1.64.82-2.22-.08-.21-.36-1.05.08-2.18 0 0 .67-.22 2.2.85.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.07 2.2-.85 2.2-.85.44 1.13.16 1.97.08 2.18.51.58.82 1.31.82 2.22 0 3.17-1.87 3.87-3.66 4.08.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .22.15.48.55.4C13.71 14.89 16 11.82 16 8.2 16 3.67 12.42 0 8 0z"></path>
-              </svg>
-              <span>View on GitHub</span>
-            </a>
-            <a class="btn btn-link btn-gallery" href="https://geminicli.com/extensions/?name=Joonghyun-Lee-Frierenoh-my-gemini-cli" target="_blank" rel="noreferrer noopener">
-              <svg class="btn-icon" viewBox="0 0 16 16" aria-hidden="true">
-                <path fill="currentColor" d="M1.5 2A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-13zM1 3.5a.5.5 0 0 1 .5-.5H5v10H1.5a.5.5 0 0 1-.5-.5v-9zM6 3h4v10H6V3zm9 9.5a.5.5 0 0 1-.5.5H11V3h3.5a.5.5 0 0 1 .5.5v9z"></path>
-              </svg>
-              <span>View on Extentions Gallery</span>
-            </a>
           </div>
           <pre class="diagram" style="margin-top:10px;">Verify:
   gemini extensions list
@@ -709,12 +748,6 @@ Structured Result
     <div class="wrap">
       <div class="links">
         <a href="https://github.com/Joonghyun-Lee-Frieren/oh-my-gemini-cli">GitHub</a>
-        <a href="../README.md">English README</a>
-        <a href="./README_ko.md">Korean</a>
-        <a href="./README_ja.md">Japanese</a>
-        <a href="./README_fr.md">French</a>
-        <a href="./README_zh.md">Chinese</a>
-        <a href="./README_es.md">Spanish</a>
         <a href="./history.md">History</a>
         <a href="./guide/installation.md">Installation Guide</a>
       </div>
