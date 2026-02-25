@@ -46,17 +46,17 @@ OmG extends Gemini CLI from a single-session assistant into a structured, role-d
 
 ```mermaid
 flowchart TD
-    U[User Request] --> G[Gemini CLI]
-    G --> E[OmG Extension]
-    E --> C[/commands/omg/*.toml]
-    E --> S[/skills/*/SKILL.md]
-    E --> A[/agents/*.md]
-    E --> X[/context/omg-core.md]
-    C --> O[Orchestration Prompt]
+    U["User Request"] --> G["Gemini CLI"]
+    G --> E["OmG Extension"]
+    E --> C["commands/omg/*.toml"]
+    E --> S["skills/*/SKILL.md"]
+    E --> A["agents/*.md"]
+    E --> X["context/omg-core.md"]
+    C --> O["Orchestration Prompt"]
     S --> O
     A --> O
     X --> O
-    O --> R[Structured Result: Plan, Execution, Validation, Next Steps]
+    O --> R["Structured Result: Plan, Execution, Validation, Next Steps"]
 ```
 
 ## Team Workflow
