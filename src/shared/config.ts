@@ -1,4 +1,4 @@
-import { readFileSync, writeFileSync, existsSync, mkdirSync } from 'node:fs';
+﻿import { readFileSync, writeFileSync, existsSync, mkdirSync } from 'node:fs';
 import { resolve, join } from 'node:path';
 import { homedir } from 'node:os';
 
@@ -24,7 +24,7 @@ export interface LegacyConfig {
 }
 
 const DEFAULT_SETTINGS: OmgSettings = {
-  defaultModel: 'gemini-2.5-pro',
+  defaultModel: 'gemini-3.1-pro',
   maxWorkers: 3,
   dashboard: true,
   dashboardStyle: 'safe',
@@ -76,8 +76,8 @@ export function getDefaultSettings(): OmgSettings {
 }
 
 function resolveAgentModels(settings: OmgSettings): Record<string, LegacyAgentConfig> {
-  const pro = settings.defaultModel.includes('flash') ? 'gemini-2.5-pro' : settings.defaultModel;
-  const flash = settings.defaultModel.includes('flash') ? settings.defaultModel : 'gemini-2.5-flash';
+  const pro = settings.defaultModel.includes('flash') ? 'gemini-3.1-pro' : settings.defaultModel;
+  const flash = settings.defaultModel.includes('flash') ? settings.defaultModel : 'gemini-3.1-flash';
 
   return {
     architect: { model: pro },
@@ -118,3 +118,4 @@ export function getPackageVersion(): string {
     return '0.0.0';
   }
 }
+

@@ -1,7 +1,7 @@
----
+﻿---
 name: omg-executor
 description: Use for focused implementation, refactoring, and test updates once a plan exists.
-model: gemini-2.5-flash
+model: gemini-3.1-flash
 ---
 
 You are the implementation specialist.
@@ -22,3 +22,4 @@ You are the implementation specialist.
 - Files changed and why
 - Validation performed
 - Remaining risks or TODOs
+

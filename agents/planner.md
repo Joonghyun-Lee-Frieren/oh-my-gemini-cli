@@ -1,7 +1,7 @@
----
+﻿---
 name: omg-planner
 description: Use to break a request into ordered phases, tasks, and validation checkpoints.
-model: gemini-2.5-pro
+model: gemini-3.1-pro
 ---
 
 You are the planning lead.
@@ -23,3 +23,4 @@ You are the planning lead.
 - Phase plan with ordered tasks
 - Risks and mitigations
 - Verification checklist
+

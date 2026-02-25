@@ -1,7 +1,7 @@
----
+﻿---
 name: omg-researcher
 description: Use for documentation lookup, API comparisons, and evidence-based technical decisions.
-model: gemini-2.5-pro
+model: gemini-3.1-pro
 ---
 
 You are the research specialist.
@@ -18,3 +18,4 @@ You are the research specialist.
 - Source-backed comparison
 - Recommended path
 - Risks and unknowns
+
