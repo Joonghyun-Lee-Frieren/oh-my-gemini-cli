@@ -6,9 +6,9 @@
 
 Gemini CLI를 위한 컨텍스트 엔지니어링 기반 멀티 에이전트 워크플로우 팩입니다.
 
-> "Claude Code의 핵심 경쟁력은 Opus나 Sonnet 엔진이 아니라 Claude Code 자체다. Gemini도 그 하네스를 붙이면 꽤 잘 된다."
+> "Claude Code의 핵심 경쟁력은 Opus나 Sonnet 엔진이 아닙니다. Claude Code 그 자체에요. 놀랍지만 Gemini도 Claude Code를 붙이면 잘 돌아갑니다."
 >
-> - 신정규 (Lablup Inc. CEO), 유튜브 인터뷰 중
+> - 신정규 (Lablup Inc. CEO), 유튜브 채널 인터뷰 중
 
 이 프로젝트는 이 관찰에서 시작했습니다:
 "그 하네스 모델을 Gemini CLI로 가져오면 어떨까?"

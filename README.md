@@ -8,7 +8,7 @@ Context-engineering-powered multi-agent workflow pack for Gemini CLI.
 
 > "Claude Code's core competitiveness isn't the Opus or Sonnet engine. It's Claude Code itself. Surprisingly, Gemini works well too when attached to Claude Code."
 >
-> - Jeongkyu Shin (CEO of Lablup Inc.), from a YouTube interview
+> - Jeongkyu Shin (CEO of Lablup Inc.), from a YouTube channel interview
 
 This project started from that observation:
 "What if we bring that harness model to Gemini CLI?"
