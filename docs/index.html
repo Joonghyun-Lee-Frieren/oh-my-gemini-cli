@@ -111,6 +111,9 @@
     }
 
     .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
       border: 1px solid #b4cad8;
       background: #f4f9ff;
       color: #143550;
@@ -119,14 +122,123 @@
       cursor: pointer;
       font-size: 13px;
       font-family: var(--sans);
+      transition: transform 0.18s ease, box-shadow 0.22s ease, background-color 0.22s ease, color 0.22s ease, border-color 0.22s ease;
+    }
+
+    .btn-icon {
+      width: 14px;
+      height: 14px;
+      flex: 0 0 14px;
+      display: block;
+      transition: transform 0.2s ease;
     }
 
     .btn:hover {
       border-color: #0b5f8f;
+      transform: translateY(-1px);
+      box-shadow: 0 6px 16px rgba(15, 71, 112, 0.12);
     }
 
-    .quote p { margin: 0 0 8px; }
-    .quote small { color: var(--muted); }
+    .btn:active {
+      transform: translateY(0);
+    }
+
+    .btn.copy-active {
+      background: #10a37f;
+      color: #ffffff;
+      border-color: #0c8a6b;
+      box-shadow: 0 0 0 4px rgba(16, 163, 127, 0.18);
+    }
+
+    .btn.copy-active .btn-icon {
+      transform: scale(1.15);
+    }
+
+    .cta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .btn-link {
+      display: inline-flex;
+      align-items: center;
+      text-decoration: none;
+    }
+
+    .btn-github {
+      background: #111827;
+      border-color: #111827;
+      color: #f8fafc;
+    }
+
+    .btn-gallery {
+      background: #fff4eb;
+      border-color: #ffc9a7;
+      color: #8c3b00;
+    }
+
+    .btn-github:hover {
+      border-color: #334155;
+      background: #1f2937;
+      color: #f8fafc;
+    }
+
+    .btn-gallery:hover {
+      border-color: #ffae79;
+      background: #ffe9da;
+      color: #7a3400;
+    }
+
+    .interview-spotlight {
+      border: 1px solid #c8def4;
+      background: linear-gradient(155deg, #eef7ff 0%, #f7fbff 55%, #ffffff 100%);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .interview-spotlight::before {
+      content: "";
+      position: absolute;
+      top: -26px;
+      right: -26px;
+      width: 96px;
+      height: 96px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(70, 145, 217, 0.24), rgba(70, 145, 217, 0));
+    }
+
+    .interview-quote {
+      margin: 0 0 12px;
+      font-size: 1.02rem;
+      font-style: italic;
+      font-weight: 600;
+      color: #15395d;
+      line-height: 1.58;
+      border-left: 3px solid #7fb1de;
+      padding-left: 10px;
+    }
+
+    .interview-meta {
+      color: #2c5f8e;
+      font-size: 0.9rem;
+      font-weight: 600;
+      letter-spacing: 0.01em;
+    }
+
+    .origin-note {
+      margin: 12px 0 0;
+      padding: 9px 10px;
+      border: 1px solid #ffd3ad;
+      border-left: 4px solid #ffae6a;
+      border-radius: 8px;
+      background: #fff7ef;
+      color: #7a3e0f;
+      font-size: 0.91rem;
+      line-height: 1.45;
+      font-style: italic;
+    }
 
     .stats {
       margin-top: 18px;
@@ -329,7 +441,7 @@
 <body>
   <header>
     <div class="wrap">
-      <span class="badge">Extensions-first release v0.2.0</span>
+      <span class="badge">Extensions-first release v0.3.0</span>
       <h1>oh-my-gemini-cli</h1>
       <p class="tagline">Context-engineering-powered multi-agent workflow pack for Gemini CLI.</p>
 
@@ -339,17 +451,37 @@
           <p class="sub">Official Gemini Extensions command</p>
           <div class="install-row">
             <code id="installCmd">gemini extensions install https://github.com/Joonghyun-Lee-Frieren/oh-my-gemini-cli</code>
-            <button class="btn" id="copyBtn" type="button">Copy</button>
+            <button class="btn" id="copyBtn" type="button">
+              <svg class="btn-icon" viewBox="0 0 16 16" aria-hidden="true">
+                <path fill="currentColor" d="M10 1H3.5A1.5 1.5 0 0 0 2 2.5V10h1V2.5a.5.5 0 0 1 .5-.5H10V1z"></path>
+                <path fill="currentColor" d="M5.5 4A1.5 1.5 0 0 0 4 5.5v8A1.5 1.5 0 0 0 5.5 15h7a1.5 1.5 0 0 0 1.5-1.5v-8A1.5 1.5 0 0 0 12.5 4h-7zm0 1h7a.5.5 0 0 1 .5.5v8a.5.5 0 0 1-.5.5h-7a.5.5 0 0 1-.5-.5v-8a.5.5 0 0 1 .5-.5z"></path>
+              </svg>
+              <span class="btn-label">Copy</span>
+            </button>
+          </div>
+          <div class="cta-row">
+            <a class="btn btn-link btn-github" href="https://github.com/Joonghyun-Lee-Frieren/oh-my-gemini-cli" target="_blank" rel="noreferrer noopener">
+              <svg class="btn-icon" viewBox="0 0 16 16" aria-hidden="true">
+                <path fill="currentColor" d="M8 0C3.58 0 0 3.67 0 8.2c0 3.62 2.29 6.69 5.47 7.77.4.08.55-.18.55-.4 0-.2-.01-.86-.01-1.56-2.01.38-2.53-.5-2.69-.95-.09-.23-.48-.95-.82-1.14-.28-.16-.68-.55-.01-.56.63-.01 1.08.59 1.23.84.72 1.25 1.87.9 2.33.69.07-.54.28-.9.5-1.11-1.78-.21-3.64-.92-3.64-4.08 0-.9.31-1.64.82-2.22-.08-.21-.36-1.05.08-2.18 0 0 .67-.22 2.2.85.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.07 2.2-.85 2.2-.85.44 1.13.16 1.97.08 2.18.51.58.82 1.31.82 2.22 0 3.17-1.87 3.87-3.66 4.08.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .22.15.48.55.4C13.71 14.89 16 11.82 16 8.2 16 3.67 12.42 0 8 0z"></path>
+              </svg>
+              <span>View on GitHub</span>
+            </a>
+            <a class="btn btn-link btn-gallery" href="https://geminicli.com/extensions/?name=Joonghyun-Lee-Frierenoh-my-gemini-cli" target="_blank" rel="noreferrer noopener">
+              <svg class="btn-icon" viewBox="0 0 16 16" aria-hidden="true">
+                <path fill="currentColor" d="M1.5 2A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-13zM1 3.5a.5.5 0 0 1 .5-.5H5v10H1.5a.5.5 0 0 1-.5-.5v-9zM6 3h4v10H6V3zm9 9.5a.5.5 0 0 1-.5.5H11V3h3.5a.5.5 0 0 1 .5.5v9z"></path>
+              </svg>
+              <span>View on Extentions Gallery</span>
+            </a>
           </div>
           <pre class="diagram" style="margin-top:10px;">Verify:
   gemini extensions list
   /extensions list</pre>
         </div>
 
-        <div class="panel quote">
-          <p>"Claude Code's core competitiveness isn't the Opus or Sonnet engine. It's Claude Code itself. Surprisingly, Gemini works well too when attached to Claude Code."</p>
-          <small>Jeongkyu Shin (CEO of Lablup Inc.), from a YouTube interview</small>
-          <p style="margin-top:10px;">OmG started from this question: "What if we bring that harness model to Gemini CLI?"</p>
+        <div class="panel interview-spotlight">
+          <p class="interview-quote">"Claude Code's core competitiveness isn't the Opus or Sonnet engine. It's Claude Code itself. Surprisingly, Gemini works well too when attached to Claude Code."</p>
+          <div class="interview-meta">Jeongkyu Shin (CEO of Lablup Inc.), from a YouTube interview</div>
+          <p class="origin-note">OmG started from this question: "What if we bring that harness model to Gemini CLI?"</p>
         </div>
       </div>
 
@@ -594,11 +726,20 @@ Structured Result
     (function () {
       var cmd = document.getElementById('installCmd').textContent;
       var btn = document.getElementById('copyBtn');
+      var label = btn.querySelector('.btn-label');
       btn.addEventListener('click', function () {
         navigator.clipboard.writeText(cmd).then(function () {
-          var prev = btn.textContent;
-          btn.textContent = 'Copied';
-          setTimeout(function () { btn.textContent = prev; }, 1200);
+          var prev = label.textContent;
+          label.textContent = 'Copied';
+          btn.classList.add('copy-active');
+          setTimeout(function () {
+            label.textContent = prev;
+            btn.classList.remove('copy-active');
+          }, 1200);
+        }).catch(function () {
+          var prev = label.textContent;
+          label.textContent = 'Copy failed';
+          setTimeout(function () { label.textContent = prev; }, 1200);
         });
       });
     })();
