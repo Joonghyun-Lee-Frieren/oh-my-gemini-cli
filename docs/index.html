@@ -479,7 +479,7 @@
   <header>
     <div class="wrap">
       <div class="hero-top">
-        <span class="badge">Latest Release v0.3.0</span>
+        <span class="badge">Latest Release v0.3.1</span>
         <div class="top-actions">
           <a class="btn btn-link btn-github" href="https://github.com/Joonghyun-Lee-Frieren/oh-my-gemini-cli" target="_blank" rel="noreferrer noopener">
             <svg class="btn-icon" viewBox="0 0 16 16" aria-hidden="true">
@@ -525,9 +525,9 @@
       </div>
 
       <div class="stats">
-        <div class="stat"><div class="n">7</div><div class="l">Sub-agents</div></div>
-        <div class="stat"><div class="n">5</div><div class="l">Reusable skills</div></div>
-        <div class="stat"><div class="n">4</div><div class="l">Namespaced commands</div></div>
+        <div class="stat"><div class="n">10</div><div class="l">Sub-agents</div></div>
+        <div class="stat"><div class="n">17</div><div class="l">Reusable skills</div></div>
+        <div class="stat"><div class="n">21</div><div class="l">Namespaced commands</div></div>
         <div class="stat"><div class="n">5</div><div class="l">Context layers</div></div>
       </div>
     </div>
@@ -607,6 +607,26 @@ Structured Result
             <td>No namespaced workflow surface</td>
             <td>Stable <code>/omg:*</code> command namespace</td>
           </tr>
+          <tr>
+            <td>Intent-stage mismatch prevention</td>
+            <td>Manual interpretation each turn</td>
+            <td><code>/omg:intent</code> gate routes requests to the right stage</td>
+          </tr>
+          <tr>
+            <td>Long-session bootstrap</td>
+            <td>Ad-hoc codebase scanning</td>
+            <td><code>/omg:deep-init</code> creates project map and validation baseline</td>
+          </tr>
+          <tr>
+            <td>Done criteria discipline</td>
+            <td>Premature completion risk</td>
+            <td><code>/omg:loop</code> enforces <code>exec -&gt; verify -&gt; fix</code> cycles</td>
+          </tr>
+          <tr>
+            <td>Task-specific guardrails</td>
+            <td>Global/static prompt policies</td>
+            <td><code>/omg:rules</code> injects conditional rule packs per task</td>
+          </tr>
         </tbody>
       </table>
     </div>
@@ -618,11 +638,11 @@ Structured Result
       <div class="cards" style="margin-bottom:10px;">
         <div class="card">
           <h3>Commands</h3>
-          <p>Fast operational control points for status, orchestration, optimization, and cache checks.</p>
+          <p>Fast control points for status, intent gating, deep init, orchestration, and loop discipline.</p>
         </div>
         <div class="card">
           <h3>Skills</h3>
-          <p>Reusable instruction packs for planning, execution, team orchestration, and research.</p>
+          <p>Reusable packs for intent routing, deep bootstrap, execution loops, and conditional guardrails.</p>
         </div>
         <div class="card">
           <h3>Sub-agents</h3>
@@ -639,9 +659,17 @@ Structured Result
         </thead>
         <tbody>
           <tr><td>Command</td><td><code>/omg:status</code></td><td>Snapshot progress, risk, and next actions</td></tr>
+          <tr><td>Command</td><td><code>/omg:intent</code></td><td>Classify request intent and route to the right stage</td></tr>
+          <tr><td>Command</td><td><code>/omg:deep-init</code></td><td>Build project map and validation baseline before long sessions</td></tr>
+          <tr><td>Command</td><td><code>/omg:rules</code></td><td>Activate task-conditional guardrail rule packs</td></tr>
+          <tr><td>Command</td><td><code>/omg:loop</code></td><td>Continue exec/verify/fix cycles until done or blocked</td></tr>
           <tr><td>Command</td><td><code>/omg:team</code></td><td>Run full multi-agent delivery loop</td></tr>
           <tr><td>Command</td><td><code>/omg:optimize</code></td><td>Tune prompt/context quality and cost profile</td></tr>
           <tr><td>Command</td><td><code>/omg:cache</code></td><td>Inspect cache/context behavior</td></tr>
+          <tr><td>Skill</td><td><code>$intent</code></td><td>Intent routing and next-command recommendation</td></tr>
+          <tr><td>Skill</td><td><code>$deep-init</code></td><td>Repository bootstrap map for long tasks</td></tr>
+          <tr><td>Skill</td><td><code>$rules</code></td><td>Conditional policy activation by trigger</td></tr>
+          <tr><td>Skill</td><td><code>$loop</code></td><td>Strict completion loop with blocker-aware status</td></tr>
           <tr><td>Skill</td><td><code>$plan</code></td><td>Milestone-level decomposition</td></tr>
           <tr><td>Skill</td><td><code>$execute</code></td><td>Implementation pass for a scoped slice</td></tr>
           <tr><td>Skill</td><td><code>$team</code></td><td>End-to-end collaborative delivery</td></tr>
@@ -694,8 +722,18 @@ Structured Result
           </tr>
           <tr>
             <td>Start workflow</td>
+            <td><code>/omg:deep-init &lt;task&gt;</code> then <code>/omg:intent &lt;task&gt;</code></td>
+            <td>Project map + stage-routed handoff before coding</td>
+          </tr>
+          <tr>
+            <td>Execute lifecycle</td>
             <td><code>/omg:team Implement feature X with tests</code></td>
             <td>Plan -> execute -> review progression summary</td>
+          </tr>
+          <tr>
+            <td>Enforce completion loop</td>
+            <td><code>/omg:loop Continue unresolved verify backlog</code></td>
+            <td>Explicit continue/done/blocked status with evidence</td>
           </tr>
           <tr>
             <td>Observe state</td>
