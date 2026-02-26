@@ -15,6 +15,14 @@ This project started from that observation:
 
 OmG extends Gemini CLI from a single-session assistant into a structured, role-driven engineering workflow.
 
+## What's New in v0.3.1
+
+- Added intent-aware intake gate: `/omg:intent` + `$intent`
+- Added strict continuation loop controls: `/omg:loop` + `$loop`
+- Added deep repository bootstrap mode: `/omg:deep-init` + `$deep-init`
+- Added conditional rule injection workflow: `/omg:rules` + `$rules`
+- Clarified extension-native scope: prompt/command/skill orchestration is supported, while runtime hook workers from external harnesses need separate runtime implementation
+
 ## What's New in v0.3.0
 
 - Added a stage-based team lifecycle: `team-plan -> team-prd -> team-exec -> team-verify -> team-fix`
@@ -116,12 +124,16 @@ Note: extension install/update commands run in terminal mode (`gemini extensions
 | Command | Purpose | Typical timing |
 | --- | --- | --- |
 | `/omg:status` | Summarize progress, risks, and next actions | Start/end of a work session |
+| `/omg:intent` | Classify task intent and route to the correct stage/command | Before planning or coding when request intent is ambiguous |
+| `/omg:rules` | Activate task-conditional guardrail rule packs | Before implementation on migration/security/performance-sensitive work |
+| `/omg:deep-init` | Build deep project map and validation baseline for long sessions | At project kickoff or when onboarding into unfamiliar codebases |
 | `/omg:team` | Execute full stage pipeline (`plan -> prd -> exec -> verify -> fix`) | Complex feature or refactor delivery |
 | `/omg:team-plan` | Build dependency-aware execution plan | Before implementation |
 | `/omg:team-prd` | Lock measurable acceptance criteria and constraints | After planning, before coding |
 | `/omg:team-exec` | Implement a scoped delivery slice | Main implementation loop |
 | `/omg:team-verify` | Validate acceptance criteria and regressions | After each execution slice |
 | `/omg:team-fix` | Patch only verified failures | When verification fails |
+| `/omg:loop` | Enforce repeated `exec -> verify -> fix` cycles until done/blocker | Mid/late delivery when unresolved findings remain |
 | `/omg:mode` | Inspect or switch operating profile (`balanced/speed/deep/autopilot/ralph/ultrawork`) | At session start or posture change |
 | `/omg:autopilot` | Run iterative autonomous cycles with checkpoints | Complex autonomous delivery |
 | `/omg:ralph` | Enforce strict quality-gated orchestration | Release-critical tasks |
@@ -137,11 +149,15 @@ Note: extension install/update commands run in terminal mode (`gemini extensions
 
 | Skill | Focus | Output style |
 | --- | --- | --- |
+| `$deep-init` | Initialize deep repository map and validation baseline | Architecture/risk map + onboarding handoff |
+| `$intent` | Route ambiguous requests into the correct OmG stage | Intent classification + next-command recommendation |
+| `$rules` | Inject conditional guardrail rule packs | Trigger matrix + active policy set |
 | `$plan` | Convert goals into phased plan | Milestones, risks, and acceptance criteria |
 | `$ralplan` | Strict, stage-gated planning with rollback points | Quality-first execution map |
 | `$execute` | Implement a scoped plan slice | Change summary with validation notes |
 | `$prd` | Convert requests into measurable acceptance criteria | PRD-style scope contract |
 | `$team` | Full orchestration across roles | Combined multi-agent report |
+| `$loop` | Enforce iterative exec/verify/fix until completion or blocker | Cycle status board + unresolved backlog |
 | `$autopilot` | Autonomous stage-loop execution | Cycle board with blockers |
 | `$ralph` | Strict verification-gated orchestration | Gate board + ship decision |
 | `$ultrawork` | Batch throughput execution | Shard board + periodic gates |

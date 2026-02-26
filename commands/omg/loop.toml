@@ -1,0 +1,36 @@
+description = "Enforce execution/verify/fix loops until acceptance criteria pass or blockers are explicit."
+prompt = """
+Run OmG `loop` enforcement.
+
+Context:
+$ARGUMENTS
+
+Protocol:
+1. Read current acceptance criteria and open backlog from prior stage outputs.
+2. Build the next smallest cycle scope.
+3. Execute one strict cycle: `team-exec -> team-verify -> team-fix` (fix only if verify fails).
+4. Never declare done when unresolved blocker or major items remain.
+5. Stop only when:
+   - all criteria pass (done),
+   - hard blocker exists (blocked),
+   - max cycles reached (escalate).
+6. Default max cycles: 3 for one invocation unless user overrides.
+7. If filesystem tools are available, update `.omg/state/workflow.md` and `.omg/state/checkpoint.md`.
+
+Output format:
+## Loop Status
+- cycle:
+- status: continue / done / blocked
+- remaining blockers:
+
+## Cycle Evidence
+| Stage | Result | Evidence | Next |
+| --- | --- | --- | --- |
+
+## Remaining Backlog
+1. ...
+2. ...
+
+## Next Command
+- ...
+"""

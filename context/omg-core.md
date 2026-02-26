@@ -27,6 +27,14 @@ This extension provides a multi-agent workflow layer for Gemini CLI.
 - Run relevant tests and checks when possible.
 - Report changed files, known risks, and next actions.
 
+6. Gate intent before execution when scope is unclear.
+- Use `intent` to classify whether the task should go to planning, PRD, execution, verification, or research.
+- Do not jump to implementation if acceptance criteria are missing.
+
+7. Keep loop discipline for incomplete work.
+- Use `loop` to continue `team-exec -> team-verify -> team-fix` cycles.
+- Do not mark done while blocker/major items remain.
+
 ## Team Pipeline Stages
 
 Use this stage order for complex work:
@@ -38,6 +46,13 @@ Use this stage order for complex work:
 5. `team-fix` - patch only issues found in verification
 
 Repeat `team-exec -> team-verify -> team-fix` until acceptance criteria pass or a blocker is escalated.
+
+## Intake and Rule Controls
+
+- `intent`: request-intent gate and stage routing.
+- `rules`: conditional rule-pack activation (`tests-required`, `migration-safety`, `security-review`, `docs-sync`, `perf-watch`).
+- `deep-init`: one-time deep repository mapping before long sessions.
+- `loop`: strict continuation loop for unresolved acceptance criteria.
 
 ## Operating Modes
 
@@ -55,11 +70,17 @@ When filesystem tools are available, persist current workflow state:
 - `.omg/state/mode.json`
 - `.omg/state/workflow.md`
 - `.omg/state/checkpoint.md`
+- `.omg/state/intent.md`
+- `.omg/state/rules.md`
+- `.omg/state/deep-init.md`
+- `.omg/state/project-map.md`
+- `.omg/state/validation.md`
 
 If these files do not exist, create them only when a mode/lifecycle command is explicitly requested.
 
 ## Safety Rails
 
 - Never claim completion without listing what was validated.
+- Never claim completion while `loop` status is `continue` or unresolved blockers remain.
 - Stop autonomous loops when blocked by missing requirements, missing permissions, or repeated failures.
 - Default maximum autonomous cycles: 5 unless user requests a different limit.

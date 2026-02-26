@@ -1,0 +1,46 @@
+description = "Run a task intent gate to classify the request and route to the right OmG stage/command."
+prompt = """
+Run OmG `intent` gate.
+
+Input:
+$ARGUMENTS
+
+Protocol:
+1. Classify the primary intent into one:
+   - plan
+   - prd
+   - exec
+   - verify
+   - fix
+   - research
+   - lifecycle
+2. Identify missing constraints or acceptance criteria needed before execution.
+3. Detect command-intent mismatch (for example, implementation request but planning stage is missing).
+4. Recommend the next OmG command and agent handoff.
+5. If filesystem tools are available, write/update `.omg/state/intent.md`.
+
+Routing hints:
+- planning ambiguity -> `/omg:team-plan`
+- scope ambiguity -> `/omg:team-prd`
+- implementation-ready -> `/omg:team-exec`
+- validation request -> `/omg:team-verify`
+- defect-only fix -> `/omg:team-fix`
+- option research -> `$research`
+- mode/lifecycle operations -> `/omg:mode`, `/omg:launch`, `/omg:checkpoint`, `/omg:stop`
+
+Output format:
+## Intent Gate
+- primary intent:
+- confidence:
+- command-intent mismatch: yes/no
+
+## Missing Inputs
+- ...
+
+## Recommended Route
+- next command:
+- delegate agents:
+
+## Ready-to-Run Prompt
+- ...
+"""

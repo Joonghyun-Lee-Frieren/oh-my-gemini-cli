@@ -6,6 +6,7 @@ All notable changes to oh-my-gemini-cli are documented here.
 
 | Version | Date | Theme | Outcome |
 | --- | --- | --- | --- |
+| `v0.3.1` | 2026-02-26 | Intent/loop guardrail expansion | Added intake gate, loop enforcement, deep init, and conditional rule injection workflows |
 | `v0.3.0` | 2026-02-25 | Workflow and mode expansion | Added stage pipeline commands, autonomous modes, and lifecycle controls |
 | `v0.2.0` | 2026-02-24 | Extensions-first rebuild | OmG moved to Gemini CLI's official extension primitives |
 | `v0.1.4` | 2026-02-23 | Runtime integration hardening | MCP/server wiring and status observability improved |
@@ -13,6 +14,42 @@ All notable changes to oh-my-gemini-cli are documented here.
 | `v0.1.2` | 2026-02-22 | Model/branding consistency | `gemini-3.1-*` naming and OmG branding normalized |
 | `v0.1.1` | 2026-02-22 | Dashboard redesign | Retro game-style TUI and richer telemetry presentation |
 | `v0.1.0` | 2026-02-22 | Initial release | Multi-agent orchestration foundation shipped |
+
+## v0.3.1 - Intent and Loop Guardrail Expansion (2026-02-26)
+
+Added extension-native guardrail workflows inspired by cross-harness operational patterns.
+
+### Added
+
+- New intake/routing command and skill:
+  - `/omg:intent`
+  - `$intent`
+- New loop enforcement command and skill:
+  - `/omg:loop`
+  - `$loop`
+- New deep repository bootstrap command and skill:
+  - `/omg:deep-init`
+  - `$deep-init`
+- New conditional rule injection command and skill:
+  - `/omg:rules`
+  - `$rules`
+- New runtime-state artifacts for extension-guided persistence:
+  - `.omg/state/intent.md`
+  - `.omg/state/rules.md`
+  - `.omg/state/deep-init.md`
+  - `.omg/state/project-map.md`
+  - `.omg/state/validation.md`
+
+### Changed
+
+- `context/omg-core.md` updated with intent-gating, conditional-rule, deep-init, and loop-discipline conventions.
+- README command/skill map expanded with the new guardrail workflows.
+- Extension/package version bumped to `0.3.1`.
+
+### Structural Fit Note
+
+- Extension-manifest primitives can represent policy-oriented orchestration (`commands/`, `skills/`, `context/`) directly.
+- Runtime hook workers, background daemons, and low-level event hooks still require separate runtime code beyond extension-only assets.
 
 ## v0.3.0 - Workflow and Mode Expansion (2026-02-25)
 
@@ -173,7 +210,7 @@ Reimplemented OmG around Gemini CLI's official Extensions model.
 | Gemini installation mode | `gemini extensions install ...` |
 | Extension metadata source | `gemini-extension.json` |
 | Command namespace | `/omg:*` |
-| Skill namespace | `$plan`, `$execute`, `$team`, `$research`, `$context-optimize` |
+| Skill namespace | `$<skill>` from `skills/*/SKILL.md` (for example: `$plan`, `$team`, `$intent`, `$deep-init`, `$loop`) |
 
 ## Notes
 
