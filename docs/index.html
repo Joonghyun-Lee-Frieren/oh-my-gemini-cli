@@ -479,7 +479,7 @@
   <header>
     <div class="wrap">
       <div class="hero-top">
-        <span class="badge">Latest Release v0.3.1</span>
+        <span class="badge">Latest Release v0.3.2</span>
         <div class="top-actions">
           <a class="btn btn-link btn-github" href="https://github.com/Joonghyun-Lee-Frieren/oh-my-gemini-cli" target="_blank" rel="noreferrer noopener">
             <svg class="btn-icon" viewBox="0 0 16 16" aria-hidden="true">
@@ -526,8 +526,8 @@
 
       <div class="stats">
         <div class="stat"><div class="n">10</div><div class="l">Sub-agents</div></div>
-        <div class="stat"><div class="n">17</div><div class="l">Reusable skills</div></div>
-        <div class="stat"><div class="n">21</div><div class="l">Namespaced commands</div></div>
+        <div class="stat"><div class="n">18</div><div class="l">Reusable skills</div></div>
+        <div class="stat"><div class="n">25</div><div class="l">Namespaced commands</div></div>
         <div class="stat"><div class="n">5</div><div class="l">Context layers</div></div>
       </div>
     </div>
@@ -627,6 +627,11 @@ Structured Result
             <td>Global/static prompt policies</td>
             <td><code>/omg:rules</code> injects conditional rule packs per task</td>
           </tr>
+          <tr>
+            <td>Status visibility control</td>
+            <td>Single fixed output density</td>
+            <td><code>/omg:hud</code> profiles (<code>normal</code>, <code>compact</code>, <code>hidden</code>) adapt status readability</td>
+          </tr>
         </tbody>
       </table>
     </div>
@@ -638,11 +643,11 @@ Structured Result
       <div class="cards" style="margin-bottom:10px;">
         <div class="card">
           <h3>Commands</h3>
-          <p>Fast control points for status, intent gating, deep init, orchestration, and loop discipline.</p>
+          <p>Fast control points for status, HUD profile, intent gating, deep init, orchestration, and loop discipline.</p>
         </div>
         <div class="card">
           <h3>Skills</h3>
-          <p>Reusable packs for intent routing, deep bootstrap, execution loops, and conditional guardrails.</p>
+          <p>Reusable packs for HUD/status control, intent routing, deep bootstrap, execution loops, and conditional guardrails.</p>
         </div>
         <div class="card">
           <h3>Sub-agents</h3>
@@ -659,6 +664,10 @@ Structured Result
         </thead>
         <tbody>
           <tr><td>Command</td><td><code>/omg:status</code></td><td>Snapshot progress, risk, and next actions</td></tr>
+          <tr><td>Command</td><td><code>/omg:hud</code></td><td>Switch status visibility profile (<code>normal</code>/<code>compact</code>/<code>hidden</code>)</td></tr>
+          <tr><td>Command</td><td><code>/omg:hud-on</code></td><td>Quick toggle to full HUD status view</td></tr>
+          <tr><td>Command</td><td><code>/omg:hud-compact</code></td><td>Quick toggle to compact HUD status view</td></tr>
+          <tr><td>Command</td><td><code>/omg:hud-off</code></td><td>Quick toggle to hidden HUD (plain status sections)</td></tr>
           <tr><td>Command</td><td><code>/omg:intent</code></td><td>Classify request intent and route to the right stage</td></tr>
           <tr><td>Command</td><td><code>/omg:deep-init</code></td><td>Build project map and validation baseline before long sessions</td></tr>
           <tr><td>Command</td><td><code>/omg:rules</code></td><td>Activate task-conditional guardrail rule packs</td></tr>
@@ -667,6 +676,7 @@ Structured Result
           <tr><td>Command</td><td><code>/omg:optimize</code></td><td>Tune prompt/context quality and cost profile</td></tr>
           <tr><td>Command</td><td><code>/omg:cache</code></td><td>Inspect cache/context behavior</td></tr>
           <tr><td>Skill</td><td><code>$intent</code></td><td>Intent routing and next-command recommendation</td></tr>
+          <tr><td>Skill</td><td><code>$hud</code></td><td>HUD profile control for status readability</td></tr>
           <tr><td>Skill</td><td><code>$deep-init</code></td><td>Repository bootstrap map for long tasks</td></tr>
           <tr><td>Skill</td><td><code>$rules</code></td><td>Conditional policy activation by trigger</td></tr>
           <tr><td>Skill</td><td><code>$loop</code></td><td>Strict completion loop with blocker-aware status</td></tr>
@@ -739,6 +749,11 @@ Structured Result
             <td>Observe state</td>
             <td><code>/omg:status</code></td>
             <td>Current progress, blockers, and next actions</td>
+          </tr>
+          <tr>
+            <td>Tune visibility</td>
+            <td><code>/omg:hud compact</code> or <code>/omg:hud-off</code></td>
+            <td>Status output density aligned to terminal/session style</td>
           </tr>
           <tr>
             <td>Tune context</td>

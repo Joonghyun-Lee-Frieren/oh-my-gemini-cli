@@ -28,22 +28,6 @@ OmG extends Gemini CLI from a single-session assistant into a structured, role-d
 - Clarified Gemini extension boundary: visual summaries are prompt-driven and state-driven, not terminal hook injection
 - Improved local dashboard HUD behavior: added top HUD line, `h` key toggle (`normal -> compact -> hidden`), and sync with `.omg/state/hud.json`
 
-## What's New in v0.3.1
-
-- Added intent-aware intake gate: `/omg:intent` + `$intent`
-- Added strict continuation loop controls: `/omg:loop` + `$loop`
-- Added deep repository bootstrap mode: `/omg:deep-init` + `$deep-init`
-- Added conditional rule injection workflow: `/omg:rules` + `$rules`
-- Clarified extension-native scope: prompt/command/skill orchestration is supported, while runtime hook workers from external harnesses need separate runtime implementation
-
-## What's New in v0.3.0
-
-- Added a stage-based team lifecycle: `team-plan -> team-prd -> team-exec -> team-verify -> team-fix`
-- Added operation modes: `balanced`, `speed`, `deep`, `autopilot`, `ralph`, `ultrawork`
-- Added lifecycle controls: `/omg:launch`, `/omg:checkpoint`, `/omg:stop`, `/omg:mode`
-- Added specialist agents for product scoping, verification gates, and decision convergence
-- Added new workflow skills: `$prd`, `$ralplan`, `$autopilot`, `$ralph`, `$ultrawork`, `$consensus`, `$mode`, `$cancel`
-
 ## At A Glance
 
 | Item | Summary |
