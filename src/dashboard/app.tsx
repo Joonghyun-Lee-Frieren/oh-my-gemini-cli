@@ -7,6 +7,7 @@ import { Header } from './components/header.js';
 import { AgentGrid } from './components/agent-grid.js';
 import { TaskList } from './components/task-list.js';
 import { LogPanel } from './components/log-panel.js';
+import { HudLine } from './components/hud-line.js';
 import { StatusBar } from './components/status-bar.js';
 import { AsciiArt } from './components/ascii-art.js';
 import { useAgentStatus } from './hooks/use-agent-status.js';
@@ -32,11 +33,13 @@ export function DashboardApp({ projectName, version, renderMode }: DashboardAppP
   const [paused, setPaused] = useState(false);
   const [layoutMode, setLayoutMode] = useState<'all' | 'agents' | 'tasks' | 'logs'>('all');
   const [inputMode, setInputMode] = useState(false);
+  const [hudVisibility, setHudVisibility] = useState<'normal' | 'compact' | 'hidden'>('normal');
   const [command, setCommand] = useState<'launch' | 'team-start' | 'status' | 'team-status' | null>(null);
   const [cacheHitRate, setCacheHitRate] = useState(0);
   const [runtimeTokenUsage, setRuntimeTokenUsage] = useState(0);
   const [runtimeCostEstimate, setRuntimeCostEstimate] = useState(0);
   const [runtimeModel, setRuntimeModel] = useState<string | undefined>(undefined);
+  const [runtimePhase, setRuntimePhase] = useState('running');
   const [sessionState, setSessionState] = useState<'running' | 'done' | 'failed'>('running');
   const mode = normalizeDashboardRenderMode(renderMode ?? process.env.OMG_DASHBOARD_STYLE);
 
@@ -48,6 +51,7 @@ export function DashboardApp({ projectName, version, renderMode }: DashboardAppP
     (task) => task.status === TaskStatus.InProgress || task.status === TaskStatus.Assigned,
   ).length;
   const queuedCount = tasks.filter((task) => task.status === TaskStatus.Queued).length;
+  const failedCount = tasks.filter((task) => task.status === TaskStatus.Failed).length;
 
   const activeModel = runtimeModel ?? agents.find((a) => a.config?.model)?.config.model;
   const estimatedTokenUsage = useMemo(() => {
@@ -69,17 +73,19 @@ export function DashboardApp({ projectName, version, renderMode }: DashboardAppP
   }, []);
 
   useEffect(() => {
-    const onMetrics = (payload: { tokenUsage?: number; costEstimate?: number; cacheHitRate?: number; model?: string }) => {
+    const onMetrics = (payload: { tokenUsage?: number; costEstimate?: number; cacheHitRate?: number; model?: string; phase?: string }) => {
       if (typeof payload.tokenUsage === 'number') setRuntimeTokenUsage(Math.max(0, payload.tokenUsage));
       if (typeof payload.costEstimate === 'number') setRuntimeCostEstimate(Math.max(0, payload.costEstimate));
       if (typeof payload.cacheHitRate === 'number') setCacheHitRate(Math.max(0, Math.min(100, payload.cacheHitRate)));
       if (typeof payload.model === 'string' && payload.model.trim()) setRuntimeModel(payload.model);
+      if (typeof payload.phase === 'string' && payload.phase.trim()) setRuntimePhase(payload.phase);
     };
     const onSession = (payload: { command: 'launch' | 'team-start' | 'status' | 'team-status'; state: 'running' | 'done' | 'failed' }) => {
       setCommand(payload.command);
       setSessionState(payload.state);
     };
     const cacheStatsPath = resolve(getProjectRoot(), STATE_DIR, 'cache-stats.json');
+    const hudStatePath = resolve(getProjectRoot(), STATE_DIR, 'hud.json');
     const loadCache = () => {
       if (!existsSync(cacheStatsPath)) return;
       try {
@@ -93,8 +99,23 @@ export function DashboardApp({ projectName, version, renderMode }: DashboardAppP
         // Keep latest valid cache rate.
       }
     };
+    const loadHudVisibility = () => {
+      if (!existsSync(hudStatePath)) return;
+      try {
+        const hud = JSON.parse(readFileSync(hudStatePath, 'utf-8')) as { visibility?: string };
+        if (hud.visibility === 'compact' || hud.visibility === 'hidden' || hud.visibility === 'normal') {
+          setHudVisibility(hud.visibility);
+        }
+      } catch {
+        // Keep the current HUD visibility if state is malformed.
+      }
+    };
     loadCache();
-    const pollId = setInterval(loadCache, 2000);
+    loadHudVisibility();
+    const pollId = setInterval(() => {
+      loadCache();
+      loadHudVisibility();
+    }, 2000);
     eventBus.on('hud:metrics', onMetrics);
     eventBus.on('hud:session', onSession);
     return () => {
@@ -148,6 +169,12 @@ export function DashboardApp({ projectName, version, renderMode }: DashboardAppP
       setRefreshTick((prev) => prev + 1);
       return;
     }
+    if (input === 'h') {
+      setHudVisibility((prev) => (
+        prev === 'normal' ? 'compact' : prev === 'compact' ? 'hidden' : 'normal'
+      ));
+      return;
+    }
     if (key.tab) {
       setLayoutMode((prev) => (
         prev === 'all' ? 'agents' : prev === 'agents' ? 'tasks' : prev === 'tasks' ? 'logs' : 'all'
@@ -175,6 +202,17 @@ export function DashboardApp({ projectName, version, renderMode }: DashboardAppP
         version={version}
         activeAgentCount={activeCount}
         totalAgentCount={agents.length || 6}
+        renderMode={mode}
+      />
+      <HudLine
+        visibility={hudVisibility}
+        command={command}
+        phase={runtimePhase}
+        activeAgents={activeCount}
+        totalAgents={Math.max(agents.length, 1)}
+        doneTasks={doneCount}
+        totalTasks={tasks.length}
+        failedTasks={failedCount}
         renderMode={mode}
       />
 
@@ -205,12 +243,14 @@ export function DashboardApp({ projectName, version, renderMode }: DashboardAppP
         activeAgents={activeCount}
         totalAgents={Math.max(agents.length, 1)}
         doneTasks={doneCount}
+        failedTasks={failedCount}
         totalTasks={tasks.length}
         sessionState={sessionState}
         layoutMode={layoutMode}
         refreshMs={refreshMs}
         inputMode={inputMode}
         command={command}
+        hudVisibility={hudVisibility}
         renderMode={mode}
       />
 

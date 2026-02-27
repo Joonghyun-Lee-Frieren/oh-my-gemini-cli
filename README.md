@@ -15,6 +15,19 @@ This project started from that observation:
 
 OmG extends Gemini CLI from a single-session assistant into a structured, role-driven engineering workflow.
 
+## What's New in v0.3.2
+
+- Added HUD profile controls for extension-native visual status rendering:
+  - `/omg:hud`
+  - `/omg:hud-on`
+  - `/omg:hud-compact`
+  - `/omg:hud-off`
+  - `$hud`
+- Upgraded `/omg:status` format to support HUD visibility profiles (`normal`, `compact`, `hidden`)
+- Added HUD runtime state convention: `.omg/state/hud.json`
+- Clarified Gemini extension boundary: visual summaries are prompt-driven and state-driven, not terminal hook injection
+- Improved local dashboard HUD behavior: added top HUD line, `h` key toggle (`normal -> compact -> hidden`), and sync with `.omg/state/hud.json`
+
 ## What's New in v0.3.1
 
 - Added intent-aware intake gate: `/omg:intent` + `$intent`
@@ -124,6 +137,10 @@ Note: extension install/update commands run in terminal mode (`gemini extensions
 | Command | Purpose | Typical timing |
 | --- | --- | --- |
 | `/omg:status` | Summarize progress, risks, and next actions | Start/end of a work session |
+| `/omg:hud` | Inspect or switch visual HUD profile (`normal`, `compact`, `hidden`) | Before long sessions or when terminal density changes |
+| `/omg:hud-on` | Quick toggle HUD to full visual mode | When returning to full status boards |
+| `/omg:hud-compact` | Quick toggle HUD to compact mode | During dense implementation loops |
+| `/omg:hud-off` | Quick toggle HUD to hidden mode (plain status sections) | When visual blocks are distracting |
 | `/omg:intent` | Classify task intent and route to the correct stage/command | Before planning or coding when request intent is ambiguous |
 | `/omg:rules` | Activate task-conditional guardrail rule packs | Before implementation on migration/security/performance-sensitive work |
 | `/omg:deep-init` | Build deep project map and validation baseline for long sessions | At project kickoff or when onboarding into unfamiliar codebases |
@@ -150,6 +167,7 @@ Note: extension install/update commands run in terminal mode (`gemini extensions
 | Skill | Focus | Output style |
 | --- | --- | --- |
 | `$deep-init` | Initialize deep repository map and validation baseline | Architecture/risk map + onboarding handoff |
+| `$hud` | Manage visual status profile for status rendering | HUD profile + preview line |
 | `$intent` | Route ambiguous requests into the correct OmG stage | Intent classification + next-command recommendation |
 | `$rules` | Inject conditional guardrail rule packs | Trigger matrix + active policy set |
 | `$plan` | Convert goals into phased plan | Milestones, risks, and acceptance criteria |

@@ -9,12 +9,14 @@ interface StatusBarProps {
   activeAgents: number;
   totalAgents: number;
   doneTasks: number;
+  failedTasks: number;
   totalTasks: number;
   sessionState: 'running' | 'done' | 'failed';
   layoutMode: 'all' | 'agents' | 'tasks' | 'logs';
   refreshMs: number;
   inputMode: boolean;
   command: 'launch' | 'team-start' | 'status' | 'team-status' | null;
+  hudVisibility: 'normal' | 'compact' | 'hidden';
   renderMode: DashboardRenderMode;
 }
 
@@ -31,6 +33,13 @@ function formatTokens(n: number): string {
   return String(n);
 }
 
+function commandHint(command: StatusBarProps['command']): string {
+  if (command === 'launch') return 'launch';
+  if (command === 'team-start') return 'team';
+  if (command === 'team-status') return 'status';
+  return 'idle';
+}
+
 export function StatusBar({
   cacheHitRate = 0,
   tokenUsage = 0,
@@ -38,12 +47,14 @@ export function StatusBar({
   activeAgents,
   totalAgents,
   doneTasks,
+  failedTasks,
   totalTasks,
   sessionState,
   layoutMode,
   refreshMs,
   inputMode,
   command,
+  hudVisibility,
   renderMode,
 }: StatusBarProps) {
   const [blink, setBlink] = useState(true);
@@ -61,10 +72,52 @@ export function StatusBar({
       : retroColors.cyan;
   const sessionLabel = sessionState.toUpperCase();
   const layoutLabel = layoutMode.toUpperCase();
+  const border = '===========================================================================';
+  const prompt = blink ? (renderMode === 'retro' ? '>>' : '>') : ' ';
+
+  if (hudVisibility === 'hidden') {
+    return (
+      <Box flexDirection="column">
+        <Text color={retroColors.purple}>{border}</Text>
+        <Box justifyContent="space-between" paddingX={1}>
+          <Text color={retroColors.dim}>HUD hidden | command {commandHint(command)} | state <Text color={sessionColor}>{sessionLabel}</Text></Text>
+          <Text color={retroColors.dim}>
+            <Text color={retroColors.cyan}>{prompt}</Text>{' '}
+            <Text color={retroColors.pink}>h</Text>:hud{' '}
+            <Text color={retroColors.pink}>tab</Text>:view{' '}
+            <Text color={retroColors.pink}>q</Text>:quit
+          </Text>
+        </Box>
+        <Text color={retroColors.purple}>{border}</Text>
+      </Box>
+    );
+  }
+
+  if (hudVisibility === 'compact') {
+    return (
+      <Box flexDirection="column">
+        <Text color={retroColors.purple}>{border}</Text>
+        <Box justifyContent="space-between" paddingX={1}>
+          <Text color={retroColors.slate}>
+            AG {activeAgents}/{totalAgents} | TK {doneTasks}/{totalTasks} | RF {(refreshMs / 1000).toFixed(1)}s | CS{' '}
+            <Text color={cacheColor}>{cacheHitRate.toFixed(0)}%</Text> | ST <Text color={sessionColor}>{sessionLabel}</Text>
+          </Text>
+          <Text color={retroColors.dim}>
+            <Text color={retroColors.cyan}>{prompt}</Text>{' '}
+            <Text color={retroColors.pink}>h</Text>:hud{' '}
+            <Text color={retroColors.pink}>q</Text>:quit{' '}
+            <Text color={retroColors.pink}>tab</Text>:view{' '}
+            <Text color={retroColors.pink}>f</Text>:refresh
+          </Text>
+        </Box>
+        <Text color={retroColors.purple}>{border}</Text>
+      </Box>
+    );
+  }
 
   return (
     <Box flexDirection="column">
-      <Text color={retroColors.purple}>═══════════════════════════════════════════════════════════════════════════</Text>
+      <Text color={retroColors.purple}>{border}</Text>
       <Box justifyContent="space-between" paddingX={1}>
         <Box gap={2}>
           <Text>
@@ -76,6 +129,10 @@ export function StatusBar({
             <Text color={retroColors.slate}>TASKS </Text>
             <Text color={retroColors.white}>{doneTasks}</Text>
             <Text color={retroColors.dim}>/{totalTasks}</Text>
+          </Text>
+          <Text>
+            <Text color={retroColors.slate}>RISKS </Text>
+            <Text color={failedTasks > 0 ? retroColors.red : retroColors.green}>{failedTasks}</Text>
           </Text>
           <Text>
             <Text color={retroColors.slate}>CACHE </Text>
@@ -113,14 +170,14 @@ export function StatusBar({
         </Box>
         <Box gap={1}>
           <Text color={retroColors.dim}>
-            <Text color={blink ? retroColors.cyan : retroColors.dim}>{renderMode === 'retro' ? '▸' : '>'}</Text>
-            {' '}
+            <Text color={blink ? retroColors.cyan : retroColors.dim}>{prompt}</Text>{' '}
             <Text color={retroColors.pink}>q</Text>:quit{' '}
             <Text color={retroColors.pink}>p</Text>:pause{' '}
             <Text color={retroColors.pink}>r</Text>:resume{' '}
             <Text color={retroColors.pink}>tab</Text>:view{' '}
             <Text color={retroColors.pink}>a</Text>:rate{' '}
             <Text color={retroColors.pink}>f</Text>:refresh{' '}
+            <Text color={retroColors.pink}>h</Text>:hud{' '}
             {command === 'launch' && (
               <>
                 <Text color={retroColors.pink}>i</Text>:input{' '}
@@ -130,7 +187,7 @@ export function StatusBar({
           </Text>
         </Box>
       </Box>
-      <Text color={retroColors.purple}>═══════════════════════════════════════════════════════════════════════════</Text>
+      <Text color={retroColors.purple}>{border}</Text>
     </Box>
   );
 }

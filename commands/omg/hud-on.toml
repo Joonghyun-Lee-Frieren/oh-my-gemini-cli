@@ -1,0 +1,22 @@
+description = "Quick toggle: set OmG HUD visibility profile to normal."
+prompt = """
+Set OmG HUD visibility profile to `normal`.
+
+Protocol:
+1. Apply `visibility = normal`.
+2. If filesystem tools are available, write/update `.omg/state/hud.json` with source `omg:hud-on`.
+3. Provide one-line HUD preview and recommended follow-up command.
+
+Output format:
+## HUD
+- applied: normal
+- persisted:
+
+## Preview
+```text
+[OMG][MODE balanced][STAGE team-exec][TASKS 3/8][RISKS 1][NEXT /omg:team-verify]
+```
+
+## Next Command
+- /omg:status
+"""

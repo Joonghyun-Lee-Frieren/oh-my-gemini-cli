@@ -1,6 +1,6 @@
-description = "Summarize current repository progress, pipeline stage, mode state, risks, and next actions."
+description = "Summarize repository progress with HUD-style visual status, pipeline stage, risks, and next actions."
 prompt = """
-Create an OmG status report for the current project.
+Create an OmG status report for the current project with a visual HUD snapshot.
 
 User context:
 $ARGUMENTS
@@ -8,11 +8,26 @@ $ARGUMENTS
 Checklist:
 1. Inspect current repository state and changed files.
 2. Detect active mode (`balanced/speed/deep/autopilot/ralph/ultrawork`) from context or `.omg/state/mode.json` if available.
-3. Summarize completed work vs remaining work by pipeline stage (`team-plan`, `team-prd`, `team-exec`, `team-verify`, `team-fix`).
-4. Identify blockers and risk areas.
-5. Propose the next 1-3 concrete actions.
+3. Detect HUD visibility profile from `.omg/state/hud.json` if available (`normal`, `compact`, `hidden`).
+4. Summarize completed work vs remaining work by pipeline stage (`team-plan`, `team-prd`, `team-exec`, `team-verify`, `team-fix`).
+5. Identify blockers and risk areas.
+6. Propose the next 1-3 concrete actions.
+
+HUD policy:
+- `normal`: include a full HUD line plus full snapshot/risk/action sections.
+- `compact`: include one-line HUD plus concise bullets.
+- `hidden`: skip the visual HUD code block and provide plain sections only.
+
+If no HUD profile is found, default to `normal`.
 
 Output format:
+## HUD
+- visibility:
+```text
+[OMG][MODE <mode>][STAGE <stage>][TASKS <done>/<total>][RISKS <count>][NEXT <next-command>]
+```
+(If visibility is `hidden`, print `- disabled (hidden profile)` and omit code block.)
+
 ## Snapshot
 - Active mode:
 - Pipeline stage:

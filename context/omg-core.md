@@ -53,6 +53,7 @@ Repeat `team-exec -> team-verify -> team-fix` until acceptance criteria pass or 
 - `rules`: conditional rule-pack activation (`tests-required`, `migration-safety`, `security-review`, `docs-sync`, `perf-watch`).
 - `deep-init`: one-time deep repository mapping before long sessions.
 - `loop`: strict continuation loop for unresolved acceptance criteria.
+- `hud`: visual status profile control (`normal`, `compact`, `hidden`) for `/omg:status`.
 
 ## Operating Modes
 
@@ -75,6 +76,7 @@ When filesystem tools are available, persist current workflow state:
 - `.omg/state/deep-init.md`
 - `.omg/state/project-map.md`
 - `.omg/state/validation.md`
+- `.omg/state/hud.json`
 
 If these files do not exist, create them only when a mode/lifecycle command is explicitly requested.
 

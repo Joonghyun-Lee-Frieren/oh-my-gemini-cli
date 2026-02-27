@@ -1,0 +1,20 @@
+description = "Quick toggle: set OmG HUD visibility profile to hidden."
+prompt = """
+Set OmG HUD visibility profile to `hidden`.
+
+Protocol:
+1. Apply `visibility = hidden`.
+2. If filesystem tools are available, write/update `.omg/state/hud.json` with source `omg:hud-off`.
+3. Confirm that future `/omg:status` calls should avoid visual HUD code blocks.
+
+Output format:
+## HUD
+- applied: hidden
+- persisted:
+
+## Effect
+- `/omg:status` should return plain sections without HUD code block.
+
+## Next Command
+- /omg:status
+"""

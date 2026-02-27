@@ -6,6 +6,7 @@ All notable changes to oh-my-gemini-cli are documented here.
 
 | Version | Date | Theme | Outcome |
 | --- | --- | --- | --- |
+| `v0.3.2` | 2026-02-26 | HUD visibility controls | Added extension-native HUD profile commands/skill and status rendering policy |
 | `v0.3.1` | 2026-02-26 | Intent/loop guardrail expansion | Added intake gate, loop enforcement, deep init, and conditional rule injection workflows |
 | `v0.3.0` | 2026-02-25 | Workflow and mode expansion | Added stage pipeline commands, autonomous modes, and lifecycle controls |
 | `v0.2.0` | 2026-02-24 | Extensions-first rebuild | OmG moved to Gemini CLI's official extension primitives |
@@ -14,6 +15,34 @@ All notable changes to oh-my-gemini-cli are documented here.
 | `v0.1.2` | 2026-02-22 | Model/branding consistency | `gemini-3.1-*` naming and OmG branding normalized |
 | `v0.1.1` | 2026-02-22 | Dashboard redesign | Retro game-style TUI and richer telemetry presentation |
 | `v0.1.0` | 2026-02-22 | Initial release | Multi-agent orchestration foundation shipped |
+
+## v0.3.2 - HUD Visibility Controls (2026-02-26)
+
+Added extension-native visual status controls inspired by statusline/HUD workflows from related harness projects.
+
+### Added
+
+- New HUD profile commands:
+  - `/omg:hud`
+  - `/omg:hud-on`
+  - `/omg:hud-compact`
+  - `/omg:hud-off`
+- New HUD control skill:
+  - `$hud`
+- New runtime-state artifact for HUD profile persistence:
+  - `.omg/state/hud.json`
+
+### Changed
+
+- `/omg:status` now renders a HUD section with visibility policy (`normal`, `compact`, `hidden`).
+- `context/omg-core.md` updated with HUD control conventions.
+- Local dashboard HUD now supports density toggle with `h` (`normal -> compact -> hidden`), top summary line, and `.omg/state/hud.json` sync.
+- Extension/package version bumped to `0.3.2`.
+
+### Structural Fit Note
+
+- Gemini Extensions currently support prompt/command/skill/state-driven visual summaries.
+- Direct terminal statusline hook injection remains runtime-specific and outside extension-only primitives.
 
 ## v0.3.1 - Intent and Loop Guardrail Expansion (2026-02-26)
 
@@ -210,7 +239,7 @@ Reimplemented OmG around Gemini CLI's official Extensions model.
 | Gemini installation mode | `gemini extensions install ...` |
 | Extension metadata source | `gemini-extension.json` |
 | Command namespace | `/omg:*` |
-| Skill namespace | `$<skill>` from `skills/*/SKILL.md` (for example: `$plan`, `$team`, `$intent`, `$deep-init`, `$loop`) |
+| Skill namespace | `$<skill>` from `skills/*/SKILL.md` (for example: `$plan`, `$team`, `$intent`, `$deep-init`, `$loop`, `$hud`) |
 
 ## Notes
 

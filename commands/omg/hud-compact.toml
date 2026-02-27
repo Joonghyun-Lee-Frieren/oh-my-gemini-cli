@@ -1,0 +1,22 @@
+description = "Quick toggle: set OmG HUD visibility profile to compact."
+prompt = """
+Set OmG HUD visibility profile to `compact`.
+
+Protocol:
+1. Apply `visibility = compact`.
+2. If filesystem tools are available, write/update `.omg/state/hud.json` with source `omg:hud-compact`.
+3. Provide one-line compact HUD preview and recommended follow-up command.
+
+Output format:
+## HUD
+- applied: compact
+- persisted:
+
+## Preview
+```text
+[OMG][MODE balanced][STAGE team-exec][TASKS 3/8][NEXT /omg:team-verify]
+```
+
+## Next Command
+- /omg:status
+"""

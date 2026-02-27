@@ -10,6 +10,7 @@ Launch protocol:
 2. If filesystem tools are available, create/update:
    - `.omg/state/workflow.md`
    - `.omg/state/checkpoint.md`
+   - `.omg/state/hud.json` (create default `visibility=normal` only if missing)
 3. Run `team-plan` then `team-prd`.
 4. Start first execution slice (`team-exec`) only when scope is clear.
 5. Report current stage and resume command.
