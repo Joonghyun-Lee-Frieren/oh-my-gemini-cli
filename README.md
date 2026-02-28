@@ -27,6 +27,10 @@ OmG extends Gemini CLI from a single-session assistant into a structured, role-d
 - Added HUD runtime state convention: `.omg/state/hud.json`
 - Clarified Gemini extension boundary: visual summaries are prompt-driven and state-driven, not terminal hook injection
 - Improved local dashboard HUD behavior: added top HUD line, `h` key toggle (`normal -> compact -> hidden`), and sync with `.omg/state/hud.json`
+- Added Claude-style memory management primitives:
+  - `/omg:memory` + `$memory`
+  - `MEMORY.md` index with `.omg/memory/*.md` topic split
+  - `.omg/rules/*.md` modular rule packs (`alwaysApply` + `globs`)
 
 ## At A Glance
 
@@ -127,6 +131,7 @@ Note: extension install/update commands run in terminal mode (`gemini extensions
 | `/omg:hud-off` | Quick toggle HUD to hidden mode (plain status sections) | When visual blocks are distracting |
 | `/omg:intent` | Classify task intent and route to the correct stage/command | Before planning or coding when request intent is ambiguous |
 | `/omg:rules` | Activate task-conditional guardrail rule packs | Before implementation on migration/security/performance-sensitive work |
+| `/omg:memory` | Maintain MEMORY index, topic files, and path-aware rule packs | During long sessions or when decisions/rules drift |
 | `/omg:deep-init` | Build deep project map and validation baseline for long sessions | At project kickoff or when onboarding into unfamiliar codebases |
 | `/omg:team` | Execute full stage pipeline (`plan -> prd -> exec -> verify -> fix`) | Complex feature or refactor delivery |
 | `/omg:team-plan` | Build dependency-aware execution plan | Before implementation |
@@ -154,6 +159,7 @@ Note: extension install/update commands run in terminal mode (`gemini extensions
 | `$hud` | Manage visual status profile for status rendering | HUD profile + preview line |
 | `$intent` | Route ambiguous requests into the correct OmG stage | Intent classification + next-command recommendation |
 | `$rules` | Inject conditional guardrail rule packs | Trigger matrix + active policy set |
+| `$memory` | Maintain durable memory index and modular rule packs | Memory audit + active-rule report |
 | `$plan` | Convert goals into phased plan | Milestones, risks, and acceptance criteria |
 | `$ralplan` | Strict, stage-gated planning with rollback points | Quality-first execution map |
 | `$execute` | Implement a scoped plan slice | Change summary with validation notes |
@@ -190,7 +196,7 @@ Note: extension install/update commands run in terminal mode (`gemini extensions
 | --- | --- | --- |
 | 1 | System / runtime constraints | Keep behavior aligned with platform guarantees |
 | 2 | Project standards | Preserve team conventions and architecture intent |
-| 3 | `GEMINI.md` and shared context | Maintain stable long-session memory |
+| 3 | `GEMINI.md`, `MEMORY.md`, and shared context | Maintain stable long-session memory |
 | 4 | Active task brief | Keep current objective and acceptance criteria visible |
 | 5 | Latest execution traces | Feed immediate iteration and review loops |
 
@@ -232,6 +238,7 @@ Legacy runtime code under `src/` remains in-repo for compatibility reference, bu
 - [Installation Guide](docs/guide/installation.md)
 - [Context Engineering Guide](docs/guide/context-engineering.md)
 - [Korean Context Engineering Guide](docs/guide/context-engineering_ko.md)
+- [Memory Management Guide](docs/guide/memory-management.md)
 - [History](docs/history.md)
 
 ## License

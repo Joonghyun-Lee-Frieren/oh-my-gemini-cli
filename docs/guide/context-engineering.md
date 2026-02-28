@@ -150,5 +150,6 @@ Before each major turn:
 ## Related Docs
 
 - [Installation Guide](./installation.md)
+- [Memory Management Guide](./memory-management.md)
 - [Korean Context Guide](./context-engineering_ko.md)
 - [History](../history.md)

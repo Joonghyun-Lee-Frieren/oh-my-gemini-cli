@@ -51,6 +51,7 @@ Repeat `team-exec -> team-verify -> team-fix` until acceptance criteria pass or 
 
 - `intent`: request-intent gate and stage routing.
 - `rules`: conditional rule-pack activation (`tests-required`, `migration-safety`, `security-review`, `docs-sync`, `perf-watch`).
+- `memory`: maintain durable memory index (`MEMORY.md`) and modular rule packs (`.omg/rules/*.md`).
 - `deep-init`: one-time deep repository mapping before long sessions.
 - `loop`: strict continuation loop for unresolved acceptance criteria.
 - `hud`: visual status profile control (`normal`, `compact`, `hidden`) for `/omg:status`.
@@ -71,6 +72,9 @@ When filesystem tools are available, persist current workflow state:
 - `.omg/state/mode.json`
 - `.omg/state/workflow.md`
 - `.omg/state/checkpoint.md`
+- `MEMORY.md`
+- `.omg/memory/*.md`
+- `.omg/rules/*.md`
 - `.omg/state/intent.md`
 - `.omg/state/rules.md`
 - `.omg/state/deep-init.md`

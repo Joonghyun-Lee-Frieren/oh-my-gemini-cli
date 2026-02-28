@@ -1,0 +1,32 @@
+description = "Manage project memory with MEMORY.md index + modular rule packs."
+prompt = """
+Run OmG memory management workflow.
+
+User context:
+$ARGUMENTS
+
+Objectives:
+1. Keep `MEMORY.md` as a short index (high-signal only).
+2. Move detailed notes into topic files under `.omg/memory/`.
+3. Maintain modular rule packs under `.omg/rules/` with frontmatter:
+   - `description`
+   - `globs` (optional)
+   - `alwaysApply` (optional)
+4. Resolve active rules by task and touched paths.
+5. Return memory update actions and next operational checks.
+
+Output format:
+## Memory Audit
+- index health:
+- topic coverage:
+- stale items:
+
+## Active Rules
+1. ...
+2. ...
+
+## Update Plan
+1. ...
+2. ...
+3. ...
+"""

@@ -12,6 +12,7 @@ import {
   saveSettings,
   ensureDir,
 } from '../shared/config.js';
+import { bootstrapProjectMemoryFiles } from '../shared/memory-files.js';
 import { logger } from '../shared/logger.js';
 
 export type SetupScope = 'user' | 'project-local' | 'project';
@@ -150,6 +151,15 @@ export async function runSetup(opts: SetupOptions): Promise<void> {
           const projectName = root.split(/[\\/]/).pop() ?? 'my-project';
           writeFileSync(geminiMd, generateDefaultGeminiMd(projectName), 'utf-8');
         }
+      },
+    },
+    {
+      label: 'Bootstrapping MEMORY.md and modular rule packs',
+      run() {
+        const result = bootstrapProjectMemoryFiles(root, { syncIndex: true, force: false });
+        logger.debug(
+          `Memory bootstrap created=${result.created.length}, skipped=${result.skipped.length}`,
+        );
       },
     },
     {
