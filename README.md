@@ -1,4 +1,9 @@
 ﻿# oh-my-gemini-cli (OmG)
+[![Release](https://img.shields.io/github/v/release/Joonghyun-Lee-Frieren/oh-my-gemini-cli?display_name=tag&sort=semver)](https://github.com/Joonghyun-Lee-Frieren/oh-my-gemini-cli/releases)
+[![License](https://img.shields.io/github/license/Joonghyun-Lee-Frieren/oh-my-gemini-cli)](LICENSE)
+[![Stars](https://img.shields.io/github/stars/Joonghyun-Lee-Frieren/oh-my-gemini-cli?style=social)](https://github.com/Joonghyun-Lee-Frieren/oh-my-gemini-cli/stargazers)
+[![Gemini Extension](https://img.shields.io/badge/Gemini-Extension-0d8a83)](https://geminicli.com/extensions/?name=Joonghyun-Lee-Frierenoh-my-gemini-cli)
+[![Sponsor](https://img.shields.io/badge/Sponsor-GitHub_Sponsors-ea4aaa?logo=githubsponsors&logoColor=white)](https://github.com/sponsors/Joonghyun-Lee-Frieren)
 
 [Landing Page](https://joonghyun-lee-frieren.github.io/oh-my-gemini-cli/) | [History](docs/history.md)
 
@@ -254,4 +259,5 @@ Extension behavior is manifest-driven through Gemini CLI extension primitives.
 ## License
 
 MIT
+
 
