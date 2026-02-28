@@ -1,0 +1,44 @@
+description = "Dry-run OmG hook pipeline against simulated event sequences and report efficiency."
+prompt = """
+Run OmG hook dry-run test.
+
+Scenario:
+$ARGUMENTS
+
+Test protocol:
+1. Select or infer event sequence (default):
+   - `session-start`
+   - `stage-transition`
+   - `pre-verify`
+   - `post-verify`
+   - `checkpoint-save`
+2. Evaluate trigger firing order by lane (`P0 -> P1 -> P2`).
+3. Simulate derived signals:
+   - `context-drift` when summary entropy increases
+   - `loop-stall` when same blocker repeats
+   - `risk-spike` when failure density grows
+4. Record skip reasons (debounce, cooldown, disabled profile, worker-session safety).
+5. Estimate hook overhead and value:
+   - estimated time spent
+   - estimated redundant-loop reduction
+   - estimated token savings from early drift/blocker detection
+6. If filesystem tools are available, write/update `.omg/state/hooks-last-test.md`.
+
+Output format:
+## Dry-Run Summary
+- profile:
+- sequence:
+- hooks fired:
+- hooks skipped:
+
+## Event Trace
+| Step | Event | Fired Hooks | Skipped Hooks | Notes |
+| --- | --- | --- | --- | --- |
+
+## Efficiency Estimate
+| Metric | Value | Comment |
+| --- | --- | --- |
+
+## Next Command
+- ...
+"""

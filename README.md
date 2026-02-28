@@ -15,22 +15,27 @@ This project started from that observation:
 
 OmG extends Gemini CLI from a single-session assistant into a structured, role-driven engineering workflow.
 
-## What's New in v0.3.2
+## What's New in v0.3.4
 
-- Added HUD profile controls for extension-native visual status rendering:
-  - `/omg:hud`
-  - `/omg:hud-on`
-  - `/omg:hud-compact`
-  - `/omg:hud-off`
-  - `$hud`
-- Upgraded `/omg:status` format to support HUD visibility profiles (`normal`, `compact`, `hidden`)
-- Added HUD runtime state convention: `.omg/state/hud.json`
-- Clarified Gemini extension boundary: visual summaries are prompt-driven and state-driven, not terminal hook injection
-- Improved local dashboard HUD behavior: added top HUD line, `h` key toggle (`normal -> compact -> hidden`), and sync with `.omg/state/hud.json`
-- Added Claude-style memory management primitives:
-  - `/omg:memory` + `$memory`
-  - `MEMORY.md` index with `.omg/memory/*.md` topic split
-  - `.omg/rules/*.md` modular rule packs (`alwaysApply` + `globs`)
+- Added extension-native hook orchestration controls:
+  - `/omg:hooks`
+  - `/omg:hooks-init`
+  - `/omg:hooks-validate`
+  - `/omg:hooks-test`
+  - `$hooks`
+- Added deterministic hook lanes (`P0-safety`, `P1-quality`, `P2-optimization`) with timeout/debounce/idempotency guidance
+- Added derived signal policy for long sessions:
+  - `context-drift`
+  - `risk-spike`
+  - `loop-stall`
+  - `token-burst`
+  - `blocker-repeat`
+- Added hook runtime-state conventions:
+  - `.omg/state/hooks.json`
+  - `.omg/state/hooks-validation.md`
+  - `.omg/state/hooks-last-test.md`
+  - `.omg/hooks/*.md`
+- Added hook engineering guide: `docs/guide/hook-engineering.md`
 
 ## At A Glance
 
@@ -129,6 +134,10 @@ Note: extension install/update commands run in terminal mode (`gemini extensions
 | `/omg:hud-on` | Quick toggle HUD to full visual mode | When returning to full status boards |
 | `/omg:hud-compact` | Quick toggle HUD to compact mode | During dense implementation loops |
 | `/omg:hud-off` | Quick toggle HUD to hidden mode (plain status sections) | When visual blocks are distracting |
+| `/omg:hooks` | Inspect/switch hook pipeline profile and trigger policy | Before autonomous loops or when hook behavior drifts |
+| `/omg:hooks-init` | Bootstrap hook config and plugin contract scaffolding | At project kickoff or first hook adoption |
+| `/omg:hooks-validate` | Validate hook ordering, safety, and budget constraints | Before enabling high-autonomy workflows |
+| `/omg:hooks-test` | Dry-run hook event sequence and efficiency estimates | After policy changes or repeated loop stalls |
 | `/omg:intent` | Classify task intent and route to the correct stage/command | Before planning or coding when request intent is ambiguous |
 | `/omg:rules` | Activate task-conditional guardrail rule packs | Before implementation on migration/security/performance-sensitive work |
 | `/omg:memory` | Maintain MEMORY index, topic files, and path-aware rule packs | During long sessions or when decisions/rules drift |
@@ -157,6 +166,7 @@ Note: extension install/update commands run in terminal mode (`gemini extensions
 | --- | --- | --- |
 | `$deep-init` | Initialize deep repository map and validation baseline | Architecture/risk map + onboarding handoff |
 | `$hud` | Manage visual status profile for status rendering | HUD profile + preview line |
+| `$hooks` | Manage deterministic hook triggers and safety policy | Trigger matrix + lane policy |
 | `$intent` | Route ambiguous requests into the correct OmG stage | Intent classification + next-command recommendation |
 | `$rules` | Inject conditional guardrail rule packs | Trigger matrix + active policy set |
 | `$memory` | Maintain durable memory index and modular rule packs | Memory audit + active-rule report |
@@ -238,6 +248,7 @@ Extension behavior is manifest-driven through Gemini CLI extension primitives.
 - [Context Engineering Guide](docs/guide/context-engineering.md)
 - [Korean Context Engineering Guide](docs/guide/context-engineering_ko.md)
 - [Memory Management Guide](docs/guide/memory-management.md)
+- [Hook Engineering Guide](docs/guide/hook-engineering.md)
 - [History](docs/history.md)
 
 ## License

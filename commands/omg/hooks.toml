@@ -1,0 +1,82 @@
+description = "Inspect or configure OmG hook pipeline profiles, triggers, and safety policy."
+prompt = """
+Run OmG hook pipeline manager.
+
+Input:
+$ARGUMENTS
+
+Protocol:
+1. Parse requested action:
+   - `status`
+   - `on` / `off`
+   - `profile <strict|balanced|fast>`
+   - `events`
+2. Manage native event triggers:
+   - `session-start`
+   - `stage-transition`
+   - `pre-verify`
+   - `post-verify`
+   - `checkpoint-save`
+   - `blocker-raised`
+   - `session-stop`
+3. Manage derived signals (opt-in, state-driven):
+   - `context-drift`
+   - `risk-spike`
+   - `loop-stall`
+   - `token-burst`
+   - `blocker-repeat`
+4. Build deterministic execution lanes:
+   - `P0-safety` (permission/risk guardrails)
+   - `P1-quality` (tests/docs/acceptance checks)
+   - `P2-optimization` (context compaction/perf hints)
+5. Enforce efficiency controls:
+   - idempotency key per event
+   - debounce window for repeated triggers
+   - timeout budget per lane
+   - cooldown after repeated failures
+6. Enforce team-safety: side-effect hooks must be disabled in delegated sub-agent turns unless user explicitly allows them.
+7. If filesystem tools are available, write/update `.omg/state/hooks.json`.
+
+Suggested `hooks.json` shape:
+{
+  "enabled": true,
+  "profile": "balanced",
+  "native_events": ["session-start", "stage-transition", "pre-verify", "post-verify", "checkpoint-save", "blocker-raised", "session-stop"],
+  "derived_signals": {
+    "context-drift": true,
+    "risk-spike": true,
+    "loop-stall": true,
+    "token-burst": false,
+    "blocker-repeat": true
+  },
+  "lanes": {
+    "P0-safety": { "timeout_ms": 400, "debounce_ms": 0 },
+    "P1-quality": { "timeout_ms": 800, "debounce_ms": 200 },
+    "P2-optimization": { "timeout_ms": 600, "debounce_ms": 500 }
+  },
+  "team_safety": {
+    "disable_side_effects_for_worker_sessions": true
+  },
+  "updated_at": "<ISO-8601>",
+  "source": "omg:hooks"
+}
+
+Output format:
+## Hook Status
+- requested:
+- applied:
+- enabled:
+- profile:
+- persisted:
+
+## Active Lanes
+| Lane | Purpose | Timeout | Debounce |
+| --- | --- | --- | --- |
+
+## Trigger Matrix
+| Trigger | Enabled | Lane | Notes |
+| --- | --- | --- | --- |
+
+## Next Command
+- ...
+"""

@@ -57,6 +57,13 @@ Run one command and one skill:
 $plan "Plan a small refactor in this repository"
 ```
 
+Optional hook-layer smoke test:
+
+```text
+/omg:hooks
+/omg:hooks-validate
+```
+
 If agent delegation is needed:
 
 ```text

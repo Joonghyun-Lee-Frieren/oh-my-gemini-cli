@@ -6,6 +6,7 @@ All notable changes to oh-my-gemini-cli are documented here.
 
 | Version | Date | Theme | Outcome |
 | --- | --- | --- | --- |
+| `v0.3.4` | 2026-02-28 | Deterministic hook orchestration | Added extension-native hook commands/skill with event-lane policy, safety validation, and dry-run testing |
 | `v0.3.3` | 2026-02-28 | Claude-style memory management | Added file-based memory index/topic split and modular rule-pack workflows |
 | `v0.3.2` | 2026-02-26 | HUD visibility controls | Added extension-native HUD profile commands/skill and status rendering policy |
 | `v0.3.1` | 2026-02-26 | Intent/loop guardrail expansion | Added intake gate, loop enforcement, deep init, and conditional rule injection workflows |
@@ -16,6 +17,38 @@ All notable changes to oh-my-gemini-cli are documented here.
 | `v0.1.2` | 2026-02-22 | Model/branding consistency | `gemini-3.1-*` naming and OmG branding normalized |
 | `v0.1.1` | 2026-02-22 | Dashboard redesign | Retro game-style TUI and richer telemetry presentation |
 | `v0.1.0` | 2026-02-22 | Initial release | Multi-agent orchestration foundation shipped |
+
+## v0.3.4 - Deterministic Hook Orchestration (2026-02-28)
+
+Added a hook-oriented orchestration layer inspired by additive hook-extension workflows, adapted for Gemini extension-native command/skill/state primitives.
+
+### Added
+
+- New hook command group:
+  - `/omg:hooks`
+  - `/omg:hooks-init`
+  - `/omg:hooks-validate`
+  - `/omg:hooks-test`
+- New hook control skill:
+  - `$hooks`
+- New hook engineering guide:
+  - `docs/guide/hook-engineering.md`
+- New runtime-state artifacts for hook policy and verification:
+  - `.omg/state/hooks.json`
+  - `.omg/state/hooks-validation.md`
+  - `.omg/state/hooks-last-test.md`
+  - `.omg/hooks/*.md`
+
+### Changed
+
+- `context/omg-core.md` updated with hook controls, hook state conventions, and worker-session side-effect safety rail.
+- README command/skill/docs map expanded with hook workflows.
+- Extension/package version bumped to `0.3.4`.
+
+### Structural Fit Note
+
+- OmG hook workflows remain extension-native (prompt/state-driven), not low-level terminal/runtime hook injection.
+- Deterministic lanes and validation/test commands provide predictable behavior before autonomous execution loops.
 
 ## v0.3.3 - Claude-Style Memory Management (2026-02-28)
 

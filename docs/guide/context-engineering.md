@@ -116,6 +116,8 @@ For long workflows, keep external state snapshots:
 - `.omg/state/mode.json`
 - `.omg/state/workflow.md`
 - `.omg/state/checkpoint.md`
+- `.omg/state/hooks.json`
+- `.omg/state/hooks-validation.md`
 
 These files help resume work without replaying every raw turn.
 
@@ -127,6 +129,8 @@ Use these commands to keep context healthy:
 - `/omg:cache` to audit cache stability risks
 - `/omg:optimize` to reduce context bloat and churn
 - `/omg:checkpoint` to save compact resume state
+- `/omg:hooks` to inspect hook trigger policy
+- `/omg:hooks-validate` to catch unsafe/non-deterministic hook graphs
 
 ## Cache-Miss Triage
 
@@ -151,5 +155,6 @@ Before each major turn:
 
 - [Installation Guide](./installation.md)
 - [Memory Management Guide](./memory-management.md)
+- [Hook Engineering Guide](./hook-engineering.md)
 - [Korean Context Guide](./context-engineering_ko.md)
 - [History](../history.md)

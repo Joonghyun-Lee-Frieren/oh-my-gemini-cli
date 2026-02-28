@@ -479,7 +479,7 @@
   <header>
     <div class="wrap">
       <div class="hero-top">
-        <span class="badge">Latest Release v0.3.2</span>
+        <span class="badge">Latest Release v0.3.4</span>
         <div class="top-actions">
           <a class="btn btn-link btn-github" href="https://github.com/Joonghyun-Lee-Frieren/oh-my-gemini-cli" target="_blank" rel="noreferrer noopener">
             <svg class="btn-icon" viewBox="0 0 16 16" aria-hidden="true">
@@ -526,8 +526,8 @@
 
       <div class="stats">
         <div class="stat"><div class="n">10</div><div class="l">Sub-agents</div></div>
-        <div class="stat"><div class="n">19</div><div class="l">Reusable skills</div></div>
-        <div class="stat"><div class="n">26</div><div class="l">Namespaced commands</div></div>
+        <div class="stat"><div class="n">20</div><div class="l">Reusable skills</div></div>
+        <div class="stat"><div class="n">30</div><div class="l">Namespaced commands</div></div>
         <div class="stat"><div class="n">5</div><div class="l">Context layers</div></div>
       </div>
     </div>
@@ -536,7 +536,7 @@
   <section>
     <div class="wrap">
       <h2>Latest Update (2026-02-28)</h2>
-      <p class="sub">Claude-style memory workflow is now integrated into OmG.</p>
+      <p class="sub">Deterministic hooks and Claude-style memory workflows are now integrated into OmG.</p>
       <table>
         <thead>
           <tr>
@@ -545,6 +545,14 @@
           </tr>
         </thead>
         <tbody>
+          <tr>
+            <td>Hook Orchestration</td>
+            <td>Added <code>/omg:hooks</code>, <code>/omg:hooks-init</code>, <code>/omg:hooks-validate</code>, <code>/omg:hooks-test</code>, and <code>$hooks</code>.</td>
+          </tr>
+          <tr>
+            <td>Hook Runtime State</td>
+            <td>Added <code>.omg/state/hooks.json</code>, <code>.omg/state/hooks-validation.md</code>, <code>.omg/state/hooks-last-test.md</code>, and <code>.omg/hooks/*.md</code> conventions.</td>
+          </tr>
           <tr>
             <td>Memory Workflow</td>
             <td>Added <code>/omg:memory</code> and <code>$memory</code> for durable memory operations.</td>
@@ -666,6 +674,11 @@ Structured Result
             <td>Single fixed output density</td>
             <td><code>/omg:hud</code> profiles (<code>normal</code>, <code>compact</code>, <code>hidden</code>) adapt status readability</td>
           </tr>
+          <tr>
+            <td>Hook safety and trigger discipline</td>
+            <td>Manual event policing and ad-hoc checks</td>
+            <td><code>/omg:hooks</code> + <code>/omg:hooks-validate</code> enforce deterministic lanes, safety policy, and trigger health checks</td>
+          </tr>
         </tbody>
       </table>
     </div>
@@ -677,11 +690,11 @@ Structured Result
       <div class="cards" style="margin-bottom:10px;">
         <div class="card">
           <h3>Commands</h3>
-          <p>Fast control points for status, HUD profile, intent gating, memory workflows, deep init, orchestration, and loop discipline.</p>
+          <p>Fast control points for status, HUD profile, hook pipeline policy, intent gating, memory workflows, deep init, orchestration, and loop discipline.</p>
         </div>
         <div class="card">
           <h3>Skills</h3>
-          <p>Reusable packs for HUD/status control, intent routing, memory indexing, deep bootstrap, execution loops, and conditional guardrails.</p>
+          <p>Reusable packs for HUD/status control, hook tuning, intent routing, memory indexing, deep bootstrap, execution loops, and conditional guardrails.</p>
         </div>
         <div class="card">
           <h3>Sub-agents</h3>
@@ -702,6 +715,10 @@ Structured Result
           <tr><td>Command</td><td><code>/omg:hud-on</code></td><td>Quick toggle to full HUD status view</td></tr>
           <tr><td>Command</td><td><code>/omg:hud-compact</code></td><td>Quick toggle to compact HUD status view</td></tr>
           <tr><td>Command</td><td><code>/omg:hud-off</code></td><td>Quick toggle to hidden HUD (plain status sections)</td></tr>
+          <tr><td>Command</td><td><code>/omg:hooks</code></td><td>Inspect/switch hook trigger profile, lanes, and safety policy</td></tr>
+          <tr><td>Command</td><td><code>/omg:hooks-init</code></td><td>Bootstrap hook policy files and plugin contract scaffolding</td></tr>
+          <tr><td>Command</td><td><code>/omg:hooks-validate</code></td><td>Validate trigger graph, ordering, and worker-session safety constraints</td></tr>
+          <tr><td>Command</td><td><code>/omg:hooks-test</code></td><td>Dry-run event sequences and estimate hook efficiency impact</td></tr>
           <tr><td>Command</td><td><code>/omg:intent</code></td><td>Classify request intent and route to the right stage</td></tr>
           <tr><td>Command</td><td><code>/omg:deep-init</code></td><td>Build project map and validation baseline before long sessions</td></tr>
           <tr><td>Command</td><td><code>/omg:rules</code></td><td>Activate task-conditional guardrail rule packs</td></tr>
@@ -712,6 +729,7 @@ Structured Result
           <tr><td>Command</td><td><code>/omg:cache</code></td><td>Inspect cache/context behavior</td></tr>
           <tr><td>Skill</td><td><code>$intent</code></td><td>Intent routing and next-command recommendation</td></tr>
           <tr><td>Skill</td><td><code>$hud</code></td><td>HUD profile control for status readability</td></tr>
+          <tr><td>Skill</td><td><code>$hooks</code></td><td>Hook event policy, lane assignment, and safety guard tuning</td></tr>
           <tr><td>Skill</td><td><code>$deep-init</code></td><td>Repository bootstrap map for long tasks</td></tr>
           <tr><td>Skill</td><td><code>$rules</code></td><td>Conditional policy activation by trigger</td></tr>
           <tr><td>Skill</td><td><code>$memory</code></td><td>Memory audit and modular rule activation map</td></tr>
@@ -775,6 +793,16 @@ Structured Result
             <td>Refresh memory</td>
             <td><code>/omg:memory Sync index and active rules for current task</code></td>
             <td>Compact memory index + task-aware rule activation context</td>
+          </tr>
+          <tr>
+            <td>Bootstrap hooks</td>
+            <td><code>/omg:hooks-init</code> then <code>/omg:hooks profile balanced</code></td>
+            <td>Deterministic hook lane policy persisted for the session</td>
+          </tr>
+          <tr>
+            <td>Validate hook graph</td>
+            <td><code>/omg:hooks-validate</code> then <code>/omg:hooks-test</code></td>
+            <td>Safe-to-run decision and dry-run evidence before high-autonomy loops</td>
           </tr>
           <tr>
             <td>Execute lifecycle</td>
@@ -844,6 +872,7 @@ Structured Result
         <a href="https://github.com/Joonghyun-Lee-Frieren/oh-my-gemini-cli">GitHub</a>
         <a href="./history.md">History</a>
         <a href="./guide/installation.md">Installation Guide</a>
+        <a href="./guide/hook-engineering.md">Hook Engineering Guide</a>
       </div>
       <div>Built for official Gemini CLI Extensions workflow.</div>
     </div>

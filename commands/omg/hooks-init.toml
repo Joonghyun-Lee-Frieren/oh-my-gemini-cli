@@ -1,0 +1,41 @@
+description = "Bootstrap OmG hook scaffolding and default event policy files."
+prompt = """
+Initialize OmG hooks.
+
+Task context:
+$ARGUMENTS
+
+Bootstrap protocol:
+1. Create a default hook profile (`balanced`) with deterministic event lanes.
+2. If filesystem tools are available, create/update:
+   - `.omg/state/hooks.json`
+   - `.omg/hooks/README.md`
+   - `.omg/hooks/plugins/safety.md`
+   - `.omg/hooks/plugins/quality.md`
+   - `.omg/hooks/plugins/optimization.md`
+3. Document plugin contract for runtime adapters:
+   - `onHookEvent(event, sdk)`
+   - `event` envelope: `event`, `source`, `session_id`, `task_id`, `metadata`
+   - `sdk` capabilities: `log`, `state.get`, `state.set`, optional runtime bridge methods
+4. Add default guardrails:
+   - side-effect hooks off for worker sessions
+   - fail-open for non-critical lanes (`P2-optimization`)
+   - fail-closed for explicit safety violations (`P0-safety`)
+5. Recommend immediate validation with `/omg:hooks-validate`.
+
+Output format:
+## Hook Bootstrap
+- status:
+- profile:
+- files initialized:
+
+## Default Event Matrix
+| Event | Lane | Enabled | Side Effects |
+| --- | --- | --- | --- |
+
+## Contract Notes
+- ...
+
+## Next Command
+- /omg:hooks-validate
+"""

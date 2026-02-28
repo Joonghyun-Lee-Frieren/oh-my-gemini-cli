@@ -1,0 +1,37 @@
+description = "Validate OmG hook trigger graph, ordering, and safety constraints."
+prompt = """
+Run OmG hook validation.
+
+Input:
+$ARGUMENTS
+
+Validation checklist:
+1. Verify all enabled events map to exactly one primary lane (`P0/P1/P2`).
+2. Detect cyclic trigger chains (event -> hook -> event loops).
+3. Check ordering determinism and idempotency-key coverage.
+4. Check timeout and debounce budgets per lane against current profile.
+5. Verify team-safety policy:
+   - side-effect hooks disabled in worker/delegated sessions
+   - high-risk hooks require explicit user confirmation context
+6. Report failures by severity (`critical`, `major`, `minor`).
+7. If filesystem tools are available, write/update `.omg/state/hooks-validation.md`.
+
+Output format:
+## Validation Result
+- overall: pass | fail
+- profile:
+- critical:
+- major:
+- minor:
+
+## Findings
+| Severity | Finding | Evidence | Fix |
+| --- | --- | --- | --- |
+
+## Safe-to-Run Decision
+- yes/no:
+- rationale:
+
+## Next Command
+- ...
+"""
