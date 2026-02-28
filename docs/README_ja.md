@@ -1,4 +1,4 @@
-# oh-my-gemini-cli (OmG)
+﻿# oh-my-gemini-cli (OmG)
 
 [ランディングページ](https://joonghyun-lee-frieren.github.io/oh-my-gemini-cli/) | [変更履歴](./history.md)
 
@@ -186,7 +186,6 @@ oh-my-gemini-cli/
 |  `- omg/
 |- skills/
 |- context/
-|- prompts/
 |- docs/
 `- LICENSE
 ```
@@ -207,7 +206,6 @@ oh-my-gemini-cli/
 | CLI スクリプト中心のランタイム配線 | 拡張マニフェスト中心のランタイム配線 |
 | 手動オンボーディングスクリプト | Gemini CLI のネイティブ拡張ローディング |
 
-`src/` のレガシーランタイムコードは互換性参照として残っていますが、拡張挙動はマニフェスト駆動です。
 
 ## ドキュメント
 
@@ -219,3 +217,5 @@ oh-my-gemini-cli/
 ## ライセンス
 
 MIT
+
+

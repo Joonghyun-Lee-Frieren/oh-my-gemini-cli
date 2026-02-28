@@ -1,4 +1,4 @@
-# oh-my-gemini-cli (OmG)
+﻿# oh-my-gemini-cli (OmG)
 
 [落地页](https://joonghyun-lee-frieren.github.io/oh-my-gemini-cli/) | [历史记录](./history.md)
 
@@ -186,7 +186,6 @@ oh-my-gemini-cli/
 |  `- omg/
 |- skills/
 |- context/
-|- prompts/
 |- docs/
 `- LICENSE
 ```
@@ -207,7 +206,6 @@ oh-my-gemini-cli/
 | 运行时主要由 CLI 脚本连接 | 运行时由扩展清单原语驱动 |
 | 手动引导脚本 | Gemini CLI 原生扩展加载 |
 
-仓库中的 `src/` 目录保留为兼容性参考；实际扩展行为由 manifest 驱动。
 
 ## 文档
 
@@ -219,3 +217,5 @@ oh-my-gemini-cli/
 ## 许可证
 
 MIT
+
+

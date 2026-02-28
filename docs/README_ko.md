@@ -1,4 +1,4 @@
-# oh-my-gemini-cli (OmG)
+﻿# oh-my-gemini-cli (OmG)
 
 [랜딩 페이지](https://joonghyun-lee-frieren.github.io/oh-my-gemini-cli/) | [변경 이력](./history.md)
 
@@ -220,7 +220,6 @@ oh-my-gemini-cli/
 |  `- omg/
 |- skills/
 |- context/
-|- prompts/
 |- docs/
 `- LICENSE
 ```
@@ -241,7 +240,6 @@ oh-my-gemini-cli/
 | CLI 스크립트 중심 런타임 연결 | 확장 매니페스트 중심 런타임 연결 |
 | 수동 온보딩 스크립트 | Gemini CLI의 네이티브 확장 로딩 |
 
-`src/`의 레거시 런타임 코드는 호환성 참고용으로 저장소에 남아 있지만, 확장 동작은 매니페스트 기반으로 구동됩니다.
 
 ## 문서
 
@@ -253,3 +251,5 @@ oh-my-gemini-cli/
 ## 라이선스
 
 MIT
+
+

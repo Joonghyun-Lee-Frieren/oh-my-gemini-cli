@@ -1,4 +1,4 @@
-# oh-my-gemini-cli (OmG)
+﻿# oh-my-gemini-cli (OmG)
 
 [Página de inicio](https://joonghyun-lee-frieren.github.io/oh-my-gemini-cli/) | [Historial](./history.md)
 
@@ -186,7 +186,6 @@ oh-my-gemini-cli/
 |  `- omg/
 |- skills/
 |- context/
-|- prompts/
 |- docs/
 `- LICENSE
 ```
@@ -207,7 +206,6 @@ oh-my-gemini-cli/
 | Runtime conectado principalmente por scripts de CLI | Runtime conectado por primitivas del manifest de extensión |
 | Scripts manuales de onboarding | Carga nativa de extensiones por Gemini CLI |
 
-El runtime legado en `src/` se mantiene en el repositorio como referencia de compatibilidad, pero el comportamiento de la extensión está guiado por el manifest.
 
 ## Documentación
 
@@ -219,3 +217,5 @@ El runtime legado en `src/` se mantiene en el repositorio como referencia de com
 ## Licencia
 
 MIT
+
+
