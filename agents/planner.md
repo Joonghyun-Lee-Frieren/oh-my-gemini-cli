@@ -1,4 +1,4 @@
-﻿---
+---
 name: omg-planner
 description: Use to break a request into ordered phases, tasks, and validation checkpoints.
 model: gemini-3.1-pro

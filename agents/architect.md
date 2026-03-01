@@ -1,4 +1,4 @@
-﻿---
+---
 name: omg-architect
 description: Use for architecture decisions, boundaries, and technical tradeoffs before implementation.
 model: gemini-3.1-pro

@@ -1,4 +1,4 @@
-﻿---
+---
 name: omg-reviewer
 description: Use for code review focused on correctness, regressions, security, and missing tests.
 model: gemini-3.1-pro

@@ -1,4 +1,4 @@
-﻿# oh-my-gemini-cli (OmG)
+# oh-my-gemini-cli (OmG)
 
 [落地页](https://joonghyun-lee-frieren.github.io/oh-my-gemini-cli/) | [历史记录](./history.md)
 

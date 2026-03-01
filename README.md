@@ -1,4 +1,4 @@
-﻿# oh-my-gemini-cli (OmG)
+# oh-my-gemini-cli (OmG)
 [![Release](https://img.shields.io/github/v/release/Joonghyun-Lee-Frieren/oh-my-gemini-cli?display_name=tag&sort=semver)](https://github.com/Joonghyun-Lee-Frieren/oh-my-gemini-cli/releases)
 [![License](https://img.shields.io/github/license/Joonghyun-Lee-Frieren/oh-my-gemini-cli)](LICENSE)
 [![Stars](https://img.shields.io/github/stars/Joonghyun-Lee-Frieren/oh-my-gemini-cli?style=social)](https://github.com/Joonghyun-Lee-Frieren/oh-my-gemini-cli/stargazers)

@@ -1,4 +1,4 @@
-﻿# oh-my-gemini-cli Extension Installation Guide
+# oh-my-gemini-cli Extension Installation Guide
 
 This guide follows the official Gemini CLI Extensions workflow.
 
