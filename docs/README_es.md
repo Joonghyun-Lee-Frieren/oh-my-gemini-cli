@@ -31,7 +31,7 @@ OmG amplía Gemini CLI, de un asistente de sesión única, a un flujo de ingenie
 | Bloques principales | `agents/`, `commands/`, `skills/`, `context/` |
 | Caso de uso principal | Tareas complejas que necesitan ciclos de planificar -> ejecutar -> revisar |
 | Superficie de control | Comandos `/omg:*` + flujos `$skill` + delegación a sub-agentes |
-| Estrategia de modelo por defecto | Planificación/arquitectura en `gemini-3.1-pro`, trabajo intensivo de ejecución en `gemini-3.1-flash` |
+| Estrategia de modelo por defecto | Planificación/arquitectura en `gemini-3.1-pro`, trabajo intensivo de ejecución en `gemini-3.1-flash`, cambios pequeños y de bajo riesgo en `gemini-3.1-flash-lite` |
 
 ## Por qué OmG
 
@@ -164,7 +164,7 @@ Nota: los comandos de instalación/actualización de extensiones se ejecutan en 
 | `omg-debugger` | Análisis de causa raíz y estrategia de parche | `gemini-3.1-pro` |
 | `omg-consensus` | Puntuación de opciones y convergencia de decisión | `gemini-3.1-pro` |
 | `omg-researcher` | Análisis y síntesis de opciones externas | `gemini-3.1-pro` |
-| `omg-quick` | Arreglos pequeños y tácticos | `gemini-3.1-flash` |
+| `omg-quick` | Arreglos pequeños y tácticos | `gemini-3.1-flash-lite` |
 
 ## Modelo de capas de contexto
 

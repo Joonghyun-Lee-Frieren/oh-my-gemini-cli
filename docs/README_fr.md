@@ -31,7 +31,7 @@ OmG transforme Gemini CLI, d'un assistant mono-session, en workflow d'ingénieri
 | Blocs principaux | `agents/`, `commands/`, `skills/`, `context/` |
 | Cas d'usage principal | Tâches complexes nécessitant des boucles planifier -> exécuter -> vérifier |
 | Surface de contrôle | Commandes `/omg:*` + workflows `$skill` + délégation à des sous-agents |
-| Stratégie modèle par défaut | Planification/architecture avec `gemini-3.1-pro`, exécution avec `gemini-3.1-flash` |
+| Stratégie modèle par défaut | Planification/architecture avec `gemini-3.1-pro`, exécution avec `gemini-3.1-flash`, petites corrections à faible risque avec `gemini-3.1-flash-lite` |
 
 ## Pourquoi OmG
 
@@ -164,7 +164,7 @@ Note : les commandes d'installation/mise à jour s'exécutent en mode terminal (
 | `omg-debugger` | Analyse cause racine et stratégie de patch | `gemini-3.1-pro` |
 | `omg-consensus` | Scoring d'options et convergence de décision | `gemini-3.1-pro` |
 | `omg-researcher` | Analyse et synthèse d'options externes | `gemini-3.1-pro` |
-| `omg-quick` | Petites corrections tactiques | `gemini-3.1-flash` |
+| `omg-quick` | Petites corrections tactiques | `gemini-3.1-flash-lite` |
 
 ## Modèle de couches de contexte
 

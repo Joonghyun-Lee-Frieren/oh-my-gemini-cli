@@ -62,7 +62,7 @@ Boundary note:
 | Core building blocks | `agents/`, `commands/`, `skills/`, `context/` |
 | Main use case | Complex implementation tasks that need plan -> execute -> review loops |
 | Control surface | `/omg:*` commands + `$skill` workflows + sub-agent delegation |
-| Default model strategy | Planning/architecture on `gemini-3.1-pro`, execution-heavy work on `gemini-3.1-flash` |
+| Default model strategy | Planning/architecture on `gemini-3.1-pro`, execution-heavy work on `gemini-3.1-flash`, tiny low-risk edits on `gemini-3.1-flash-lite` |
 
 ## Why OmG
 
@@ -220,7 +220,7 @@ Note: extension install/update commands run in terminal mode (`gemini extensions
 | `omg-debugger` | Root-cause analysis and patch strategy | `gemini-3.1-pro` |
 | `omg-consensus` | Option scoring and decision convergence | `gemini-3.1-pro` |
 | `omg-researcher` | External option analysis and synthesis | `gemini-3.1-pro` |
-| `omg-quick` | Small, tactical fixes | `gemini-3.1-flash` |
+| `omg-quick` | Small, tactical fixes | `gemini-3.1-flash-lite` |
 
 ## Context Layer Model
 

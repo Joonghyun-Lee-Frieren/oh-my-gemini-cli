@@ -375,6 +375,10 @@
       background: linear-gradient(90deg, var(--accent), #ff6b3d);
     }
 
+    .bar-fill.lite {
+      background: linear-gradient(90deg, #7a8f24, #b2c43a);
+    }
+
     .cards {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -618,8 +622,12 @@ Structured Result
             <div class="bar-track"><div class="bar-fill" style="width:70%"></div></div>
           </div>
           <div class="bar">
-            <div class="bar-label"><span>Execution &amp; Quick Fixes (<code>gemini-3.1-flash</code>)</span><span>30%</span></div>
-            <div class="bar-track"><div class="bar-fill flash" style="width:30%"></div></div>
+            <div class="bar-label"><span>Execution Delivery (<code>gemini-3.1-flash</code>)</span><span>20%</span></div>
+            <div class="bar-track"><div class="bar-fill flash" style="width:20%"></div></div>
+          </div>
+          <div class="bar">
+            <div class="bar-label"><span>Quick Low-Risk Fixes (<code>gemini-3.1-flash-lite</code>)</span><span>10%</span></div>
+            <div class="bar-track"><div class="bar-fill lite" style="width:10%"></div></div>
           </div>
         </div>
       </div>
@@ -791,7 +799,7 @@ Structured Result
           <tr><td><code>omg-reviewer</code></td><td>Regression checks and correctness review</td><td><code>gemini-3.1-pro</code></td></tr>
           <tr><td><code>omg-debugger</code></td><td>Root cause analysis and fix strategy</td><td><code>gemini-3.1-pro</code></td></tr>
           <tr><td><code>omg-researcher</code></td><td>Evidence gathering and decision support</td><td><code>gemini-3.1-pro</code></td></tr>
-          <tr><td><code>omg-quick</code></td><td>Small tactical edits</td><td><code>gemini-3.1-flash</code></td></tr>
+          <tr><td><code>omg-quick</code></td><td>Small tactical edits</td><td><code>gemini-3.1-flash-lite</code></td></tr>
         </tbody>
       </table>
     </div>
