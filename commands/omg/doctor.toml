@@ -1,0 +1,41 @@
+description = "Run OmG diagnostics for extension readiness, workflow state integrity, and multi-agent safety."
+prompt = """
+Run OmG doctor diagnostics.
+
+Input:
+$ARGUMENTS
+
+Supported scopes:
+- default (or `status`): quick extension health check
+- `team`: multi-agent/team-pipeline readiness diagnostics
+- `hooks`: hook-policy safety and trigger-health diagnostics
+
+Diagnostic protocol:
+1. Detect requested scope and run matching checks.
+2. Verify extension surface integrity:
+   - key directories (`agents`, `commands/omg`, `skills`, `context`)
+   - key manifest/context files (`gemini-extension.json`, `context/omg-core.md`)
+3. Verify command-skill readiness for core flows (`team`, `intent`, `loop`, `rules`, `memory`, `hooks`, `reasoning`, `approval`).
+4. Check state artifacts and drift risks under `.omg/state/` when available.
+5. Detect common failure patterns:
+   - extension not loaded in current session
+   - command discovery mismatch
+   - stale/missing state files
+   - hook safety policy gaps for autonomous loops
+6. Produce concrete remediation actions in priority order.
+7. If filesystem tools are available, write/update `.omg/state/doctor.md`.
+
+Output format:
+## Doctor Result
+- scope:
+- overall: pass | warn | fail
+- ready_for_autonomy: yes | no
+
+## Findings
+| Severity | Area | Finding | Action |
+| --- | --- | --- | --- |
+
+## Recommended Next Command
+1. ...
+2. ...
+"""

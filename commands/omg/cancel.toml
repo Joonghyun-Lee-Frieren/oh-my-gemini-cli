@@ -1,0 +1,30 @@
+description = "Alias to stop autonomous workflow safely and produce a resume-ready handoff."
+prompt = """
+Run OmG cancel flow (alias of `stop` behavior).
+
+Context:
+$ARGUMENTS
+
+Protocol:
+1. Detect active mode/lifecycle from context or `.omg/state/*` when available.
+2. Stop current autonomous/team loop gracefully without discarding progress.
+3. Summarize completed work, in-flight work, blockers, and remaining TODOs.
+4. Provide a minimal resume plan with one recommended next command.
+5. If filesystem tools are available, write/update `.omg/state/checkpoint.md`.
+
+Output format:
+## Lifecycle
+- status: stopped
+- active mode:
+- stage:
+
+## Progress Snapshot
+- completed:
+- in-flight:
+- open:
+
+## Resume Plan
+1. ...
+2. ...
+3. ...
+"""

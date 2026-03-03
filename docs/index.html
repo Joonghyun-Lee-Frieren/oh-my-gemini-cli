@@ -526,8 +526,8 @@
 
       <div class="stats">
         <div class="stat"><div class="n">10</div><div class="l">Sub-agents</div></div>
-        <div class="stat"><div class="n">20</div><div class="l">Reusable skills</div></div>
-        <div class="stat"><div class="n">30</div><div class="l">Namespaced commands</div></div>
+        <div class="stat"><div class="n">23</div><div class="l">Reusable skills</div></div>
+        <div class="stat"><div class="n">34</div><div class="l">Namespaced commands</div></div>
         <div class="stat"><div class="n">5</div><div class="l">Context layers</div></div>
       </div>
     </div>
@@ -535,8 +535,8 @@
 
   <section>
     <div class="wrap">
-      <h2>Latest Update (2026-02-28)</h2>
-      <p class="sub">Deterministic hooks and Claude-style memory workflows are now integrated into OmG.</p>
+      <h2>Latest Update (2026-03-03)</h2>
+      <p class="sub">Harness-aligned operator controls from oh-my-codex are now mapped into Gemini extension-native OmG workflows.</p>
       <table>
         <thead>
           <tr>
@@ -546,8 +546,32 @@
         </thead>
         <tbody>
           <tr>
+            <td>Reasoning Control</td>
+            <td>Added <code>/omg:reasoning</code> and <code>$reasoning</code> for effort-level switching (<code>low</code>/<code>medium</code>/<code>high</code>/<code>xhigh</code>).</td>
+          </tr>
+          <tr>
+            <td>Diagnostics</td>
+            <td>Added <code>/omg:doctor</code> and <code>$doctor</code> for extension/team/hook readiness checks with remediation output.</td>
+          </tr>
+          <tr>
+            <td>Approval Posture</td>
+            <td>Added <code>/omg:approval</code> and <code>$approval</code> for <code>suggest</code>/<code>auto</code>/<code>full-auto</code> policy switching.</td>
+          </tr>
+          <tr>
+            <td>Lifecycle Alias</td>
+            <td>Added <code>/omg:cancel</code> as a harness-style alias to safe stop/resume handoff behavior.</td>
+          </tr>
+          <tr>
+            <td>New Runtime State</td>
+            <td>Added <code>.omg/state/reasoning.json</code>, <code>.omg/state/approval.json</code>, and <code>.omg/state/doctor.md</code> conventions.</td>
+          </tr>
+          <tr>
             <td>Hook Orchestration</td>
             <td>Added <code>/omg:hooks</code>, <code>/omg:hooks-init</code>, <code>/omg:hooks-validate</code>, <code>/omg:hooks-test</code>, and <code>$hooks</code>.</td>
+          </tr>
+          <tr>
+            <td>Capability Boundary</td>
+            <td>OmG persists policy and behavior posture in extension state; host runtime flags still depend on Gemini CLI runtime configuration.</td>
           </tr>
           <tr>
             <td>Hook Runtime State</td>
@@ -675,6 +699,21 @@ Structured Result
             <td><code>/omg:hud</code> profiles (<code>normal</code>, <code>compact</code>, <code>hidden</code>) adapt status readability</td>
           </tr>
           <tr>
+            <td>Reasoning effort posture</td>
+            <td>Implicit depth/cost behavior</td>
+            <td><code>/omg:reasoning</code> sets explicit effort profile and route guidance</td>
+          </tr>
+          <tr>
+            <td>Approval policy posture</td>
+            <td>Ad-hoc confirmation behavior</td>
+            <td><code>/omg:approval</code> manages <code>suggest/auto/full-auto</code> with risk guardrails</td>
+          </tr>
+          <tr>
+            <td>Preflight diagnostics</td>
+            <td>Manual setup checks</td>
+            <td><code>/omg:doctor</code> provides readiness findings and prioritized remediation</td>
+          </tr>
+          <tr>
             <td>Hook safety and trigger discipline</td>
             <td>Manual event policing and ad-hoc checks</td>
             <td><code>/omg:hooks</code> + <code>/omg:hooks-validate</code> enforce deterministic lanes, safety policy, and trigger health checks</td>
@@ -690,11 +729,11 @@ Structured Result
       <div class="cards" style="margin-bottom:10px;">
         <div class="card">
           <h3>Commands</h3>
-          <p>Fast control points for status, HUD profile, hook pipeline policy, intent gating, memory workflows, deep init, orchestration, and loop discipline.</p>
+          <p>Fast control points for status, doctor diagnostics, approval/reasoning posture, hook policy, intent gating, memory workflows, and loop discipline.</p>
         </div>
         <div class="card">
           <h3>Skills</h3>
-          <p>Reusable packs for HUD/status control, hook tuning, intent routing, memory indexing, deep bootstrap, execution loops, and conditional guardrails.</p>
+          <p>Reusable packs for diagnostics, approval/reasoning posture, HUD/status control, hook tuning, intent routing, and conditional guardrails.</p>
         </div>
         <div class="card">
           <h3>Sub-agents</h3>
@@ -711,6 +750,7 @@ Structured Result
         </thead>
         <tbody>
           <tr><td>Command</td><td><code>/omg:status</code></td><td>Snapshot progress, risk, and next actions</td></tr>
+          <tr><td>Command</td><td><code>/omg:doctor</code></td><td>Diagnose extension/team readiness and generate remediation plan</td></tr>
           <tr><td>Command</td><td><code>/omg:hud</code></td><td>Switch status visibility profile (<code>normal</code>/<code>compact</code>/<code>hidden</code>)</td></tr>
           <tr><td>Command</td><td><code>/omg:hud-on</code></td><td>Quick toggle to full HUD status view</td></tr>
           <tr><td>Command</td><td><code>/omg:hud-compact</code></td><td>Quick toggle to compact HUD status view</td></tr>
@@ -724,9 +764,15 @@ Structured Result
           <tr><td>Command</td><td><code>/omg:rules</code></td><td>Activate task-conditional guardrail rule packs</td></tr>
           <tr><td>Command</td><td><code>/omg:memory</code></td><td>Manage <code>MEMORY.md</code> index, topic notes, and rule packs</td></tr>
           <tr><td>Command</td><td><code>/omg:loop</code></td><td>Continue exec/verify/fix cycles until done or blocked</td></tr>
+          <tr><td>Command</td><td><code>/omg:reasoning</code></td><td>Switch reasoning effort (<code>low</code>/<code>medium</code>/<code>high</code>/<code>xhigh</code>)</td></tr>
+          <tr><td>Command</td><td><code>/omg:approval</code></td><td>Switch approval posture (<code>suggest</code>/<code>auto</code>/<code>full-auto</code>)</td></tr>
           <tr><td>Command</td><td><code>/omg:team</code></td><td>Run full multi-agent delivery loop</td></tr>
+          <tr><td>Command</td><td><code>/omg:cancel</code></td><td>Harness-style safe cancel alias with resume handoff</td></tr>
           <tr><td>Command</td><td><code>/omg:optimize</code></td><td>Tune prompt/context quality and cost profile</td></tr>
           <tr><td>Command</td><td><code>/omg:cache</code></td><td>Inspect cache/context behavior</td></tr>
+          <tr><td>Skill</td><td><code>$doctor</code></td><td>Readiness diagnostics and remediation sequencing</td></tr>
+          <tr><td>Skill</td><td><code>$reasoning</code></td><td>Reasoning-effort posture control for depth/cost tuning</td></tr>
+          <tr><td>Skill</td><td><code>$approval</code></td><td>Approval policy posture control with risk guardrails</td></tr>
           <tr><td>Skill</td><td><code>$intent</code></td><td>Intent routing and next-command recommendation</td></tr>
           <tr><td>Skill</td><td><code>$hud</code></td><td>HUD profile control for status readability</td></tr>
           <tr><td>Skill</td><td><code>$hooks</code></td><td>Hook event policy, lane assignment, and safety guard tuning</td></tr>
@@ -783,6 +829,16 @@ Structured Result
             <td>Validate</td>
             <td><code>gemini extensions list</code> or <code>/extensions list</code></td>
             <td>Extension appears in active extension list</td>
+          </tr>
+          <tr>
+            <td>Doctor preflight</td>
+            <td><code>/omg:doctor</code> (or <code>/omg:doctor team</code>)</td>
+            <td>Readiness findings with prioritized remediation before autonomy</td>
+          </tr>
+          <tr>
+            <td>Set operator posture</td>
+            <td><code>/omg:reasoning high</code> then <code>/omg:approval auto</code></td>
+            <td>Explicit depth/cost and confirmation policy aligned to task risk</td>
           </tr>
           <tr>
             <td>Start workflow</td>
@@ -855,6 +911,16 @@ Structured Result
             <td><code>/omg:* not found</code></td>
             <td>Extension not loaded in current process</td>
             <td>Run <code>gemini extensions list</code> and restart session</td>
+          </tr>
+          <tr>
+            <td>Autonomous flow confirms too often or too little</td>
+            <td>Approval posture not aligned with risk profile</td>
+            <td>Run <code>/omg:approval suggest|auto|full-auto</code> and re-check policy</td>
+          </tr>
+          <tr>
+            <td>Setup health is unclear before a long run</td>
+            <td>State/config drift accumulated across sessions</td>
+            <td>Run <code>/omg:doctor</code> and apply remediation list</td>
           </tr>
           <tr>
             <td>Skills not triggering</td>

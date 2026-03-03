@@ -1,0 +1,46 @@
+description = "Inspect or set OmG reasoning effort profile (low, medium, high, xhigh) for depth/cost control."
+prompt = """
+Run OmG reasoning-effort manager.
+
+Input:
+$ARGUMENTS
+
+Protocol:
+1. Parse requested effort value.
+2. Supported values:
+   - `low`
+   - `medium`
+   - `high`
+   - `xhigh`
+3. If no value is provided, show current profile from `.omg/state/reasoning.json` when available.
+4. Map effort to OmG posture:
+   - planning depth
+   - verification strictness
+   - expected latency/token cost
+5. If filesystem tools are available, write/update `.omg/state/reasoning.json`.
+6. Clarify boundary: this profile controls OmG orchestration behavior and recommendations, not Gemini runtime flags directly.
+
+Suggested `reasoning.json` shape:
+{
+  "effort": "low|medium|high|xhigh",
+  "planning_depth": "minimal|balanced|deep|maximum",
+  "verification_strictness": "light|normal|high|very-high",
+  "updated_at": "<ISO-8601>",
+  "source": "omg:reasoning"
+}
+
+Output format:
+## Reasoning Status
+- current:
+- requested:
+- applied:
+- persisted:
+
+## Effort Matrix
+| Effort | Planning Depth | Verification | Cost/Latency |
+| --- | --- | --- | --- |
+
+## Recommended Route
+1. ...
+2. ...
+"""

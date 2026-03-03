@@ -56,6 +56,10 @@ Repeat `team-exec -> team-verify -> team-fix` until acceptance criteria pass or 
 - `loop`: strict continuation loop for unresolved acceptance criteria.
 - `hud`: visual status profile control (`normal`, `compact`, `hidden`) for `/omg:status`.
 - `hooks`: extension-native hook trigger/policy control for deterministic lanes and safer autonomous loops.
+- `reasoning`: reasoning effort profile (`low`, `medium`, `high`, `xhigh`) to tune depth/cost posture.
+- `approval`: approval posture (`suggest`, `auto`, `full-auto`) for autonomous action confirmation policy.
+- `doctor`: readiness diagnostics for command/skill/state integrity and team safety posture.
+- `cancel`: alias lifecycle stop path with resume-ready handoff.
 
 ## Operating Modes
 
@@ -85,6 +89,9 @@ When filesystem tools are available, persist current workflow state:
 - `.omg/state/hooks.json`
 - `.omg/state/hooks-validation.md`
 - `.omg/state/hooks-last-test.md`
+- `.omg/state/reasoning.json`
+- `.omg/state/approval.json`
+- `.omg/state/doctor.md`
 - `.omg/hooks/*.md`
 
 If these files do not exist, create them only when a mode/lifecycle command is explicitly requested.

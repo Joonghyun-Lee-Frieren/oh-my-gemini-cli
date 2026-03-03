@@ -42,6 +42,19 @@ OmG extends Gemini CLI from a single-session assistant into a structured, role-d
   - `.omg/hooks/*.md`
 - Added hook engineering guide: `docs/guide/hook-engineering.md`
 
+## Harness Alignment Update (2026-03-03)
+
+To align practical operator controls from `oh-my-codex` with Gemini extension-native primitives, OmG adds:
+
+- `/omg:reasoning` + `$reasoning` for quick reasoning-effort posture control (`low`, `medium`, `high`, `xhigh`)
+- `/omg:doctor` + `$doctor` for setup/readiness diagnostics (including `team` scope)
+- `/omg:approval` + `$approval` for approval posture control (`suggest`, `auto`, `full-auto`)
+- `/omg:cancel` command alias for stop/resume handoff flow parity
+
+Boundary note:
+- OmG can persist and enforce policy posture in extension state and prompts.
+- Runtime-level CLI flags (for example host approval/reasoning switches) still depend on Gemini CLI runtime configuration.
+
 ## At A Glance
 
 | Item | Summary |
@@ -135,6 +148,7 @@ Note: extension install/update commands run in terminal mode (`gemini extensions
 | Command | Purpose | Typical timing |
 | --- | --- | --- |
 | `/omg:status` | Summarize progress, risks, and next actions | Start/end of a work session |
+| `/omg:doctor` | Run extension/team/hook readiness diagnostics and remediation plan | Before long autonomous runs or when setup seems broken |
 | `/omg:hud` | Inspect or switch visual HUD profile (`normal`, `compact`, `hidden`) | Before long sessions or when terminal density changes |
 | `/omg:hud-on` | Quick toggle HUD to full visual mode | When returning to full status boards |
 | `/omg:hud-compact` | Quick toggle HUD to compact mode | During dense implementation loops |
@@ -155,6 +169,8 @@ Note: extension install/update commands run in terminal mode (`gemini extensions
 | `/omg:team-fix` | Patch only verified failures | When verification fails |
 | `/omg:loop` | Enforce repeated `exec -> verify -> fix` cycles until done/blocker | Mid/late delivery when unresolved findings remain |
 | `/omg:mode` | Inspect or switch operating profile (`balanced/speed/deep/autopilot/ralph/ultrawork`) | At session start or posture change |
+| `/omg:reasoning` | Inspect or switch reasoning effort (`low/medium/high/xhigh`) | Before deep analysis or when latency/cost should be tuned |
+| `/omg:approval` | Inspect or switch approval posture (`suggest/auto/full-auto`) | Before autonomous delivery loops or policy changes |
 | `/omg:autopilot` | Run iterative autonomous cycles with checkpoints | Complex autonomous delivery |
 | `/omg:ralph` | Enforce strict quality-gated orchestration | Release-critical tasks |
 | `/omg:ultrawork` | Throughput mode for batched independent tasks | Large backlogs |
@@ -162,6 +178,7 @@ Note: extension install/update commands run in terminal mode (`gemini extensions
 | `/omg:launch` | Initialize persistent lifecycle state for long tasks | Beginning of long sessions |
 | `/omg:checkpoint` | Save compact checkpoint and resume hint | Mid-session handoff |
 | `/omg:stop` | Gracefully stop autonomous mode and preserve progress | Pause/interrupt moments |
+| `/omg:cancel` | Harness-style cancel alias that stops safely and returns resume handoff | When interrupting autonomous/team flow |
 | `/omg:optimize` | Improve prompts/context for quality and token efficiency | After a noisy or expensive session |
 | `/omg:cache` | Inspect cache and context behavior | Long-running context-heavy tasks |
 
@@ -186,6 +203,9 @@ Note: extension install/update commands run in terminal mode (`gemini extensions
 | `$ultrawork` | Batch throughput execution | Shard board + periodic gates |
 | `$consensus` | Option comparison and convergence | Decision matrix + chosen path |
 | `$mode` | Mode/profile switching | Active posture + recommended next command |
+| `$reasoning` | Reasoning effort profile switching | Depth/cost posture + next command |
+| `$approval` | Approval posture switching | Guardrail matrix + risk policy summary |
+| `$doctor` | Setup/readiness diagnostics | Findings board + remediation sequence |
 | `$cancel` | Graceful stop with resume handoff | Lifecycle stop summary |
 | `$research` | Explore options/tradeoffs | Decision-oriented comparison |
 | `$context-optimize` | Improve context structure | Compression and signal-to-noise adjustments |
@@ -236,6 +256,8 @@ oh-my-gemini-cli/
 | `settings.filter is not a function` during install | Stale Gemini CLI runtime or stale cached extension metadata | Update Gemini CLI, uninstall extension, then reinstall from repository URL |
 | `/omg:*` command not found | Extension not loaded in current session | Run `gemini extensions list`, then restart Gemini CLI session |
 | Skill does not trigger | Skill frontmatter path mismatch | Confirm `skills/<name>/SKILL.md` exists and extension is reloaded |
+| Autonomous flow confirms too often (or too little) | Approval posture not aligned to task risk | Run `/omg:approval suggest|auto|full-auto` and recheck guardrails |
+| Setup health is unclear before long run | State/config drift accumulated | Run `/omg:doctor` (or `/omg:doctor team`) and apply remediation list |
 
 ## Migration Notes
 
