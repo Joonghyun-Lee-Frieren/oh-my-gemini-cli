@@ -40,40 +40,6 @@ OmG extends Gemini CLI from a single-session assistant into a structured, role-d
 - Added runtime-state convention for assembled roster:
   - `.omg/state/team-assembly.md`
 
-## What's New in v0.3.4
-
-- Added extension-native hook orchestration controls:
-  - `/omg:hooks`
-  - `/omg:hooks-init`
-  - `/omg:hooks-validate`
-  - `/omg:hooks-test`
-  - `$hooks`
-- Added deterministic hook lanes (`P0-safety`, `P1-quality`, `P2-optimization`) with timeout/debounce/idempotency guidance
-- Added derived signal policy for long sessions:
-  - `context-drift`
-  - `risk-spike`
-  - `loop-stall`
-  - `token-burst`
-  - `blocker-repeat`
-- Added hook runtime-state conventions:
-  - `.omg/state/hooks.json`
-  - `.omg/state/hooks-validation.md`
-  - `.omg/state/hooks-last-test.md`
-  - `.omg/hooks/*.md`
-- Added hook engineering guide: `docs/guide/hook-engineering.md`
-
-## Harness Alignment Update (2026-03-03)
-
-To align practical operator controls from `oh-my-codex` with Gemini extension-native primitives, OmG adds:
-
-- `/omg:doctor` + `$doctor` for setup/readiness diagnostics (including `team` scope)
-- `/omg:approval` + `$approval` for approval posture control (`suggest`, `auto`, `full-auto`)
-- `/omg:cancel` command alias for stop/resume handoff flow parity
-
-Boundary note:
-- OmG can persist and enforce policy posture in extension state and prompts.
-- Runtime-level CLI flags (for example host approval switches) still depend on Gemini CLI runtime configuration.
-
 ## At A Glance
 
 | Item | Summary |
