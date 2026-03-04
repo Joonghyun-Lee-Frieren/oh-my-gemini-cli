@@ -483,7 +483,7 @@
   <header>
     <div class="wrap">
       <div class="hero-top">
-        <span class="badge">Latest Release v0.3.4</span>
+        <span class="badge">Latest Release v0.3.5</span>
         <div class="top-actions">
           <a class="btn btn-link btn-github" href="https://github.com/Joonghyun-Lee-Frieren/oh-my-gemini-cli" target="_blank" rel="noreferrer noopener">
             <svg class="btn-icon" viewBox="0 0 16 16" aria-hidden="true">
@@ -529,9 +529,9 @@
       </div>
 
       <div class="stats">
-        <div class="stat"><div class="n">10</div><div class="l">Sub-agents</div></div>
-        <div class="stat"><div class="n">23</div><div class="l">Reusable skills</div></div>
-        <div class="stat"><div class="n">34</div><div class="l">Namespaced commands</div></div>
+        <div class="stat"><div class="n">13</div><div class="l">Sub-agents</div></div>
+        <div class="stat"><div class="n">24</div><div class="l">Reusable skills</div></div>
+        <div class="stat"><div class="n">35</div><div class="l">Namespaced commands</div></div>
         <div class="stat"><div class="n">5</div><div class="l">Context layers</div></div>
       </div>
     </div>
@@ -539,8 +539,8 @@
 
   <section>
     <div class="wrap">
-      <h2>Latest Update (2026-03-03)</h2>
-      <p class="sub">Harness-aligned operator controls from oh-my-codex are now mapped into Gemini extension-native OmG workflows.</p>
+      <h2>Latest Update (2026-03-04)</h2>
+      <p class="sub">Dynamic Agent Team Assembly adds approval-gated, role-fit team composition before staged execution.</p>
       <table>
         <thead>
           <tr>
@@ -550,44 +550,32 @@
         </thead>
         <tbody>
           <tr>
-            <td>Diagnostics</td>
-            <td>Added <code>/omg:doctor</code> and <code>$doctor</code> for extension/team/hook readiness checks with remediation output.</td>
+            <td>Dynamic Team Assembly</td>
+            <td>Added <code>/omg:team-assemble</code> and <code>$team-assemble</code> to build a task-fit roster before execution.</td>
           </tr>
           <tr>
-            <td>Approval Posture</td>
-            <td>Added <code>/omg:approval</code> and <code>$approval</code> for <code>suggest</code>/<code>auto</code>/<code>full-auto</code> policy switching.</td>
+            <td>Approval Gate</td>
+            <td>Team assembly now proposes a roster first, then asks explicit confirmation before autonomous lifecycle execution.</td>
           </tr>
           <tr>
-            <td>Lifecycle Alias</td>
-            <td>Added <code>/omg:cancel</code> as a harness-style alias to safe stop/resume handoff behavior.</td>
+            <td>New Specialist Roles</td>
+            <td>Added <code>omg-director</code>, <code>omg-consultant</code>, and <code>omg-editor</code> for orchestration, strategic analysis, and output packaging.</td>
           </tr>
           <tr>
-            <td>New Runtime State</td>
-            <td>Added <code>.omg/state/approval.json</code> and <code>.omg/state/doctor.md</code> conventions.</td>
+            <td>Model Allocation Policy</td>
+            <td>Codified lane policy: judgment/gates on <code>gemini-3.1-pro</code>, execution on <code>gemini-3.1-flash</code>, broad low-risk exploration on <code>gemini-3.1-flash-lite</code>.</td>
           </tr>
           <tr>
-            <td>Hook Orchestration</td>
-            <td>Added <code>/omg:hooks</code>, <code>/omg:hooks-init</code>, <code>/omg:hooks-validate</code>, <code>/omg:hooks-test</code>, and <code>$hooks</code>.</td>
+            <td>State Persistence</td>
+            <td>Added <code>.omg/state/team-assembly.md</code> convention for resume-safe roster handoff.</td>
           </tr>
           <tr>
-            <td>Capability Boundary</td>
-            <td>OmG persists policy and behavior posture in extension state; host runtime flags still depend on Gemini CLI runtime configuration.</td>
+            <td>Documentation Boost</td>
+            <td>Added a dedicated guide: <code>docs/guide/agent-team-assembly.md</code>.</td>
           </tr>
           <tr>
-            <td>Hook Runtime State</td>
-            <td>Added <code>.omg/state/hooks.json</code>, <code>.omg/state/hooks-validation.md</code>, <code>.omg/state/hooks-last-test.md</code>, and <code>.omg/hooks/*.md</code> conventions.</td>
-          </tr>
-          <tr>
-            <td>Memory Workflow</td>
-            <td>Added <code>/omg:memory</code> and <code>$memory</code> for durable memory operations.</td>
-          </tr>
-          <tr>
-            <td>Memory Structure</td>
-            <td>Introduced <code>MEMORY.md</code> index + topic files under <code>.omg/memory/*.md</code>.</td>
-          </tr>
-          <tr>
-            <td>Rule Management</td>
-            <td>Added modular rule packs under <code>.omg/rules/*.md</code> with <code>alwaysApply</code> and <code>globs</code>.</td>
+            <td>Activation Path</td>
+            <td>No extra preview toggle required in OmG; if extension is loaded, <code>/omg:team-assemble</code> is ready.</td>
           </tr>
         </tbody>
       </table>
@@ -615,19 +603,19 @@ Structured Result
 
       <div>
         <h2>Model Allocation</h2>
-        <p class="sub">Typical role split in multi-agent mode</p>
+        <p class="sub">Policy-based lane split for dynamic team assembly</p>
         <div class="chart">
           <div class="bar">
-            <div class="bar-label"><span>Planning &amp; Architecture (<code>gemini-3.1-pro</code>)</span><span>70%</span></div>
-            <div class="bar-track"><div class="bar-fill" style="width:70%"></div></div>
+            <div class="bar-label"><span>Judgment &amp; Acceptance Gates (<code>gemini-3.1-pro</code>)</span><span>60%</span></div>
+            <div class="bar-track"><div class="bar-fill" style="width:60%"></div></div>
           </div>
           <div class="bar">
-            <div class="bar-label"><span>Execution Delivery (<code>gemini-3.1-flash</code>)</span><span>20%</span></div>
-            <div class="bar-track"><div class="bar-fill flash" style="width:20%"></div></div>
+            <div class="bar-label"><span>Implementation &amp; Delivery (<code>gemini-3.1-flash</code>)</span><span>25%</span></div>
+            <div class="bar-track"><div class="bar-fill flash" style="width:25%"></div></div>
           </div>
           <div class="bar">
-            <div class="bar-label"><span>Quick Low-Risk Fixes (<code>gemini-3.1-flash-lite</code>)</span><span>10%</span></div>
-            <div class="bar-track"><div class="bar-fill lite" style="width:10%"></div></div>
+            <div class="bar-label"><span>Broad Low-Risk Exploration (<code>gemini-3.1-flash-lite</code>)</span><span>15%</span></div>
+            <div class="bar-track"><div class="bar-fill lite" style="width:15%"></div></div>
           </div>
         </div>
       </div>
@@ -655,7 +643,12 @@ Structured Result
           <tr>
             <td>Parallel role execution</td>
             <td>Single-thread thinking</td>
-            <td><code>/omg:team</code> orchestrates planner/architect/executor/reviewer</td>
+            <td><code>/omg:team-assemble</code> builds role lanes first, then <code>/omg:team</code> executes with explicit handoffs</td>
+          </tr>
+          <tr>
+            <td>Task-fit team composition</td>
+            <td>Manual role guessing each session</td>
+            <td>Domain specialists + format specialists are selected dynamically with approval gate</td>
           </tr>
           <tr>
             <td>Consistency in decisions</td>
@@ -723,20 +716,64 @@ Structured Result
   </section>
 
   <section>
+    <div class="wrap two-col">
+      <div>
+        <h2>Dynamic Team Assembly</h2>
+        <p class="sub">Assemble first, execute after approval.</p>
+        <table>
+          <thead>
+            <tr>
+              <th>Step</th>
+              <th>Behavior</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>1. Analyze task shape</td><td>Infer domain, output type, risk posture, and evidence depth.</td></tr>
+            <tr><td>2. Build role lanes</td><td>Select domain specialists and format specialists separately.</td></tr>
+            <tr><td>3. Assign models</td><td>Map judgment, execution, and exploration lanes to predictable model profiles.</td></tr>
+            <tr><td>4. Ask approval</td><td>Pause and request explicit confirmation before autonomous team execution.</td></tr>
+            <tr><td>5. Run lifecycle</td><td>Execute <code>team-plan -&gt; team-prd -&gt; team-exec -&gt; team-verify -&gt; team-fix</code>.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div>
+        <h2>Example Roster</h2>
+        <p class="sub">Competitor analysis + executive report</p>
+        <table>
+          <thead>
+            <tr>
+              <th>Lane</th>
+              <th>Agent(s)</th>
+              <th>Purpose</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>Orchestration</td><td><code>omg-director</code></td><td>Route messages, resolve conflicts, maintain acceptance focus.</td></tr>
+            <tr><td>Exploration</td><td><code>omg-researcher</code> x3</td><td>Parallel evidence collection across competitor segments.</td></tr>
+            <tr><td>Decision</td><td><code>omg-consultant</code></td><td>Define criteria and recommend strategic direction.</td></tr>
+            <tr><td>Editorial</td><td><code>omg-editor</code></td><td>Deliver concise executive-ready output.</td></tr>
+            <tr><td>Quality</td><td><code>omg-reviewer</code></td><td>Check consistency, unsupported claims, and missing evidence.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section>
     <div class="wrap">
       <h2>Interface Catalog</h2>
       <div class="cards" style="margin-bottom:10px;">
         <div class="card">
           <h3>Commands</h3>
-          <p>Fast control points for status, doctor diagnostics, approval posture, hook policy, intent gating, memory workflows, and loop discipline.</p>
+          <p>Fast control points for status, intent routing, dynamic team assembly, approval posture, and staged execution control.</p>
         </div>
         <div class="card">
           <h3>Skills</h3>
-          <p>Reusable packs for diagnostics, approval posture, HUD/status control, hook tuning, intent routing, and conditional guardrails.</p>
+          <p>Reusable packs for team assembly, diagnostics, approval posture, context hygiene, and guardrail-aware delivery loops.</p>
         </div>
         <div class="card">
           <h3>Sub-agents</h3>
-          <p>Role-specialized behavior contracts to keep each step coherent and auditable.</p>
+          <p>Role-specialized behavior contracts across orchestration, analysis, implementation, quality, and final packaging.</p>
         </div>
       </div>
       <table style="margin-bottom:10px;">
@@ -759,12 +796,13 @@ Structured Result
           <tr><td>Command</td><td><code>/omg:hooks-validate</code></td><td>Validate trigger graph, ordering, and worker-session safety constraints</td></tr>
           <tr><td>Command</td><td><code>/omg:hooks-test</code></td><td>Dry-run event sequences and estimate hook efficiency impact</td></tr>
           <tr><td>Command</td><td><code>/omg:intent</code></td><td>Classify request intent and route to the right stage</td></tr>
+          <tr><td>Command</td><td><code>/omg:team-assemble</code></td><td>Build a task-fit team roster and request execution approval</td></tr>
           <tr><td>Command</td><td><code>/omg:deep-init</code></td><td>Build project map and validation baseline before long sessions</td></tr>
           <tr><td>Command</td><td><code>/omg:rules</code></td><td>Activate task-conditional guardrail rule packs</td></tr>
           <tr><td>Command</td><td><code>/omg:memory</code></td><td>Manage <code>MEMORY.md</code> index, topic notes, and rule packs</td></tr>
           <tr><td>Command</td><td><code>/omg:loop</code></td><td>Continue exec/verify/fix cycles until done or blocked</td></tr>
           <tr><td>Command</td><td><code>/omg:approval</code></td><td>Switch approval posture (<code>suggest</code>/<code>auto</code>/<code>full-auto</code>)</td></tr>
-          <tr><td>Command</td><td><code>/omg:team</code></td><td>Run full multi-agent delivery loop</td></tr>
+          <tr><td>Command</td><td><code>/omg:team</code></td><td>Run full multi-agent lifecycle with optional assembled roster</td></tr>
           <tr><td>Command</td><td><code>/omg:cancel</code></td><td>Harness-style safe cancel alias with resume handoff</td></tr>
           <tr><td>Command</td><td><code>/omg:optimize</code></td><td>Tune prompt/context quality and cost profile</td></tr>
           <tr><td>Command</td><td><code>/omg:cache</code></td><td>Inspect cache/context behavior</td></tr>
@@ -777,6 +815,7 @@ Structured Result
           <tr><td>Skill</td><td><code>$rules</code></td><td>Conditional policy activation by trigger</td></tr>
           <tr><td>Skill</td><td><code>$memory</code></td><td>Memory audit and modular rule activation map</td></tr>
           <tr><td>Skill</td><td><code>$loop</code></td><td>Strict completion loop with blocker-aware status</td></tr>
+          <tr><td>Skill</td><td><code>$team-assemble</code></td><td>Dynamic team charter and approval gate</td></tr>
           <tr><td>Skill</td><td><code>$plan</code></td><td>Milestone-level decomposition</td></tr>
           <tr><td>Skill</td><td><code>$execute</code></td><td>Implementation pass for a scoped slice</td></tr>
           <tr><td>Skill</td><td><code>$team</code></td><td>End-to-end collaborative delivery</td></tr>
@@ -795,10 +834,16 @@ Structured Result
         <tbody>
           <tr><td><code>omg-architect</code></td><td>System boundaries and long-term design quality</td><td><code>gemini-3.1-pro</code></td></tr>
           <tr><td><code>omg-planner</code></td><td>Task slicing, dependencies, execution order</td><td><code>gemini-3.1-pro</code></td></tr>
+          <tr><td><code>omg-product</code></td><td>Scope lock and measurable acceptance criteria</td><td><code>gemini-3.1-pro</code></td></tr>
           <tr><td><code>omg-executor</code></td><td>Code-level implementation and incremental delivery</td><td><code>gemini-3.1-flash</code></td></tr>
           <tr><td><code>omg-reviewer</code></td><td>Regression checks and correctness review</td><td><code>gemini-3.1-pro</code></td></tr>
+          <tr><td><code>omg-verifier</code></td><td>Acceptance-gate evidence checks and release readiness</td><td><code>gemini-3.1-pro</code></td></tr>
           <tr><td><code>omg-debugger</code></td><td>Root cause analysis and fix strategy</td><td><code>gemini-3.1-pro</code></td></tr>
+          <tr><td><code>omg-consensus</code></td><td>Option convergence and decision scoring</td><td><code>gemini-3.1-pro</code></td></tr>
           <tr><td><code>omg-researcher</code></td><td>Evidence gathering and decision support</td><td><code>gemini-3.1-pro</code></td></tr>
+          <tr><td><code>omg-director</code></td><td>Lane orchestration, conflict resolution, and handoff control</td><td><code>gemini-3.1-pro</code></td></tr>
+          <tr><td><code>omg-consultant</code></td><td>Decision criteria, strategic analysis, and recommendation framing</td><td><code>gemini-3.1-pro</code></td></tr>
+          <tr><td><code>omg-editor</code></td><td>Final deliverable structure and consistency packaging</td><td><code>gemini-3.1-flash</code></td></tr>
           <tr><td><code>omg-quick</code></td><td>Small tactical edits</td><td><code>gemini-3.1-flash-lite</code></td></tr>
         </tbody>
       </table>
@@ -843,6 +888,11 @@ Structured Result
             <td>Project map + stage-routed handoff before coding</td>
           </tr>
           <tr>
+            <td>Assemble team</td>
+            <td><code>/omg:team-assemble &lt;task&gt;</code></td>
+            <td>Role-fit roster proposal + approval gate before autonomous execution</td>
+          </tr>
+          <tr>
             <td>Refresh memory</td>
             <td><code>/omg:memory Sync index and active rules for current task</code></td>
             <td>Compact memory index + task-aware rule activation context</td>
@@ -859,8 +909,8 @@ Structured Result
           </tr>
           <tr>
             <td>Execute lifecycle</td>
-            <td><code>/omg:team Implement feature X with tests</code></td>
-            <td>Plan -> execute -> review progression summary</td>
+            <td><code>/omg:team Implement feature X with tests (approved roster)</code></td>
+            <td>team-plan -> team-prd -> team-exec -> team-verify -> team-fix progression summary</td>
           </tr>
           <tr>
             <td>Enforce completion loop</td>
@@ -915,6 +965,11 @@ Structured Result
             <td>Run <code>/omg:approval suggest|auto|full-auto</code> and re-check policy</td>
           </tr>
           <tr>
+            <td>Team assembly keeps proposing but not executing</td>
+            <td>No explicit approval token after roster proposal</td>
+            <td>Reply with <code>yes</code>, <code>approve</code>, <code>go</code>, or <code>run</code> and re-run <code>/omg:team-assemble</code></td>
+          </tr>
+          <tr>
             <td>Setup health is unclear before a long run</td>
             <td>State/config drift accumulated across sessions</td>
             <td>Run <code>/omg:doctor</code> and apply remediation list</td>
@@ -935,6 +990,7 @@ Structured Result
         <a href="https://github.com/Joonghyun-Lee-Frieren/oh-my-gemini-cli">GitHub</a>
         <a href="./history.md">History</a>
         <a href="./guide/installation.md">Installation Guide</a>
+        <a href="./guide/agent-team-assembly.md">Team Assembly Guide</a>
         <a href="./guide/hook-engineering.md">Hook Engineering Guide</a>
       </div>
       <div>Built for official Gemini CLI Extensions workflow.</div>

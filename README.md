@@ -20,6 +20,26 @@ This project started from that observation:
 
 OmG extends Gemini CLI from a single-session assistant into a structured, role-driven engineering workflow.
 
+## What's New in v0.3.5
+
+- Added dynamic team assembly entrypoints:
+  - `/omg:team-assemble`
+  - `$team-assemble`
+- Added role-specialized teammates for non-coding and mixed workloads:
+  - `omg-director` (orchestration)
+  - `omg-consultant` (decision criteria and strategic analysis)
+  - `omg-editor` (final output structuring and quality)
+- Added approval-gated team assembly protocol:
+  - Propose roster first
+  - Ask explicit confirmation: "Proceed with this team? (yes/no)"
+  - Run lifecycle only after approval
+- Added model-allocation rule for predictable cost:
+  - judgment/gates -> `gemini-3.1-pro`
+  - implementation-heavy execution -> `gemini-3.1-flash`
+  - broad low-risk exploration -> `gemini-3.1-flash-lite`
+- Added runtime-state convention for assembled roster:
+  - `.omg/state/team-assembly.md`
+
 ## What's New in v0.3.4
 
 - Added extension-native hook orchestration controls:
@@ -62,7 +82,7 @@ Boundary note:
 | Core building blocks | `agents/`, `commands/`, `skills/`, `context/` |
 | Main use case | Complex implementation tasks that need plan -> execute -> review loops |
 | Control surface | `/omg:*` commands + `$skill` workflows + sub-agent delegation |
-| Default model strategy | Planning/architecture on `gemini-3.1-pro`, execution-heavy work on `gemini-3.1-flash`, tiny low-risk edits on `gemini-3.1-flash-lite` |
+| Default model strategy | Judgment/acceptance gates on `gemini-3.1-pro`, implementation-heavy work on `gemini-3.1-flash`, broad low-risk exploration on `gemini-3.1-flash-lite` |
 
 ## Why OmG
 
@@ -95,22 +115,55 @@ flowchart TD
 ```mermaid
 sequenceDiagram
     participant User
+    participant Director as omg-director
     participant Planner as omg-planner
     participant Architect as omg-architect
     participant Executor as omg-executor
     participant Reviewer as omg-reviewer
     participant Debugger as omg-debugger
+    participant Editor as omg-editor
 
-    User->>Planner: Define goal and constraints
+    User->>Director: Request team execution
+    Director->>User: Propose dynamic team + approval gate
+    User->>Director: Approve roster
+    Director->>Planner: Define goal and constraints
     Planner->>Architect: Validate technical direction (when needed)
     Architect-->>Planner: Design feedback and risk flags
-    Planner->>Executor: Hand off actionable task slices
+    Planner->>Director: Hand off executable slices
+    Director->>Executor: Assign implementation lane
     Executor->>Reviewer: Submit implementation result
     Reviewer-->>Executor: Accept or request fix
     Reviewer->>Debugger: Trigger on failing tests or regressions
     Debugger-->>Reviewer: Root cause + patch proposal
-    Reviewer-->>User: Final validated report
+    Reviewer->>Director: Verification result
+    Director->>Editor: Package validated output
+    Editor-->>User: Final validated deliverable
 ```
+
+## Dynamic Team Assembly
+
+Use `team-assemble` when a fixed engineering roster is not enough.
+
+- Split selection into:
+  - domain specialists (problem expertise)
+  - format specialists (report/content/output quality)
+- Spawn parallel exploration lanes (`omg-researcher` xN) for broad discovery tasks.
+- Route decisions through a judgment lane (`omg-consultant` or `omg-architect`).
+- Keep verify/fix loops explicit (`omg-reviewer` -> `omg-verifier` -> `omg-debugger`).
+- Require explicit approval before autonomous execution starts.
+
+Example flow:
+
+```text
+/omg:team-assemble "Compare 3 competitors and produce an exec report"
+-> proposes: researcher x3 + consultant + editor + director
+-> asks: Proceed with this team? (yes/no)
+-> after approval: team-plan -> team-prd -> team-exec -> team-verify -> team-fix
+```
+
+Activation note:
+- No separate research-preview setting is required in OmG.
+- If the extension is loaded, `/omg:team-assemble` and `$team-assemble` are immediately available.
 
 ## Install
 
@@ -160,7 +213,8 @@ Note: extension install/update commands run in terminal mode (`gemini extensions
 | `/omg:rules` | Activate task-conditional guardrail rule packs | Before implementation on migration/security/performance-sensitive work |
 | `/omg:memory` | Maintain MEMORY index, topic files, and path-aware rule packs | During long sessions or when decisions/rules drift |
 | `/omg:deep-init` | Build deep project map and validation baseline for long sessions | At project kickoff or when onboarding into unfamiliar codebases |
-| `/omg:team` | Execute full stage pipeline (`plan -> prd -> exec -> verify -> fix`) | Complex feature or refactor delivery |
+| `/omg:team-assemble` | Dynamically compose a role-fit team with approval gate before execution | Before `/omg:team` on cross-domain or non-standard tasks |
+| `/omg:team` | Execute full stage pipeline (`team-assemble? -> plan -> prd -> exec -> verify -> fix`) | Complex feature or refactor delivery |
 | `/omg:team-plan` | Build dependency-aware execution plan | Before implementation |
 | `/omg:team-prd` | Lock measurable acceptance criteria and constraints | After planning, before coding |
 | `/omg:team-exec` | Implement a scoped delivery slice | Main implementation loop |
@@ -194,6 +248,7 @@ Note: extension install/update commands run in terminal mode (`gemini extensions
 | `$ralplan` | Strict, stage-gated planning with rollback points | Quality-first execution map |
 | `$execute` | Implement a scoped plan slice | Change summary with validation notes |
 | `$prd` | Convert requests into measurable acceptance criteria | PRD-style scope contract |
+| `$team-assemble` | Dynamic roster selection + approval-gated launch | Team charter + lane protocol |
 | `$team` | Full orchestration across roles | Combined multi-agent report |
 | `$loop` | Enforce iterative exec/verify/fix until completion or blocker | Cycle status board + unresolved backlog |
 | `$autopilot` | Autonomous stage-loop execution | Cycle board with blockers |
@@ -220,6 +275,9 @@ Note: extension install/update commands run in terminal mode (`gemini extensions
 | `omg-debugger` | Root-cause analysis and patch strategy | `gemini-3.1-pro` |
 | `omg-consensus` | Option scoring and decision convergence | `gemini-3.1-pro` |
 | `omg-researcher` | External option analysis and synthesis | `gemini-3.1-pro` |
+| `omg-director` | Team message routing, conflict resolution, and lifecycle orchestration | `gemini-3.1-pro` |
+| `omg-consultant` | Strategic analysis criteria and recommendation framing | `gemini-3.1-pro` |
+| `omg-editor` | Final deliverable structure, consistency, and audience fit | `gemini-3.1-flash` |
 | `omg-quick` | Small, tactical fixes | `gemini-3.1-flash-lite` |
 
 ## Context Layer Model
@@ -253,6 +311,7 @@ oh-my-gemini-cli/
 | `settings.filter is not a function` during install | Stale Gemini CLI runtime or stale cached extension metadata | Update Gemini CLI, uninstall extension, then reinstall from repository URL |
 | `/omg:*` command not found | Extension not loaded in current session | Run `gemini extensions list`, then restart Gemini CLI session |
 | Skill does not trigger | Skill frontmatter path mismatch | Confirm `skills/<name>/SKILL.md` exists and extension is reloaded |
+| Team assembly keeps proposing but does not execute | Approval token missing in request | Reply with explicit approval (`yes`, `approve`, `go`, or `run`) |
 | Autonomous flow confirms too often (or too little) | Approval posture not aligned to task risk | Run `/omg:approval suggest|auto|full-auto` and recheck guardrails |
 | Setup health is unclear before long run | State/config drift accumulated | Run `/omg:doctor` (or `/omg:doctor team`) and apply remediation list |
 
@@ -278,6 +337,7 @@ Extension behavior is manifest-driven through Gemini CLI extension primitives.
 
 - [Installation Guide](docs/guide/installation.md)
 - [Context Engineering Guide](docs/guide/context-engineering.md)
+- [Agent Team Assembly Guide](docs/guide/agent-team-assembly.md)
 - [Korean Context Engineering Guide](docs/guide/context-engineering_ko.md)
 - [Memory Management Guide](docs/guide/memory-management.md)
 - [Hook Engineering Guide](docs/guide/hook-engineering.md)

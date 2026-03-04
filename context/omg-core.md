@@ -13,11 +13,14 @@ This extension provides a multi-agent workflow layer for Gemini CLI.
 - Keep each phase explicit and verifiable.
 
 3. Delegate by role.
+- Use `omg-director` for team-level orchestration and conflict resolution.
 - Use `omg-architect` for design and tradeoffs.
 - Use `omg-planner` for task decomposition.
 - Use `omg-product` for PRD-quality scope and acceptance criteria.
+- Use `omg-consultant` for strategic criteria and recommendation framing.
 - Use `omg-executor` for implementation.
 - Use `omg-reviewer`, `omg-verifier`, and `omg-debugger` for quality and recovery.
+- Use `omg-editor` for final output packaging.
 
 4. Minimize context load.
 - Read only files needed for the current step.
@@ -31,7 +34,11 @@ This extension provides a multi-agent workflow layer for Gemini CLI.
 - Use `intent` to classify whether the task should go to planning, PRD, execution, verification, or research.
 - Do not jump to implementation if acceptance criteria are missing.
 
-7. Keep loop discipline for incomplete work.
+7. Assemble a fit-for-task team before stage execution when needed.
+- Use `team-assemble` to map domain specialists and format specialists.
+- Require explicit approval before starting autonomous team execution.
+
+8. Keep loop discipline for incomplete work.
 - Use `loop` to continue `team-exec -> team-verify -> team-fix` cycles.
 - Do not mark done while blocker/major items remain.
 
@@ -39,6 +46,7 @@ This extension provides a multi-agent workflow layer for Gemini CLI.
 
 Use this stage order for complex work:
 
+0. `team-assemble` - build and confirm a task-fit multi-role roster
 1. `team-plan` - decompose and map dependencies
 2. `team-prd` - lock scope, constraints, and acceptance criteria
 3. `team-exec` - implement one validated slice at a time
@@ -50,6 +58,7 @@ Repeat `team-exec -> team-verify -> team-fix` until acceptance criteria pass or 
 ## Intake and Rule Controls
 
 - `intent`: request-intent gate and stage routing.
+- `team-assemble`: dynamic roster planning with approval gate before execution.
 - `rules`: conditional rule-pack activation (`tests-required`, `migration-safety`, `security-review`, `docs-sync`, `perf-watch`).
 - `memory`: maintain durable memory index (`MEMORY.md`) and modular rule packs (`.omg/rules/*.md`).
 - `deep-init`: one-time deep repository mapping before long sessions.
@@ -81,6 +90,7 @@ When filesystem tools are available, persist current workflow state:
 - `.omg/memory/*.md`
 - `.omg/rules/*.md`
 - `.omg/state/intent.md`
+- `.omg/state/team-assembly.md`
 - `.omg/state/rules.md`
 - `.omg/state/deep-init.md`
 - `.omg/state/project-map.md`

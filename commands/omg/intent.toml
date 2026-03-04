@@ -7,6 +7,7 @@ $ARGUMENTS
 
 Protocol:
 1. Classify the primary intent into one:
+   - team-assemble
    - plan
    - prd
    - exec
@@ -20,6 +21,7 @@ Protocol:
 5. If filesystem tools are available, write/update `.omg/state/intent.md`.
 
 Routing hints:
+- dynamic multi-role team setup -> `/omg:team-assemble`
 - planning ambiguity -> `/omg:team-plan`
 - scope ambiguity -> `/omg:team-prd`
 - implementation-ready -> `/omg:team-exec`

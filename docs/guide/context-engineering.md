@@ -39,16 +39,18 @@ Without context engineering, long sessions degrade quickly:
 
 OmG uses a stage lifecycle:
 
-1. `team-plan`
-2. `team-prd`
-3. `team-exec`
-4. `team-verify`
-5. `team-fix`
+1. `team-assemble`
+2. `team-plan`
+3. `team-prd`
+4. `team-exec`
+5. `team-verify`
+6. `team-fix`
 
 Context objective by stage:
 
 | Stage | Main context focus | Keep | Avoid |
 | --- | --- | --- | --- |
+| `team-assemble` | role-fit roster and collaboration lanes | explicit ownership and model policy | oversized fixed rosters |
 | `team-plan` | decomposition and dependency graph | scope boundaries | implementation noise |
 | `team-prd` | acceptance criteria and non-goals | measurable done criteria | vague "looks good" goals |
 | `team-exec` | scoped implementation slice | minimal diffs and rationale | broad re-planning |

@@ -15,7 +15,7 @@ Use this skill as an intake gate to reduce command-stage mismatch.
 
 ## Workflow
 
-1. Classify primary intent (`plan`, `prd`, `exec`, `verify`, `fix`, `research`, `lifecycle`).
+1. Classify primary intent (`team-assemble`, `plan`, `prd`, `exec`, `verify`, `fix`, `research`, `lifecycle`).
 2. Detect missing inputs required for that intent.
 3. Flag command-intent mismatch risks.
 4. Recommend exact next `/omg:*` command or `$skill`.

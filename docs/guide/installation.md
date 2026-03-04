@@ -70,6 +70,12 @@ If agent delegation is needed:
 /omg:team "Implement a small feature with planning and review"
 ```
 
+If dynamic team composition is needed before execution:
+
+```text
+/omg:team-assemble "Analyze competitors and draft a decision report"
+```
+
 ## Note
 
 No extension-level setting override is required for installation.

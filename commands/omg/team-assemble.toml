@@ -1,0 +1,65 @@
+description = "Stage 0/5: Dynamically assemble a task-fit agent team with approval gating and model-aware role assignment."
+prompt = """
+Run OmG `team-assemble`.
+
+Task:
+$ARGUMENTS
+
+Protocol:
+1. Analyze task shape:
+   - domain (engineering/research/analysis/content/ops/hybrid)
+   - output target (code/report/plan/presentation)
+   - risk and verification needs
+2. Assemble two role groups:
+   - domain specialists (problem-space experts)
+   - format specialists (output-quality experts)
+3. Build role lanes from OmG agents:
+   - orchestration lane: `omg-director`
+   - exploration lane: `omg-researcher` (spawn multiple lanes when breadth is high)
+   - decision lane: `omg-consultant` or `omg-architect`
+   - execution lane: `omg-executor` when implementation is required
+   - quality lane: `omg-reviewer`, `omg-verifier`, `omg-debugger`
+   - editorial lane: `omg-editor` for final packaging
+4. Assign model profiles by lane:
+   - judgment and acceptance gates -> `gemini-3.1-pro`
+   - implementation-heavy execution -> `gemini-3.1-flash`
+   - broad low-risk exploration -> `gemini-3.1-flash-lite` (upgrade to `gemini-3.1-pro` if depth is critical)
+5. Define collaboration protocol:
+   - explicit message flow between lanes
+   - trigger conditions for verify/fix loops
+   - fallback path when evidence conflicts or execution fails
+6. Confirmation gate:
+   - If input includes explicit approval tokens (`approve`, `approved`, `yes`, `go`, `run`), proceed to execution.
+   - Otherwise stop after team proposal and ask: "Proceed with this team? (yes/no)"
+7. Approved execution path:
+   - Run `team-plan -> team-prd -> team-exec -> team-verify -> team-fix`.
+   - Repeat `team-exec -> team-verify -> team-fix` until criteria pass or blockers are explicit.
+8. If filesystem tools are available, write/update:
+   - `.omg/state/team-assembly.md`
+   - `.omg/state/workflow.md`
+
+Output format:
+## Team Fit Analysis
+- task shape:
+- required expertise:
+- output target:
+- risk posture:
+
+## Proposed Team
+| Role | Agent | Why This Role | Model Profile | Lanes |
+| --- | --- | --- | --- | --- |
+
+## Collaboration Protocol
+- handoff graph:
+- verify/fix trigger:
+- conflict resolution:
+
+## Approval Gate
+- approval detected: yes/no
+- confirmation prompt: Proceed with this team? (yes/no)
+
+## Execution Summary (only when approved)
+- stage status:
+- key outcomes:
+- open blockers:
+"""

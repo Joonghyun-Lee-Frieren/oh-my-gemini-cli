@@ -6,6 +6,7 @@ All notable changes to oh-my-gemini-cli are documented here.
 
 | Version | Date | Theme | Outcome |
 | --- | --- | --- | --- |
+| `v0.3.5` | 2026-03-04 | Dynamic Agent Team Assembly | Added approval-gated dynamic team composition with new director/consultant/editor roles and model-aware lane policy |
 | `v0.3.4` | 2026-02-28 | Deterministic hook orchestration | Added extension-native hook commands/skill with event-lane policy, safety validation, and dry-run testing |
 | `v0.3.3` | 2026-02-28 | Claude-style memory management | Added file-based memory index/topic split and modular rule-pack workflows |
 | `v0.3.2` | 2026-02-26 | HUD visibility controls | Added extension-native HUD profile commands/skill and status rendering policy |
@@ -17,6 +18,37 @@ All notable changes to oh-my-gemini-cli are documented here.
 | `v0.1.2` | 2026-02-22 | Model/branding consistency | `gemini-3.1-*` naming and OmG branding normalized |
 | `v0.1.1` | 2026-02-22 | Dashboard redesign | Retro game-style TUI and richer telemetry presentation |
 | `v0.1.0` | 2026-02-22 | Initial release | Multi-agent orchestration foundation shipped |
+
+## v0.3.5 - Dynamic Agent Team Assembly (2026-03-04)
+
+Added an approval-gated dynamic team composition layer so OmG can assemble fit-for-task rosters before stage execution.
+
+### Added
+
+- New team assembly command and skill:
+  - `/omg:team-assemble`
+  - `$team-assemble`
+- New specialist sub-agents:
+  - `omg-director`
+  - `omg-consultant`
+  - `omg-editor`
+- New guide:
+  - `docs/guide/agent-team-assembly.md`
+- New runtime-state convention:
+  - `.omg/state/team-assembly.md`
+
+### Changed
+
+- `team` orchestration now supports optional stage-0 dynamic assembly.
+- `intent` routing expanded with `team-assemble` classification path.
+- `context/omg-core.md` updated with stage-0 lifecycle and roster state conventions.
+- README, installation guide, and landing page expanded with team assembly flows, role taxonomy, and model-allocation policy.
+- Extension/package version bumped to `0.3.5`.
+
+### Structural Fit Note
+
+- OmG remains extension-native: assembly is prompt/state orchestrated.
+- Team collaboration is modeled through explicit handoffs and verify/fix loops, not hidden runtime daemons.
 
 ## v0.3.4 - Deterministic Hook Orchestration (2026-02-28)
 
