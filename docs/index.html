@@ -483,7 +483,7 @@
   <header>
     <div class="wrap">
       <div class="hero-top">
-        <span class="badge">Latest Release v0.3.5</span>
+        <span class="badge">Latest Release v0.3.4</span>
         <div class="top-actions">
           <a class="btn btn-link btn-github" href="https://github.com/Joonghyun-Lee-Frieren/oh-my-gemini-cli" target="_blank" rel="noreferrer noopener">
             <svg class="btn-icon" viewBox="0 0 16 16" aria-hidden="true">
@@ -539,8 +539,8 @@
 
   <section>
     <div class="wrap">
-      <h2>Latest Update (2026-03-04)</h2>
-      <p class="sub">Dynamic Agent Team Assembly adds approval-gated, role-fit team composition before staged execution.</p>
+      <h2>Latest Update (v0.3.4 Team Assembly)</h2>
+      <p class="sub">Team Assembly adds dynamic roster design and explicit approval before staged team execution.</p>
       <table>
         <thead>
           <tr>
@@ -554,24 +554,24 @@
             <td>Added <code>/omg:team-assemble</code> and <code>$team-assemble</code> to build a task-fit roster before execution.</td>
           </tr>
           <tr>
-            <td>Approval Gate</td>
-            <td>Team assembly now proposes a roster first, then asks explicit confirmation before autonomous lifecycle execution.</td>
+            <td>Parallel Specialist Lanes</td>
+            <td>Assembly separates domain specialists and format specialists, and can run multiple <code>omg-researcher</code> lanes in parallel.</td>
           </tr>
           <tr>
-            <td>New Specialist Roles</td>
-            <td>Added <code>omg-director</code>, <code>omg-consultant</code>, and <code>omg-editor</code> for orchestration, strategic analysis, and output packaging.</td>
+            <td>Team Conversation Loop</td>
+            <td>Team roles exchange structured handoffs so verification and fix cycles can run as a real collaboration loop.</td>
           </tr>
           <tr>
             <td>Model Allocation Policy</td>
-            <td>Codified lane policy: judgment/gates on <code>gemini-3.1-pro</code>, execution on <code>gemini-3.1-flash</code>, broad low-risk exploration on <code>gemini-3.1-flash-lite</code>.</td>
+            <td>Codified lane policy: judgment/gates on <code>gemini-3.1-pro</code>, execution on <code>gemini-3.1-flash</code>, and exploration/quick low-risk work on <code>gemini-3.1-flash-lite</code>.</td>
+          </tr>
+          <tr>
+            <td>Approval Gate</td>
+            <td>Team assembly proposes a roster first, then asks explicit confirmation before autonomous lifecycle execution.</td>
           </tr>
           <tr>
             <td>State Persistence</td>
             <td>Added <code>.omg/state/team-assembly.md</code> convention for resume-safe roster handoff.</td>
-          </tr>
-          <tr>
-            <td>Documentation Boost</td>
-            <td>Added a dedicated guide: <code>docs/guide/agent-team-assembly.md</code>.</td>
           </tr>
           <tr>
             <td>Activation Path</td>
@@ -603,7 +603,7 @@ Structured Result
 
       <div>
         <h2>Model Allocation</h2>
-        <p class="sub">Policy-based lane split for dynamic team assembly</p>
+        <p class="sub">Role-aware split across <code>gemini-3.1-pro</code>, <code>gemini-3.1-flash</code>, and <code>gemini-3.1-flash-lite</code> lanes.</p>
         <div class="chart">
           <div class="bar">
             <div class="bar-label"><span>Judgment &amp; Acceptance Gates (<code>gemini-3.1-pro</code>)</span><span>60%</span></div>
@@ -614,7 +614,7 @@ Structured Result
             <div class="bar-track"><div class="bar-fill flash" style="width:25%"></div></div>
           </div>
           <div class="bar">
-            <div class="bar-label"><span>Broad Low-Risk Exploration (<code>gemini-3.1-flash-lite</code>)</span><span>15%</span></div>
+            <div class="bar-label"><span>Exploration &amp; Quick Low-Risk Work (<code>gemini-3.1-flash-lite</code>)</span><span>15%</span></div>
             <div class="bar-track"><div class="bar-fill lite" style="width:15%"></div></div>
           </div>
         </div>
