@@ -263,6 +263,17 @@ oh-my-gemini-cli/
 - [한국어 컨텍스트 엔지니어링 가이드](./guide/context-engineering_ko.md)
 - [변경 이력](./history.md)
 
+## Upstream 동기화 (oh-my-codex, 2026-03-09)
+
+최근 2주 릴리즈 노트 기준으로 OmG extension 구조에 적용한 항목:
+
+- 팀원별 reasoning effort 오버라이드 (global + teammate)
+- `team-verify` / reviewer / editor anti-slop 품질 게이트
+
+경계상 제외한 항목:
+
+- tmux/worker bootstrap 계열 런타임 변경 (Gemini Extensions 경계 밖)
+
 ## Star History
 
 [![Star History Chart](https://api.star-history.com/svg?repos=Joonghyun-Lee-Frieren/oh-my-gemini-cli&type=Date)](https://www.star-history.com/#Joonghyun-Lee-Frieren/oh-my-gemini-cli&Date)

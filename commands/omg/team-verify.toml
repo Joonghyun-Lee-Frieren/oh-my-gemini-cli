@@ -9,8 +9,11 @@ Protocol:
 1. Delegate review to `omg-reviewer`.
 2. Delegate acceptance-gate checks to `omg-verifier`.
 3. Validate each acceptance criterion with evidence.
-4. Classify issues as blocker, major, or minor.
-5. Produce targeted fix list for `team-fix`.
+4. Run anti-slop quality gate:
+   - detect generic filler, vague claims, and weak evidence phrasing
+   - require concise, evidence-anchored language in final output
+5. Classify issues as blocker, major, or minor.
+6. Produce targeted fix list for `team-fix`.
 
 Output format:
 ## Stage
@@ -22,6 +25,10 @@ Output format:
 
 ## Review Findings
 - ...
+
+## Quality Gate
+- anti-slop status: pass/fail
+- notes:
 
 ## Fix Backlog
 1. ...

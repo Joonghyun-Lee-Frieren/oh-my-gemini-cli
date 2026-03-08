@@ -24,17 +24,22 @@ Protocol:
    - judgment and acceptance gates -> `gemini-3.1-pro`
    - implementation-heavy execution -> `gemini-3.1-flash`
    - broad low-risk exploration -> `gemini-3.1-flash-lite` (upgrade to `gemini-3.1-pro` if depth is critical)
-5. Define collaboration protocol:
+5. Assign reasoning effort per lane:
+   - load `.omg/state/reasoning.json` when available
+   - apply teammate overrides first, then global default
+   - use higher effort for reviewer/verifier lanes on high-risk tasks
+6. Define collaboration protocol:
    - explicit message flow between lanes
    - trigger conditions for verify/fix loops
+   - anti-slop quality gate before final delivery
    - fallback path when evidence conflicts or execution fails
-6. Confirmation gate:
+7. Confirmation gate:
    - If input includes explicit approval tokens (`approve`, `approved`, `yes`, `go`, `run`), proceed to execution.
    - Otherwise stop after team proposal and ask: "Proceed with this team? (yes/no)"
-7. Approved execution path:
+8. Approved execution path:
    - Run `team-plan -> team-prd -> team-exec -> team-verify -> team-fix`.
    - Repeat `team-exec -> team-verify -> team-fix` until criteria pass or blockers are explicit.
-8. If filesystem tools are available, write/update:
+9. If filesystem tools are available, write/update:
    - `.omg/state/team-assembly.md`
    - `.omg/state/workflow.md`
 
@@ -46,12 +51,18 @@ Output format:
 - risk posture:
 
 ## Proposed Team
-| Role | Agent | Why This Role | Model Profile | Lanes |
-| --- | --- | --- | --- | --- |
+| Role | Agent | Why This Role | Model Profile | Reasoning Effort | Lanes |
+| --- | --- | --- | --- | --- | --- |
+
+## Reasoning Allocation
+- global effort:
+- teammate overrides:
+- high-effort lanes:
 
 ## Collaboration Protocol
 - handoff graph:
 - verify/fix trigger:
+- anti-slop gate:
 - conflict resolution:
 
 ## Approval Gate

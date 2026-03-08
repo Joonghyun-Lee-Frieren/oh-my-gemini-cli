@@ -566,6 +566,14 @@
             <td>Codified lane policy: judgment/gates on <code>gemini-3.1-pro</code>, execution on <code>gemini-3.1-flash</code>, and exploration/quick low-risk work on <code>gemini-3.1-flash-lite</code>.</td>
           </tr>
           <tr>
+            <td>Role-aware Reasoning Effort</td>
+            <td>Added support for global + teammate reasoning posture so reviewer/verifier lanes can run deeper without forcing all lanes to xhigh.</td>
+          </tr>
+          <tr>
+            <td>Anti-Slop Quality Gate</td>
+            <td>Verification/editor paths now include anti-slop checks for generic filler, repetitive phrasing, and weak evidence wording.</td>
+          </tr>
+          <tr>
             <td>State Persistence</td>
             <td>Added <code>.omg/state/team-assembly.md</code> convention for resume-safe roster handoff.</td>
           </tr>
@@ -730,7 +738,7 @@ Structured Result
           <tbody>
             <tr><td>1. Analyze task shape</td><td>Infer domain, output type, risk posture, and evidence depth.</td></tr>
             <tr><td>2. Build role lanes</td><td>Select domain specialists and format specialists separately.</td></tr>
-            <tr><td>3. Assign models</td><td>Map judgment, execution, and exploration lanes to predictable model profiles.</td></tr>
+            <tr><td>3. Assign models + reasoning</td><td>Map model profiles and teammate reasoning effort by lane risk.</td></tr>
             <tr><td>4. Ask approval</td><td>Pause and request explicit confirmation before autonomous team execution.</td></tr>
             <tr><td>5. Run lifecycle</td><td>Execute <code>team-plan -&gt; team-prd -&gt; team-exec -&gt; team-verify -&gt; team-fix</code>.</td></tr>
           </tbody>
@@ -800,6 +808,7 @@ Structured Result
           <tr><td>Command</td><td><code>/omg:deep-init</code></td><td>Build project map and validation baseline before long sessions</td></tr>
           <tr><td>Command</td><td><code>/omg:rules</code></td><td>Activate task-conditional guardrail rule packs</td></tr>
           <tr><td>Command</td><td><code>/omg:memory</code></td><td>Manage <code>MEMORY.md</code> index, topic notes, and rule packs</td></tr>
+          <tr><td>Command</td><td><code>/omg:reasoning</code></td><td>Set global/teammate reasoning effort profile for depth and cost control</td></tr>
           <tr><td>Command</td><td><code>/omg:loop</code></td><td>Continue exec/verify/fix cycles until done or blocked</td></tr>
           <tr><td>Command</td><td><code>/omg:approval</code></td><td>Switch approval posture (<code>suggest</code>/<code>auto</code>/<code>full-auto</code>)</td></tr>
           <tr><td>Command</td><td><code>/omg:team</code></td><td>Run full multi-agent lifecycle with optional assembled roster</td></tr>
@@ -814,6 +823,7 @@ Structured Result
           <tr><td>Skill</td><td><code>$deep-init</code></td><td>Repository bootstrap map for long tasks</td></tr>
           <tr><td>Skill</td><td><code>$rules</code></td><td>Conditional policy activation by trigger</td></tr>
           <tr><td>Skill</td><td><code>$memory</code></td><td>Memory audit and modular rule activation map</td></tr>
+          <tr><td>Skill</td><td><code>$reasoning</code></td><td>Reasoning effort matrix with teammate overrides</td></tr>
           <tr><td>Skill</td><td><code>$loop</code></td><td>Strict completion loop with blocker-aware status</td></tr>
           <tr><td>Skill</td><td><code>$team-assemble</code></td><td>Dynamic team charter and approval gate</td></tr>
           <tr><td>Skill</td><td><code>$plan</code></td><td>Milestone-level decomposition</td></tr>
@@ -968,6 +978,11 @@ Structured Result
             <td>Legacy wrapper scripts use <code>--allowed-tools</code></td>
             <td>Deprecated flag in recent Gemini CLI versions</td>
             <td>Migrate wrappers to policy profiles using <code>--policy</code></td>
+          </tr>
+          <tr>
+            <td>Output feels generic or repetitive</td>
+            <td>Reasoning posture and quality gate too weak for target artifact</td>
+            <td>Raise <code>/omg:reasoning</code> (optionally teammate overrides) and rerun <code>/omg:team-verify</code></td>
           </tr>
           <tr>
             <td>Team assembly keeps proposing but not executing</td>

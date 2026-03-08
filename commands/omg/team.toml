@@ -7,13 +7,14 @@ $ARGUMENTS
 
 Execution protocol (staged):
 1. If team composition is unclear or task is non-standard, run `team-assemble` first.
-2. `team-plan`: Delegate decomposition to `omg-planner` and architecture checks to `omg-architect`.
-3. `team-prd`: Delegate scope lock and acceptance criteria to `omg-product`.
-4. `team-exec`: Delegate implementation slices to `omg-executor`.
-5. `team-verify`: Delegate validation to `omg-reviewer` and `omg-verifier`.
-6. `team-fix`: If verification fails, delegate root-cause and patches to `omg-debugger` + `omg-executor`.
-7. Repeat steps 4-6 until acceptance criteria pass or blockers are explicit.
-8. Return one merged lifecycle report.
+2. Load reasoning posture from `.omg/state/reasoning.json` and apply teammate overrides when available.
+3. `team-plan`: Delegate decomposition to `omg-planner` and architecture checks to `omg-architect`.
+4. `team-prd`: Delegate scope lock and acceptance criteria to `omg-product`.
+5. `team-exec`: Delegate implementation slices to `omg-executor`.
+6. `team-verify`: Delegate validation to `omg-reviewer` and `omg-verifier` (include anti-slop quality check).
+7. `team-fix`: If verification fails, delegate root-cause and patches to `omg-debugger` + `omg-executor`.
+8. Repeat steps 5-7 until acceptance criteria pass or blockers are explicit.
+9. Return one merged lifecycle report.
 
 State handling:
 - If filesystem tools are available, update `.omg/state/workflow.md` with stage status and open blockers.
@@ -30,6 +31,8 @@ Final report format:
 - assembly used: yes/no
 - role map:
 - model map:
+- reasoning map:
+- anti-slop gate: pass/fail
 
 ## Team Plan
 - ...

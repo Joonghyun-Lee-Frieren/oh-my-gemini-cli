@@ -40,6 +40,15 @@ OmG extends Gemini CLI from a single-session assistant into a structured, role-d
 - Added runtime-state convention for assembled roster:
   - `.omg/state/team-assembly.md`
 
+## Upstream Alignment (oh-my-codex, Reviewed: 2026-03-09)
+
+Applied extension-native updates from recent `oh-my-codex` releases (last 2 weeks):
+
+- Added role-aware reasoning posture support (global + teammate overrides) in OmG reasoning/team orchestration.
+- Added anti-slop quality gates in verification/editor/reviewer paths to reduce vague or repetitive output.
+- Preserved extension boundary:
+  - runtime worker/tmux bootstrap changes in `oh-my-codex` were not ported because OmG runs through Gemini Extensions primitives.
+
 ## At A Glance
 
 | Item | Summary |
@@ -115,7 +124,9 @@ Use `team-assemble` when a fixed engineering roster is not enough.
   - format specialists (report/content/output quality)
 - Spawn parallel exploration lanes (`omg-researcher` xN) for broad discovery tasks.
 - Route decisions through a judgment lane (`omg-consultant` or `omg-architect`).
+- Assign reasoning effort per lane from global profile + teammate overrides.
 - Keep verify/fix loops explicit (`omg-reviewer` -> `omg-verifier` -> `omg-debugger`).
+- Run anti-slop check before final delivery.
 - Require explicit approval before autonomous execution starts.
 
 Example flow:
@@ -187,13 +198,14 @@ Note: extension install/update commands run in terminal mode (`gemini extensions
 | `/omg:intent` | Classify task intent and route to the correct stage/command | Before planning or coding when request intent is ambiguous |
 | `/omg:rules` | Activate task-conditional guardrail rule packs | Before implementation on migration/security/performance-sensitive work |
 | `/omg:memory` | Maintain MEMORY index, topic files, and path-aware rule packs | During long sessions or when decisions/rules drift |
+| `/omg:reasoning` | Set global reasoning effort and teammate overrides (`low/medium/high/xhigh`) | Before expensive planning/review loops or when depth is role-dependent |
 | `/omg:deep-init` | Build deep project map and validation baseline for long sessions | At project kickoff or when onboarding into unfamiliar codebases |
-| `/omg:team-assemble` | Dynamically compose a role-fit team with approval gate before execution | Before `/omg:team` on cross-domain or non-standard tasks |
+| `/omg:team-assemble` | Dynamically compose a role-fit team with approval gate and lane-specific reasoning map | Before `/omg:team` on cross-domain or non-standard tasks |
 | `/omg:team` | Execute full stage pipeline (`team-assemble? -> plan -> prd -> exec -> verify -> fix`) | Complex feature or refactor delivery |
 | `/omg:team-plan` | Build dependency-aware execution plan | Before implementation |
 | `/omg:team-prd` | Lock measurable acceptance criteria and constraints | After planning, before coding |
 | `/omg:team-exec` | Implement a scoped delivery slice | Main implementation loop |
-| `/omg:team-verify` | Validate acceptance criteria and regressions | After each execution slice |
+| `/omg:team-verify` | Validate acceptance criteria, regressions, and anti-slop quality gate | After each execution slice |
 | `/omg:team-fix` | Patch only verified failures | When verification fails |
 | `/omg:loop` | Enforce repeated `exec -> verify -> fix` cycles until done/blocker | Mid/late delivery when unresolved findings remain |
 | `/omg:mode` | Inspect or switch operating profile (`balanced/speed/deep/autopilot/ralph/ultrawork`) | At session start or posture change |
@@ -219,6 +231,7 @@ Note: extension install/update commands run in terminal mode (`gemini extensions
 | `$intent` | Route ambiguous requests into the correct OmG stage | Intent classification + next-command recommendation |
 | `$rules` | Inject conditional guardrail rule packs | Trigger matrix + active policy set |
 | `$memory` | Maintain durable memory index and modular rule packs | Memory audit + active-rule report |
+| `$reasoning` | Control global/teammate reasoning effort posture | Effort profile + override matrix |
 | `$plan` | Convert goals into phased plan | Milestones, risks, and acceptance criteria |
 | `$ralplan` | Strict, stage-gated planning with rollback points | Quality-first execution map |
 | `$execute` | Implement a scoped plan slice | Change summary with validation notes |
@@ -287,6 +300,7 @@ oh-my-gemini-cli/
 | `/omg:*` command not found | Extension not loaded in current session | Run `gemini extensions list`, then restart Gemini CLI session |
 | Skill does not trigger | Skill frontmatter path mismatch | Confirm `skills/<name>/SKILL.md` exists and extension is reloaded |
 | Team assembly keeps proposing but does not execute | Approval token missing in request | Reply with explicit approval (`yes`, `approve`, `go`, or `run`) |
+| Output is verbose, generic, or repetitive | Reasoning/gate posture too weak for the target artifact | Raise `/omg:reasoning` effort (optionally teammate overrides) and rerun `/omg:team-verify` |
 | Existing launch scripts use `--allowed-tools` | Flag deprecated in newer Gemini CLI | Replace with policy profiles via `--policy` and re-run |
 | Autonomous flow confirms too often (or too little) | Approval posture not aligned to task risk | Run `/omg:approval suggest|auto|full-auto` and recheck guardrails |
 | Setup health is unclear before long run | State/config drift accumulated | Run `/omg:doctor` (or `/omg:doctor team`) and apply remediation list |
