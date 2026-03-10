@@ -1,6 +1,6 @@
 {
   "name": "oh-my-gemini-cli",
-  "version": "0.3.6",
+  "version": "0.3.7",
   "description": "Extension-first context engineering and multi-agent workflow pack for Gemini CLI.",
   "keywords": [
     "gemini",
@@ -19,6 +19,7 @@
   "author": "Joonghyun-Lee-Frieren",
   "type": "module",
   "files": [
+    "GEMINI.md",
     "gemini-extension.json",
     "agents/",
     "commands/",

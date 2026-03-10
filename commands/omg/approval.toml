@@ -28,17 +28,7 @@ Suggested `approval.json` shape:
   "source": "omg:approval"
 }
 
-Output format:
-## Approval Status
-- current:
-- requested:
-- applied:
-- persisted:
-
-## Guardrail Policy
-| Operation Class | suggest | auto | full-auto |
-| --- | --- | --- | --- |
-
-## Next Command
-- ...
+Response:
+- Keep it concise and operator-facing.
+- Include `Approval Status`, `Guardrail Policy`, and `Next Command`.
 """

@@ -1,119 +1,47 @@
 # OmG Core Context
 
-This extension provides a multi-agent workflow layer for Gemini CLI.
+OmG adds a role-driven workflow layer to Gemini CLI.
 
-## Core Principles
+## Primary Interface
 
-1. Keep prefixes stable.
-- Avoid rewriting static instructions during a session.
-- Put changing details in the latest user message.
+- Use `/omg:*` commands for operational control.
+- Keep always-on context thin; heavy procedure belongs in the invoked command, not here.
+- Retained deep-work skills are intentionally limited to:
+  - `$plan`
+  - `$execute`
+  - `$prd`
+  - `$ralplan`
+  - `$research`
+  - `$context-optimize`
 
-2. Plan before coding on non-trivial tasks.
-- Use planning first, then execution, then review.
-- Keep each phase explicit and verifiable.
+## Default Flow
 
-3. Delegate by role.
-- Use `omg-director` for team-level orchestration and conflict resolution.
-- Use `omg-architect` for design and tradeoffs.
-- Use `omg-planner` for task decomposition.
-- Use `omg-product` for PRD-quality scope and acceptance criteria.
-- Use `omg-consultant` for strategic criteria and recommendation framing.
-- Use `omg-executor` for implementation.
-- Use `omg-reviewer`, `omg-verifier`, and `omg-debugger` for quality and recovery.
-- Use `omg-editor` for final output packaging.
+- On non-trivial work: `intent` -> `team-assemble` when role fit is unclear -> `team-plan` -> `team-prd` -> `team-exec` -> `team-verify` -> `team-fix`.
+- Repeat `team-exec -> team-verify -> team-fix` until acceptance criteria pass or a blocker is explicit.
+- Use `loop` when unfinished work still has a valid next slice.
 
-4. Minimize context load.
-- Read only files needed for the current step.
-- Summarize before handing off to another agent.
+## Controls
 
-5. Always finish with validation.
-- Run relevant tests and checks when possible.
-- Report changed files, known risks, and next actions.
+- Modes: `balanced`, `speed`, `deep`, `autopilot`, `ralph`, `ultrawork`.
+- Operational controls: `rules`, `memory`, `deep-init`, `hud`, `hooks`, `notify`, `reasoning`, `approval`, `doctor`, `cancel`.
+- Delegate by role when needed: `omg-director`, `omg-architect`, `omg-planner`, `omg-product`, `omg-consultant`, `omg-executor`, `omg-reviewer`, `omg-verifier`, `omg-debugger`, `omg-editor`.
 
-6. Gate intent before execution when scope is unclear.
-- Use `intent` to classify whether the task should go to planning, PRD, execution, verification, or research.
-- Do not jump to implementation if acceptance criteria are missing.
+## Context and State
 
-7. Assemble a fit-for-task team before stage execution when needed.
-- Use `team-assemble` to map domain specialists and format specialists.
-- Require explicit approval before starting autonomous team execution.
+- Read only files needed for the current step and summarize before handoff.
+- Persist state only when the active command needs it under `.omg/state/*`, `MEMORY.md`, `.omg/memory/*`, `.omg/rules/*`, `.omg/hooks/*`, or `.omg/notify/*`.
+- `GEMINI.md` is the thin extension entrypoint; `context/omg-core.md` is the imported shared baseline.
 
-8. Keep loop discipline for incomplete work.
-- Use `loop` to continue `team-exec -> team-verify -> team-fix` cycles.
-- Do not mark done while blocker/major items remain.
+## Command Response Contract
 
-## Team Pipeline Stages
+- Keep `/omg:*` outputs concise and operator-facing.
+- State current status or decision first, then blockers or risks, then the next command or action.
+- Use tables only for matrices or comparisons.
+- Mention validation evidence and persisted files only when relevant.
 
-Use this stage order for complex work:
+## Safety
 
-0. `team-assemble` - build and confirm a task-fit multi-role roster
-1. `team-plan` - decompose and map dependencies
-2. `team-prd` - lock scope, constraints, and acceptance criteria
-3. `team-exec` - implement one validated slice at a time
-4. `team-verify` - run correctness/regression checks
-5. `team-fix` - patch only issues found in verification
-
-Repeat `team-exec -> team-verify -> team-fix` until acceptance criteria pass or a blocker is escalated.
-
-## Intake and Rule Controls
-
-- `intent`: request-intent gate and stage routing.
-- `team-assemble`: dynamic roster planning with approval gate before execution.
-- `rules`: conditional rule-pack activation (`tests-required`, `migration-safety`, `security-review`, `docs-sync`, `perf-watch`).
-- `memory`: maintain durable memory index (`MEMORY.md`) and modular rule packs (`.omg/rules/*.md`).
-- `deep-init`: one-time deep repository mapping before long sessions.
-- `loop`: strict continuation loop for unresolved acceptance criteria.
-- `hud`: visual status profile control (`normal`, `compact`, `hidden`) for `/omg:status`.
-- `hooks`: extension-native hook trigger/policy control for deterministic lanes and safer autonomous loops.
-- `notify`: notification routing policy for approvals, blockers, verification outcomes, checkpoints, and idle-watchdog alerts.
-- `reasoning`: reasoning effort profile (`low`, `medium`, `high`, `xhigh`) to tune depth/cost posture.
-- `approval`: approval posture (`suggest`, `auto`, `full-auto`) for autonomous action confirmation policy.
-- `doctor`: readiness diagnostics for command/skill/state integrity and team safety posture.
-- `cancel`: alias lifecycle stop path with resume-ready handoff.
-
-## Operating Modes
-
-- `balanced` (default): stable quality/speed mix.
-- `speed`: favor short cycles and narrower diffs.
-- `deep`: favor design depth and stricter verification.
-- `autopilot`: iterative multi-stage execution until done/blocker.
-- `ralph`: strict quality-gated orchestration with no skipped verify gate.
-- `ultrawork`: throughput mode for many independent or batchable tasks.
-
-## Runtime State Conventions
-
-When filesystem tools are available, persist current workflow state:
-
-- `.omg/state/mode.json`
-- `.omg/state/workflow.md`
-- `.omg/state/checkpoint.md`
-- `MEMORY.md`
-- `.omg/memory/*.md`
-- `.omg/rules/*.md`
-- `.omg/state/intent.md`
-- `.omg/state/team-assembly.md`
-- `.omg/state/rules.md`
-- `.omg/state/deep-init.md`
-- `.omg/state/project-map.md`
-- `.omg/state/validation.md`
-- `.omg/state/hud.json`
-- `.omg/state/hooks.json`
-- `.omg/state/hooks-validation.md`
-- `.omg/state/hooks-last-test.md`
-- `.omg/state/notify.json`
-- `.omg/state/reasoning.json`
-- `.omg/state/approval.json`
-- `.omg/state/doctor.md`
-- `.omg/hooks/*.md`
-- `.omg/notify/*.md`
-
-If these files do not exist, create them only when a mode/lifecycle command is explicitly requested.
-
-## Safety Rails
-
-- Never claim completion without listing what was validated.
-- Never claim completion while `loop` status is `continue` or unresolved blockers remain.
-- Stop autonomous loops when blocked by missing requirements, missing permissions, or repeated failures.
-- Default maximum autonomous cycles: 5 unless user requests a different limit.
-- Keep side-effect hooks disabled in delegated worker sessions unless user explicitly opts in.
-- Keep external notification dispatch disabled in delegated worker sessions unless user explicitly opts in.
+- Do not start implementation when scope or acceptance criteria are missing.
+- Never claim completion without validation evidence.
+- Stop autonomous loops on hard blockers, missing permissions, or repeated failures.
+- Keep side-effect hooks and external notifications disabled in delegated worker sessions unless the user explicitly opts in.

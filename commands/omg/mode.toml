@@ -27,16 +27,7 @@ Suggested `mode.json` shape:
   "max_autonomous_cycles": 5
 }
 
-Output format:
-## Mode Status
-- current:
-- requested:
-- applied:
-
-## Profile Settings
-| Setting | Value |
-| --- | --- |
-
-## Recommended Next Command
-- ...
+Response:
+- Keep it concise and operator-facing.
+- Include `Mode Status`, `Profile Settings`, and `Recommended Next Command`.
 """

@@ -6,6 +6,7 @@ All notable changes to oh-my-gemini-cli are documented here.
 
 | Version | Date | Theme | Outcome |
 | --- | --- | --- | --- |
+| `v0.3.7` | 2026-03-10 | Load surface cleanup | Fixed root context wiring, removed mirrored control-plane skills, and slimmed repeated command boilerplate |
 | `v0.3.6` | 2026-03-10 | Notification routing | Added extension-native notification profiles, event routing, and safe external-delivery boundaries for long-running OmG sessions |
 | `v0.3.5` | 2026-03-04 | Dynamic Agent Team Assembly | Added approval-gated dynamic team composition with new director/consultant/editor roles and model-aware lane policy |
 | `v0.3.4` | 2026-02-28 | Deterministic hook orchestration | Added extension-native hook commands/skill with event-lane policy, safety validation, and dry-run testing |
@@ -19,6 +20,35 @@ All notable changes to oh-my-gemini-cli are documented here.
 | `v0.1.2` | 2026-02-22 | Model/branding consistency | `gemini-3.1-*` naming and OmG branding normalized |
 | `v0.1.1` | 2026-02-22 | Dashboard redesign | Retro game-style TUI and richer telemetry presentation |
 | `v0.1.0` | 2026-02-22 | Initial release | Multi-agent orchestration foundation shipped |
+
+## v0.3.7 - Load Surface Cleanup (2026-03-10)
+
+Fixed the extension manifest/context chain and reduced duplicated discovery surface so OmG loads through a thinner always-on prompt.
+
+### Added
+
+- New root extension context entrypoint:
+  - `GEMINI.md`
+
+### Changed
+
+- `GEMINI.md` now imports `context/omg-core.md`, matching the manifest's `contextFileName`.
+- `context/omg-core.md` trimmed to stable runtime rules only.
+- Mirrored control-plane skills were removed; retained skills are now:
+  - `$plan`
+  - `$execute`
+  - `$prd`
+  - `$ralplan`
+  - `$research`
+  - `$context-optimize`
+- High-traffic `/omg:*` commands were shortened by removing repeated output-format boilerplate.
+- `doctor` diagnostics now validate the real context import chain and retained skill set.
+- Extension/package version bumped to `0.3.7`.
+
+### Structural Fit Note
+
+- OmG is now explicitly slash-command-first for operational control.
+- Deep-work skills remain available, but overlapping command/skill mirrors were intentionally removed to shrink startup discovery overhead.
 
 ## v0.3.6 - Notification Routing (2026-03-10)
 

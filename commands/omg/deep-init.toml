@@ -16,19 +16,7 @@ Protocol:
    - `.omg/state/project-map.md`
    - `.omg/state/validation.md`
 
-Output format:
-## Deep Init Summary
-- repository type:
-- active stack:
-- key entry points:
-
-## Project Map
-| Area | Responsibility | Risk | Validation Hook |
-| --- | --- | --- | --- |
-
-## Guardrails
-- ...
-
-## Recommended Next Command
-- `/omg:intent` or `/omg:team-plan`
+Response:
+- Keep it concise and operator-facing.
+- Include `Deep Init Summary`, `Project Map`, `Guardrails`, and `Recommended Next Command`.
 """

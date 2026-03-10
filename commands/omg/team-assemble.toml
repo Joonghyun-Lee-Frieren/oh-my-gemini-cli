@@ -43,34 +43,8 @@ Protocol:
    - `.omg/state/team-assembly.md`
    - `.omg/state/workflow.md`
 
-Output format:
-## Team Fit Analysis
-- task shape:
-- required expertise:
-- output target:
-- risk posture:
-
-## Proposed Team
-| Role | Agent | Why This Role | Model Profile | Reasoning Effort | Lanes |
-| --- | --- | --- | --- | --- | --- |
-
-## Reasoning Allocation
-- global effort:
-- teammate overrides:
-- high-effort lanes:
-
-## Collaboration Protocol
-- handoff graph:
-- verify/fix trigger:
-- anti-slop gate:
-- conflict resolution:
-
-## Approval Gate
-- approval detected: yes/no
-- confirmation prompt: Proceed with this team? (yes/no)
-
-## Execution Summary (only when approved)
-- stage status:
-- key outcomes:
-- open blockers:
+Response:
+- Keep it concise and operator-facing.
+- Include `Team Fit Analysis`, `Proposed Team`, `Reasoning Allocation`, `Collaboration Protocol`, and `Approval Gate`.
+- Include `Execution Summary` only when approval is already explicit.
 """

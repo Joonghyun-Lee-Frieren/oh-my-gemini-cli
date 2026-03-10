@@ -22,20 +22,8 @@ Suggested `hud.json` shape:
   "source": "omg:hud"
 }
 
-Output format:
-## HUD Profile
-- requested:
-- applied:
-- persisted:
-
-## HUD Preview
-```text
-[OMG][MODE balanced][STAGE team-exec][TASKS 3/8][RISKS 1][NEXT /omg:team-verify]
-```
-
-## Notes
-- ...
-
-## Next Command
-- ...
+Response:
+- Keep it concise and operator-facing.
+- Include `HUD Profile`, `HUD Preview`, `Notes`, and `Next Command`.
+- `HUD Preview` should be a single sample line.
 """

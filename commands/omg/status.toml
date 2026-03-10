@@ -20,26 +20,9 @@ HUD policy:
 
 If no HUD profile is found, default to `normal`.
 
-Output format:
-## HUD
-- visibility:
-```text
-[OMG][MODE <mode>][STAGE <stage>][TASKS <done>/<total>][RISKS <count>][NEXT <next-command>]
-```
-(If visibility is `hidden`, print `- disabled (hidden profile)` and omit code block.)
-
-## Snapshot
-- Active mode:
-- Pipeline stage:
-- Objective:
-- Progress:
-- Outstanding work:
-
-## Risks
-- ...
-
-## Next Actions
-1. ...
-2. ...
-3. ...
+Response:
+- Keep it concise and operator-facing.
+- Include sections for `HUD`, `Snapshot`, `Risks`, and `Next Actions`.
+- In `HUD`, render one HUD line unless visibility is `hidden`.
+- Limit `Next Actions` to 1-3 concrete items.
 """

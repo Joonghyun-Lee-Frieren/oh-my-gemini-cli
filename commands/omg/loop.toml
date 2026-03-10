@@ -17,20 +17,7 @@ Protocol:
 6. Default max cycles: 3 for one invocation unless user overrides.
 7. If filesystem tools are available, update `.omg/state/workflow.md` and `.omg/state/checkpoint.md`.
 
-Output format:
-## Loop Status
-- cycle:
-- status: continue / done / blocked
-- remaining blockers:
-
-## Cycle Evidence
-| Stage | Result | Evidence | Next |
-| --- | --- | --- | --- |
-
-## Remaining Backlog
-1. ...
-2. ...
-
-## Next Command
-- ...
+Response:
+- Keep it concise and operator-facing.
+- Include `Loop Status`, `Cycle Evidence`, `Remaining Backlog`, and `Next Command`.
 """

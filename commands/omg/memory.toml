@@ -15,18 +15,8 @@ Objectives:
 4. Resolve active rules by task and touched paths.
 5. Return memory update actions and next operational checks.
 
-Output format:
-## Memory Audit
-- index health:
-- topic coverage:
-- stale items:
-
-## Active Rules
-1. ...
-2. ...
-
-## Update Plan
-1. ...
-2. ...
-3. ...
+Response:
+- Keep it concise and operator-facing.
+- Include `Memory Audit`, `Active Rules`, and `Update Plan`.
+- Limit `Update Plan` to the smallest high-signal actions.
 """

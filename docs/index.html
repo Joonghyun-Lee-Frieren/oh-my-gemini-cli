@@ -483,7 +483,7 @@
   <header>
     <div class="wrap">
       <div class="hero-top">
-        <span class="badge">Latest Update v0.3.6</span>
+        <span class="badge">Latest Update v0.3.7</span>
         <div class="top-actions">
           <a class="btn btn-link btn-github" href="https://github.com/Joonghyun-Lee-Frieren/oh-my-gemini-cli" target="_blank" rel="noreferrer noopener">
             <svg class="btn-icon" viewBox="0 0 16 16" aria-hidden="true">
@@ -530,7 +530,7 @@
 
       <div class="stats">
         <div class="stat"><div class="n">13</div><div class="l">Sub-agents</div></div>
-        <div class="stat"><div class="n">25</div><div class="l">Reusable skills</div></div>
+        <div class="stat"><div class="n">6</div><div class="l">Retained skills</div></div>
         <div class="stat"><div class="n">36</div><div class="l">Namespaced commands</div></div>
         <div class="stat"><div class="n">5</div><div class="l">Context layers</div></div>
       </div>
@@ -539,8 +539,8 @@
 
   <section>
     <div class="wrap">
-      <h2>Latest Update (v0.3.6 Notification Routing)</h2>
-      <p class="sub">Extension-native notification routing adds event policies for approvals, verification outcomes, blockers, checkpoints, and idle watchdog alerts.</p>
+      <h2>Latest Update (v0.3.7 Load Surface Cleanup)</h2>
+      <p class="sub">The extension now loads through a real root context entrypoint, keeps only a small deep-work skill surface, and trims repeated control-command boilerplate.</p>
       <table>
         <thead>
           <tr>
@@ -550,32 +550,32 @@
         </thead>
         <tbody>
           <tr>
-            <td>Notification Entry Points</td>
-            <td>Added <code>/omg:notify</code> and <code>$notify</code> to configure alert routing for long-running OmG sessions.</td>
+            <td>Context Wiring</td>
+            <td>Added a real root <code>GEMINI.md</code> so the extension manifest now resolves to <code>GEMINI.md -&gt; context/omg-core.md</code> instead of a missing file.</td>
           </tr>
           <tr>
-            <td>Profiles</td>
-            <td>Added <code>quiet</code>, <code>balanced</code>, and <code>watchdog</code> profiles so unattended runs can choose the right alert density.</td>
+            <td>Always-on Context</td>
+            <td>Trimmed the shared OmG baseline so only stable runtime rules stay in always-loaded context.</td>
           </tr>
           <tr>
-            <td>Event Routing</td>
-            <td>Added first-class events for <code>approval-needed</code>, <code>verify-failed</code>, <code>blocker-raised</code>, <code>checkpoint-saved</code>, <code>idle-watchdog</code>, and <code>session-stop</code>.</td>
+            <td>Skill Surface</td>
+            <td>Removed mirrored control-plane skills and kept only 6 deep-work skills: <code>$plan</code>, <code>$execute</code>, <code>$prd</code>, <code>$ralplan</code>, <code>$research</code>, and <code>$context-optimize</code>.</td>
           </tr>
           <tr>
-            <td>Channel Policy</td>
-            <td>Notification plans now distinguish <code>desktop</code>, <code>terminal-bell</code>, <code>file</code>, and external <code>webhook</code> bridges.</td>
+            <td>Slash-First Control</td>
+            <td>Operational workflows such as approval, hooks, HUD, memory, notify, and team coordination now resolve through <code>/omg:*</code> commands only.</td>
           </tr>
           <tr>
-            <td>Runtime State</td>
-            <td>Added persisted policy and template conventions: <code>.omg/state/notify.json</code> and <code>.omg/notify/*.md</code>.</td>
+            <td>Command Slimming</td>
+            <td>Shortened repeated output-format boilerplate in high-traffic commands so each invocation carries less duplicated prompt text.</td>
           </tr>
           <tr>
-            <td>Safety Boundary</td>
-            <td>External delivery stays opt-in and delegated worker sessions keep external notification dispatch disabled by default.</td>
+            <td>Doctor Checks</td>
+            <td><code>/omg:doctor</code> now validates the actual context import chain and the retained skill set.</td>
           </tr>
           <tr>
             <td>Activation Path</td>
-            <td>No extra preview flag is required; once the extension is loaded, <code>/omg:notify</code> is available immediately.</td>
+            <td>No extra preview flag is required; once the extension is loaded, the slash-command surface is immediately available with a thinner startup footprint.</td>
           </tr>
         </tbody>
       </table>
@@ -593,9 +593,9 @@ Gemini CLI
     |
 OmG Extension (gemini-extension.json)
     |--- commands/omg/*.toml  -> command-driven orchestration
-    |--- skills/*/SKILL.md    -> reusable execution playbooks
+    |--- skills/*/SKILL.md    -> retained deep-work skills only
     |--- agents/*.md          -> role prompts and behavior contracts
-    |--- context/omg-core.md  -> shared context baseline
+    |--- GEMINI.md -> context/omg-core.md
     |
 Structured Result
 (plan / implementation / review / next actions)</pre>
@@ -653,7 +653,7 @@ Structured Result
           <tr>
             <td>Consistency in decisions</td>
             <td>High drift risk across long chats</td>
-            <td>Shared baseline from <code>context/omg-core.md</code></td>
+            <td>Shared baseline from a thin <code>GEMINI.md -&gt; context/omg-core.md</code> chain</td>
           </tr>
           <tr>
             <td>Debug/review loop</td>
@@ -715,6 +715,11 @@ Structured Result
             <td>Manual monitoring or ad-hoc shell notifications</td>
             <td><code>/omg:notify</code> keeps approvals, blockers, verify failures, checkpoints, and idle drift observable with extension-native policy files</td>
           </tr>
+          <tr>
+            <td>Startup/discovery weight</td>
+            <td>Broad mirrored command/skill surface plus disconnected shared context</td>
+            <td>Slash-command-first surface with 6 retained deep-work skills and a real root <code>GEMINI.md</code> entrypoint</td>
+          </tr>
         </tbody>
       </table>
     </div>
@@ -770,11 +775,11 @@ Structured Result
       <div class="cards" style="margin-bottom:10px;">
         <div class="card">
           <h3>Commands</h3>
-          <p>Fast control points for status, notification routing, intent routing, approval posture, and staged execution control.</p>
+          <p>Primary control plane for status, notification routing, intent routing, approval posture, and staged execution control.</p>
         </div>
         <div class="card">
           <h3>Skills</h3>
-          <p>Reusable packs for notification routing, diagnostics, approval posture, context hygiene, and guardrail-aware delivery loops.</p>
+          <p>Small retained deep-work skill set for planning, scoped execution, PRD drafting, research, and context cleanup.</p>
         </div>
         <div class="card">
           <h3>Sub-agents</h3>
@@ -813,21 +818,10 @@ Structured Result
           <tr><td>Command</td><td><code>/omg:cancel</code></td><td>Harness-style safe cancel alias with resume handoff</td></tr>
           <tr><td>Command</td><td><code>/omg:optimize</code></td><td>Tune prompt/context quality and cost profile</td></tr>
           <tr><td>Command</td><td><code>/omg:cache</code></td><td>Inspect cache/context behavior</td></tr>
-          <tr><td>Skill</td><td><code>$doctor</code></td><td>Readiness diagnostics and remediation sequencing</td></tr>
-          <tr><td>Skill</td><td><code>$approval</code></td><td>Approval policy posture control with risk guardrails</td></tr>
-          <tr><td>Skill</td><td><code>$intent</code></td><td>Intent routing and next-command recommendation</td></tr>
-          <tr><td>Skill</td><td><code>$hud</code></td><td>HUD profile control for status readability</td></tr>
-          <tr><td>Skill</td><td><code>$hooks</code></td><td>Hook event policy, lane assignment, and safety guard tuning</td></tr>
-          <tr><td>Skill</td><td><code>$notify</code></td><td>Notification profile, event matrix, and channel safety policy</td></tr>
-          <tr><td>Skill</td><td><code>$deep-init</code></td><td>Repository bootstrap map for long tasks</td></tr>
-          <tr><td>Skill</td><td><code>$rules</code></td><td>Conditional policy activation by trigger</td></tr>
-          <tr><td>Skill</td><td><code>$memory</code></td><td>Memory audit and modular rule activation map</td></tr>
-          <tr><td>Skill</td><td><code>$reasoning</code></td><td>Reasoning effort matrix with teammate overrides</td></tr>
-          <tr><td>Skill</td><td><code>$loop</code></td><td>Strict completion loop with blocker-aware status</td></tr>
-          <tr><td>Skill</td><td><code>$team-assemble</code></td><td>Dynamic team charter and approval gate</td></tr>
           <tr><td>Skill</td><td><code>$plan</code></td><td>Milestone-level decomposition</td></tr>
           <tr><td>Skill</td><td><code>$execute</code></td><td>Implementation pass for a scoped slice</td></tr>
-          <tr><td>Skill</td><td><code>$team</code></td><td>End-to-end collaborative delivery</td></tr>
+          <tr><td>Skill</td><td><code>$prd</code></td><td>Measurable scope and acceptance-criteria drafting</td></tr>
+          <tr><td>Skill</td><td><code>$ralplan</code></td><td>Strict staged planning with rollback points</td></tr>
           <tr><td>Skill</td><td><code>$research</code></td><td>Option comparison and tradeoff synthesis</td></tr>
           <tr><td>Skill</td><td><code>$context-optimize</code></td><td>Signal-to-noise optimization in context</td></tr>
         </tbody>

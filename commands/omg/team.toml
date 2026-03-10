@@ -22,34 +22,7 @@ State handling:
 - Keep verification evidence concise (tests, checks, reasoning).
 
 Final report format:
-## Pipeline Summary
-- Active mode:
-- Current stage:
-- Completion status:
-
-## Team Assembly
-- assembly used: yes/no
-- role map:
-- model map:
-- reasoning map:
-- anti-slop gate: pass/fail
-
-## Team Plan
-- ...
-
-## Stage Results
-- team-plan:
-- team-prd:
-- team-exec:
-- team-verify:
-- team-fix:
-
-## Work Completed
-- ...
-
-## Validation
-- ...
-
-## Open Items
-- ...
+- Keep it concise and operator-facing.
+- Include `Pipeline Summary`, `Team Assembly`, `Stage Results`, `Work Completed`, `Validation`, and `Open Items`.
+- Collapse stage details when a stage was skipped or unchanged.
 """

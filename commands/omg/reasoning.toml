@@ -35,22 +35,7 @@ Suggested `reasoning.json` shape:
   "source": "omg:reasoning"
 }
 
-Output format:
-## Reasoning Status
-- current:
-- requested:
-- applied:
-- persisted:
-
-## Effort Matrix
-| Effort | Planning Depth | Verification | Cost/Latency |
-| --- | --- | --- | --- |
-
-## Team Overrides
-| Teammate | Effort | Reason |
-| --- | --- | --- |
-
-## Recommended Route
-1. ...
-2. ...
+Response:
+- Keep it concise and operator-facing.
+- Include `Reasoning Status`, `Effort Matrix`, `Team Overrides`, and `Recommended Route`.
 """

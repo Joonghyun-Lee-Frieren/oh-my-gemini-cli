@@ -14,28 +14,21 @@ Diagnostic protocol:
 1. Detect requested scope and run matching checks.
 2. Verify extension surface integrity:
    - key directories (`agents`, `commands/omg`, `skills`, `context`)
-   - key manifest/context files (`gemini-extension.json`, `context/omg-core.md`)
-3. Verify command-skill readiness for core flows (`team`, `intent`, `loop`, `rules`, `memory`, `hooks`, `reasoning`, `approval`).
-4. Check state artifacts and drift risks under `.omg/state/` when available.
-5. Detect common failure patterns:
+   - key manifest/context files (`gemini-extension.json`, `GEMINI.md`, `context/omg-core.md`)
+3. Verify command readiness for core flows (`team`, `intent`, `loop`, `rules`, `memory`, `hooks`, `notify`, `reasoning`, `approval`).
+4. Verify retained deep-work skills (`plan`, `execute`, `prd`, `ralplan`, `research`, `context-optimize`).
+5. Check state artifacts and drift risks under `.omg/state/` when available.
+6. Detect common failure patterns:
    - extension not loaded in current session
+   - missing or stale root `GEMINI.md` import chain
    - command discovery mismatch
    - stale/missing state files
    - hook safety policy gaps for autonomous loops
-6. Produce concrete remediation actions in priority order.
-7. If filesystem tools are available, write/update `.omg/state/doctor.md`.
+7. Produce concrete remediation actions in priority order.
+8. If filesystem tools are available, write/update `.omg/state/doctor.md`.
 
-Output format:
-## Doctor Result
-- scope:
-- overall: pass | warn | fail
-- ready_for_autonomy: yes | no
-
-## Findings
-| Severity | Area | Finding | Action |
-| --- | --- | --- | --- |
-
-## Recommended Next Command
-1. ...
-2. ...
+Response:
+- Keep it concise and operator-facing.
+- Include `Doctor Result`, `Findings`, and `Recommended Next Command`.
+- Use the findings table only when there are multiple discrete issues.
 """

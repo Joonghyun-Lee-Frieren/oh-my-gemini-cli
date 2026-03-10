@@ -20,37 +20,30 @@ This project started from that observation:
 
 OmG extends Gemini CLI from a single-session assistant into a structured, role-driven engineering workflow.
 
-## What's New in v0.3.6
+## What's New in v0.3.7
 
-- Added notification routing entrypoints:
-  - `/omg:notify`
-  - `$notify`
-- Added extension-native notification profiles:
-  - `quiet`
-  - `balanced`
-  - `watchdog`
-- Added routed event groups for long-running sessions:
-  - `approval-needed`
-  - `verify-failed`
-  - `blocker-raised`
-  - `checkpoint-saved`
-  - `idle-watchdog`
-  - `session-stop`
-- Added runtime-state conventions for notification policy and templates:
-  - `.omg/state/notify.json`
-  - `.omg/notify/*.md`
-- Added safety boundary for external delivery:
-  - OmG owns trigger policy and templates
-  - Desktop/webhook delivery stays opt-in and host-runtime dependent
+- Fixed extension context wiring:
+  - added root `GEMINI.md`
+  - imported `context/omg-core.md` through the manifest entrypoint
+- Reduced always-on prompt weight:
+  - trimmed the shared OmG baseline to only stable runtime rules
+  - moved the control plane to slash commands first
+- Removed mirrored control-plane skills:
+  - retained deep-work skills only: `$plan`, `$execute`, `$prd`, `$ralplan`, `$research`, `$context-optimize`
+- Slimmed high-traffic `/omg:*` commands:
+  - shortened repeated output boilerplate in status/doctor/intent/team/hooks/notify and related control commands
+- Updated diagnostics:
+  - `/omg:doctor` now checks the real `GEMINI.md -> context/omg-core.md` chain
+  - doctor now validates the retained skill set instead of every mirrored command/skill pair
 
 ## At A Glance
 
 | Item | Summary |
 | --- | --- |
 | Delivery model | Official Gemini CLI extension (`gemini-extension.json`) |
-| Core building blocks | `agents/`, `commands/`, `skills/`, `context/` |
+| Core building blocks | `GEMINI.md`, `agents/`, `commands/`, `skills/`, `context/` |
 | Main use case | Complex implementation tasks that need plan -> execute -> review loops |
-| Control surface | `/omg:*` commands + `$skill` workflows + sub-agent delegation |
+| Control surface | Slash-command-first `/omg:*` control plane + 6 deep-work `$skills` + sub-agent delegation |
 | Default model strategy | Judgment/acceptance gates on `gemini-3.1-pro`, implementation-heavy work on `gemini-3.1-flash`, broad low-risk exploration on `gemini-3.1-flash-lite` |
 
 ## Why OmG
@@ -59,7 +52,7 @@ OmG extends Gemini CLI from a single-session assistant into a structured, role-d
 | --- | --- |
 | Context gets mixed across planning and execution | Role-separated agents with focused responsibilities |
 | Hard to keep progress visible in long tasks | Explicit workflow stages and command-driven status checks |
-| Repetitive prompt engineering for common jobs | Reusable skill templates (`$plan`, `$team`, `$research`) |
+| Repetitive prompt engineering for common jobs | Slash commands for operational control plus retained deep-work skills (`$plan`, `$execute`, `$research`) |
 | Drift between "what was decided" and "what was changed" | Review and debugging roles inside the same orchestration loop |
 
 ## Architecture
@@ -71,7 +64,7 @@ flowchart TD
     E --> C["commands/omg/*.toml"]
     E --> S["skills/*/SKILL.md"]
     E --> A["agents/*.md"]
-    E --> X["context/omg-core.md"]
+    E --> X["GEMINI.md -> context/omg-core.md"]
     C --> O["Orchestration Prompt"]
     S --> O
     A --> O
@@ -134,7 +127,7 @@ Example flow:
 
 Activation note:
 - No separate research-preview setting is required in OmG.
-- If the extension is loaded, `/omg:team-assemble` and `$team-assemble` are immediately available.
+- If the extension is loaded, `/omg:team-assemble` is immediately available.
 
 ## Notification Routing
 
@@ -245,31 +238,14 @@ Note: extension install/update commands run in terminal mode (`gemini extensions
 
 ### Skills
 
+Retained skills are intentionally limited to non-overlapping deep-work workflows so the extension loads less discovery metadata at session start.
+
 | Skill | Focus | Output style |
 | --- | --- | --- |
-| `$deep-init` | Initialize deep repository map and validation baseline | Architecture/risk map + onboarding handoff |
-| `$hud` | Manage visual status profile for status rendering | HUD profile + preview line |
-| `$hooks` | Manage deterministic hook triggers and safety policy | Trigger matrix + lane policy |
-| `$notify` | Configure notification routing and external-delivery safety posture | Event matrix + channel policy |
-| `$intent` | Route ambiguous requests into the correct OmG stage | Intent classification + next-command recommendation |
-| `$rules` | Inject conditional guardrail rule packs | Trigger matrix + active policy set |
-| `$memory` | Maintain durable memory index and modular rule packs | Memory audit + active-rule report |
-| `$reasoning` | Control global/teammate reasoning effort posture | Effort profile + override matrix |
 | `$plan` | Convert goals into phased plan | Milestones, risks, and acceptance criteria |
 | `$ralplan` | Strict, stage-gated planning with rollback points | Quality-first execution map |
 | `$execute` | Implement a scoped plan slice | Change summary with validation notes |
 | `$prd` | Convert requests into measurable acceptance criteria | PRD-style scope contract |
-| `$team-assemble` | Dynamic roster selection + approval-gated launch | Team charter + lane protocol |
-| `$team` | Full orchestration across roles | Combined multi-agent report |
-| `$loop` | Enforce iterative exec/verify/fix until completion or blocker | Cycle status board + unresolved backlog |
-| `$autopilot` | Autonomous stage-loop execution | Cycle board with blockers |
-| `$ralph` | Strict verification-gated orchestration | Gate board + ship decision |
-| `$ultrawork` | Batch throughput execution | Shard board + periodic gates |
-| `$consensus` | Option comparison and convergence | Decision matrix + chosen path |
-| `$mode` | Mode/profile switching | Active posture + recommended next command |
-| `$approval` | Approval posture switching | Guardrail matrix + risk policy summary |
-| `$doctor` | Setup/readiness diagnostics | Findings board + remediation sequence |
-| `$cancel` | Graceful stop with resume handoff | Lifecycle stop summary |
 | `$research` | Explore options/tradeoffs | Decision-oriented comparison |
 | `$context-optimize` | Improve context structure | Compression and signal-to-noise adjustments |
 
@@ -297,7 +273,7 @@ Note: extension install/update commands run in terminal mode (`gemini extensions
 | --- | --- | --- |
 | 1 | System / runtime constraints | Keep behavior aligned with platform guarantees |
 | 2 | Project standards | Preserve team conventions and architecture intent |
-| 3 | `GEMINI.md`, `MEMORY.md`, and shared context | Maintain stable long-session memory |
+| 3 | Thin `GEMINI.md`, `MEMORY.md`, and shared context | Maintain stable long-session memory without carrying heavy procedure every turn |
 | 4 | Active task brief | Keep current objective and acceptance criteria visible |
 | 5 | Latest execution traces | Feed immediate iteration and review loops |
 
@@ -305,6 +281,7 @@ Note: extension install/update commands run in terminal mode (`gemini extensions
 
 ```text
 oh-my-gemini-cli/
+|- GEMINI.md
 |- gemini-extension.json
 |- agents/
 |- commands/
@@ -321,7 +298,7 @@ oh-my-gemini-cli/
 | --- | --- | --- |
 | `settings.filter is not a function` during install | Stale Gemini CLI runtime or stale cached extension metadata | Update Gemini CLI, uninstall extension, then reinstall from repository URL |
 | `/omg:*` command not found | Extension not loaded in current session | Run `gemini extensions list`, then restart Gemini CLI session |
-| Skill does not trigger | Skill frontmatter path mismatch | Confirm `skills/<name>/SKILL.md` exists and extension is reloaded |
+| Skill does not trigger | Only the retained deep-work skills are still shipped, or extension metadata is stale | Recheck the retained skill list in the README and reload the extension/session |
 | Team assembly keeps proposing but does not execute | Approval token missing in request | Reply with explicit approval (`yes`, `approve`, `go`, or `run`) |
 | Output is verbose, generic, or repetitive | Reasoning/gate posture too weak for the target artifact | Raise `/omg:reasoning` effort (optionally teammate overrides) and rerun `/omg:team-verify` |
 | Existing launch scripts use `--allowed-tools` | Flag deprecated in newer Gemini CLI | Replace with policy profiles via `--policy` and re-run |

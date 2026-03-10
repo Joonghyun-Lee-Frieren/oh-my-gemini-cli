@@ -30,19 +30,7 @@ Routing hints:
 - option research -> `$research`
 - mode/lifecycle operations -> `/omg:mode`, `/omg:launch`, `/omg:checkpoint`, `/omg:stop`
 
-Output format:
-## Intent Gate
-- primary intent:
-- confidence:
-- command-intent mismatch: yes/no
-
-## Missing Inputs
-- ...
-
-## Recommended Route
-- next command:
-- delegate agents:
-
-## Ready-to-Run Prompt
-- ...
+Response:
+- Keep it concise and operator-facing.
+- Include `Intent Gate`, `Missing Inputs`, `Recommended Route`, and `Ready-to-Run Prompt`.
 """

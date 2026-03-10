@@ -61,22 +61,7 @@ Suggested `hooks.json` shape:
   "source": "omg:hooks"
 }
 
-Output format:
-## Hook Status
-- requested:
-- applied:
-- enabled:
-- profile:
-- persisted:
-
-## Active Lanes
-| Lane | Purpose | Timeout | Debounce |
-| --- | --- | --- | --- |
-
-## Trigger Matrix
-| Trigger | Enabled | Lane | Notes |
-| --- | --- | --- | --- |
-
-## Next Command
-- ...
+Response:
+- Keep it concise and operator-facing.
+- Include `Hook Status`, `Active Lanes`, `Trigger Matrix`, and `Next Command`.
 """

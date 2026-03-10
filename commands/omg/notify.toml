@@ -75,22 +75,7 @@ Suggested `notify.json` shape:
   "source": "omg:notify"
 }
 
-Output format:
-## Notification Status
-- requested:
-- applied:
-- profile:
-- channels:
-- template:
-- persisted:
-
-## Event Matrix
-| Event | Enabled | Channel | Template | Notes |
-| --- | --- | --- | --- | --- |
-
-## Extension Boundary
-- ...
-
-## Next Command
-- ...
+Response:
+- Keep it concise and operator-facing.
+- Include `Notification Status`, `Event Matrix`, `Extension Boundary`, and `Next Command`.
 """
