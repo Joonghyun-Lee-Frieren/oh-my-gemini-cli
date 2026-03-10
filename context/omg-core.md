@@ -65,6 +65,7 @@ Repeat `team-exec -> team-verify -> team-fix` until acceptance criteria pass or 
 - `loop`: strict continuation loop for unresolved acceptance criteria.
 - `hud`: visual status profile control (`normal`, `compact`, `hidden`) for `/omg:status`.
 - `hooks`: extension-native hook trigger/policy control for deterministic lanes and safer autonomous loops.
+- `notify`: notification routing policy for approvals, blockers, verification outcomes, checkpoints, and idle-watchdog alerts.
 - `reasoning`: reasoning effort profile (`low`, `medium`, `high`, `xhigh`) to tune depth/cost posture.
 - `approval`: approval posture (`suggest`, `auto`, `full-auto`) for autonomous action confirmation policy.
 - `doctor`: readiness diagnostics for command/skill/state integrity and team safety posture.
@@ -99,10 +100,12 @@ When filesystem tools are available, persist current workflow state:
 - `.omg/state/hooks.json`
 - `.omg/state/hooks-validation.md`
 - `.omg/state/hooks-last-test.md`
+- `.omg/state/notify.json`
 - `.omg/state/reasoning.json`
 - `.omg/state/approval.json`
 - `.omg/state/doctor.md`
 - `.omg/hooks/*.md`
+- `.omg/notify/*.md`
 
 If these files do not exist, create them only when a mode/lifecycle command is explicitly requested.
 
@@ -113,3 +116,4 @@ If these files do not exist, create them only when a mode/lifecycle command is e
 - Stop autonomous loops when blocked by missing requirements, missing permissions, or repeated failures.
 - Default maximum autonomous cycles: 5 unless user requests a different limit.
 - Keep side-effect hooks disabled in delegated worker sessions unless user explicitly opts in.
+- Keep external notification dispatch disabled in delegated worker sessions unless user explicitly opts in.

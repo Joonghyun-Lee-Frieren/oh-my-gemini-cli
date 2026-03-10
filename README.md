@@ -20,25 +20,28 @@ This project started from that observation:
 
 OmG extends Gemini CLI from a single-session assistant into a structured, role-driven engineering workflow.
 
-## What's New in v0.3.5
+## What's New in v0.3.6
 
-- Added dynamic team assembly entrypoints:
-  - `/omg:team-assemble`
-  - `$team-assemble`
-- Added role-specialized teammates for non-coding and mixed workloads:
-  - `omg-director` (orchestration)
-  - `omg-consultant` (decision criteria and strategic analysis)
-  - `omg-editor` (final output structuring and quality)
-- Added approval-gated team assembly protocol:
-  - Propose roster first
-  - Ask explicit confirmation: "Proceed with this team? (yes/no)"
-  - Run lifecycle only after approval
-- Added model-allocation rule for predictable cost:
-  - judgment/gates -> `gemini-3.1-pro`
-  - implementation-heavy execution -> `gemini-3.1-flash`
-  - broad low-risk exploration -> `gemini-3.1-flash-lite`
-- Added runtime-state convention for assembled roster:
-  - `.omg/state/team-assembly.md`
+- Added notification routing entrypoints:
+  - `/omg:notify`
+  - `$notify`
+- Added extension-native notification profiles:
+  - `quiet`
+  - `balanced`
+  - `watchdog`
+- Added routed event groups for long-running sessions:
+  - `approval-needed`
+  - `verify-failed`
+  - `blocker-raised`
+  - `checkpoint-saved`
+  - `idle-watchdog`
+  - `session-stop`
+- Added runtime-state conventions for notification policy and templates:
+  - `.omg/state/notify.json`
+  - `.omg/notify/*.md`
+- Added safety boundary for external delivery:
+  - OmG owns trigger policy and templates
+  - Desktop/webhook delivery stays opt-in and host-runtime dependent
 
 ## At A Glance
 
@@ -133,6 +136,33 @@ Activation note:
 - No separate research-preview setting is required in OmG.
 - If the extension is loaded, `/omg:team-assemble` and `$team-assemble` are immediately available.
 
+## Notification Routing
+
+Use `notify` when a long-running OmG session needs explicit signals for approvals, verification outcomes, blockers, or idle drift.
+
+- Supported profiles:
+  - `quiet`: only urgent interruptions (`approval-needed`, `verify-failed`, `blocker-raised`, `session-stop`)
+  - `balanced`: quiet + checkpoint and team-approval updates
+  - `watchdog`: balanced + idle-watchdog alerts for unattended loops
+- Supported channels:
+  - `desktop` (host notification adapter)
+  - `terminal-bell`
+  - `file`
+  - `webhook` (external bridge)
+- Safety boundary:
+  - OmG manages event routing, templates, and persisted policy
+  - actual delivery must be implemented by Gemini host hooks, shell adapters, or project-specific webhook bridges
+  - delegated worker sessions keep external dispatch disabled unless the user explicitly opts in
+
+Example flow:
+
+```text
+/omg:notify profile watchdog
+-> enables: approval-needed, verify-failed, blocker-raised, checkpoint-saved, idle-watchdog, session-stop
+-> suggests channels: terminal-bell + file by default
+-> persists policy: .omg/state/notify.json
+```
+
 ## Install
 
 Install from GitHub using the official Gemini Extensions command:
@@ -186,6 +216,7 @@ Note: extension install/update commands run in terminal mode (`gemini extensions
 | `/omg:hooks-init` | Bootstrap hook config and plugin contract scaffolding | At project kickoff or first hook adoption |
 | `/omg:hooks-validate` | Validate hook ordering, safety, and budget constraints | Before enabling high-autonomy workflows |
 | `/omg:hooks-test` | Dry-run hook event sequence and efficiency estimates | After policy changes or repeated loop stalls |
+| `/omg:notify` | Configure notification routing for approvals, blockers, verify results, checkpoints, and idle watchdog alerts | Before unattended `autopilot`/`loop` runs or when alert noise needs tuning |
 | `/omg:intent` | Classify task intent and route to the correct stage/command | Before planning or coding when request intent is ambiguous |
 | `/omg:rules` | Activate task-conditional guardrail rule packs | Before implementation on migration/security/performance-sensitive work |
 | `/omg:memory` | Maintain MEMORY index, topic files, and path-aware rule packs | During long sessions or when decisions/rules drift |
@@ -219,6 +250,7 @@ Note: extension install/update commands run in terminal mode (`gemini extensions
 | `$deep-init` | Initialize deep repository map and validation baseline | Architecture/risk map + onboarding handoff |
 | `$hud` | Manage visual status profile for status rendering | HUD profile + preview line |
 | `$hooks` | Manage deterministic hook triggers and safety policy | Trigger matrix + lane policy |
+| `$notify` | Configure notification routing and external-delivery safety posture | Event matrix + channel policy |
 | `$intent` | Route ambiguous requests into the correct OmG stage | Intent classification + next-command recommendation |
 | `$rules` | Inject conditional guardrail rule packs | Trigger matrix + active policy set |
 | `$memory` | Maintain durable memory index and modular rule packs | Memory audit + active-rule report |

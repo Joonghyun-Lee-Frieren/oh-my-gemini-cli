@@ -15,6 +15,29 @@ Gemini CLI를 위한 컨텍스트 엔지니어링 기반 멀티 에이전트 워
 
 OmG는 Gemini CLI를 단일 세션 도우미에서 구조화된 역할 기반 엔지니어링 워크플로우로 확장합니다.
 
+## v0.3.6의 새로운 내용
+
+- 알림 라우팅 진입점 추가:
+  - `/omg:notify`
+  - `$notify`
+- 장기 실행용 알림 프로파일 추가:
+  - `quiet`
+  - `balanced`
+  - `watchdog`
+- 장기 세션 이벤트 라우팅 추가:
+  - `approval-needed`
+  - `verify-failed`
+  - `blocker-raised`
+  - `checkpoint-saved`
+  - `idle-watchdog`
+  - `session-stop`
+- 알림 정책/템플릿 상태 규약 추가:
+  - `.omg/state/notify.json`
+  - `.omg/notify/*.md`
+- 확장 경계 명확화:
+  - OmG는 이벤트 라우팅과 템플릿을 관리
+  - 데스크톱/웹훅 전달은 호스트 런타임 훅 또는 외부 브리지에 위임
+
 ## v0.3.2의 새로운 내용
 
 - 확장 네이티브 시각 상태 렌더링을 위한 HUD 프로파일 제어 추가:
@@ -102,6 +125,33 @@ sequenceDiagram
     Reviewer-->>User: 최종 검증 결과 보고
 ```
 
+## 알림 라우팅
+
+장기 실행 세션에서 승인 요청, 검증 실패, 블로커, 유휴 상태를 놓치고 싶지 않을 때 `notify`를 사용합니다.
+
+- 프로파일:
+  - `quiet`: 긴급 이벤트만 알림
+  - `balanced`: 체크포인트와 팀 승인 이벤트까지 포함
+  - `watchdog`: `balanced` + 유휴 감시 알림
+- 채널:
+  - `desktop`
+  - `terminal-bell`
+  - `file`
+  - `webhook`
+- 안전 경계:
+  - OmG는 이벤트 정책과 템플릿만 관리합니다.
+  - 실제 전송은 Gemini 호스트 훅, 셸 스크립트, 외부 웹훅 브리지에 맡깁니다.
+  - 위임된 worker 세션에서는 외부 알림 전송을 기본 비활성화합니다.
+
+예시:
+
+```text
+/omg:notify profile watchdog
+-> approval-needed, verify-failed, blocker-raised, checkpoint-saved, idle-watchdog, session-stop 활성화
+-> 기본 채널은 terminal-bell + file 제안
+-> .omg/state/notify.json에 정책 저장
+```
+
 ## 설치
 
 공식 Gemini Extensions 명령으로 GitHub에서 설치합니다:
@@ -142,6 +192,7 @@ gemini extensions list
 | `/omg:hud-on` | HUD를 전체 시각 모드로 빠르게 전환 | 전체 상태 보드로 복귀할 때 |
 | `/omg:hud-compact` | HUD를 컴팩트 모드로 빠르게 전환 | 구현 루프 중 밀도 높은 업데이트가 필요할 때 |
 | `/omg:hud-off` | HUD를 숨김 모드로 빠르게 전환 (플레인 상태 섹션) | 시각 블록이 방해될 때 |
+| `/omg:notify` | 승인/블로커/검증 결과/체크포인트/유휴 감시 알림 라우팅 구성 | 무인 `autopilot`/`loop` 실행 전 또는 알림 노이즈 조정 시 |
 | `/omg:intent` | 요청 인텐트를 분류하고 적절한 스테이지/명령으로 라우팅 | 계획/구현 전, 요청 의도가 모호할 때 |
 | `/omg:rules` | 작업 조건에 맞는 가드레일 룰 팩 활성화 | 마이그레이션/보안/성능 민감 작업 시작 전 |
 | `/omg:deep-init` | 장기 세션을 위한 프로젝트 맵/검증 기준선 초기화 | 신규 코드베이스 온보딩 또는 대형 작업 킥오프 시 |
@@ -171,6 +222,7 @@ gemini extensions list
 | --- | --- | --- |
 | `$deep-init` | 딥 리포지토리 맵/검증 기준선 초기화 | 구조/리스크 맵 + 온보딩 핸드오프 |
 | `$hud` | 상태 출력용 시각 HUD 프로파일 관리 | HUD 프로파일 + 프리뷰 라인 |
+| `$notify` | 알림 라우팅과 외부 전송 안전 정책 구성 | 이벤트 매트릭스 + 채널 정책 |
 | `$intent` | 모호한 요청을 올바른 OmG 단계로 라우팅 | 인텐트 분류 + 다음 명령 추천 |
 | `$rules` | 조건부 가드레일 룰 팩 주입 | 트리거 매트릭스 + 활성 정책 |
 | `$plan` | 목표를 단계별 계획으로 변환 | 마일스톤, 리스크, 수용 기준 |

@@ -1,0 +1,96 @@
+description = "Inspect or configure OmG notification routing for approval gates, verification outcomes, blockers, and long-running sessions."
+prompt = """
+Run OmG notification manager.
+
+Input:
+$ARGUMENTS
+
+Protocol:
+1. Parse requested action:
+   - `status`
+   - `off`
+   - `profile <quiet|balanced|watchdog>`
+   - `channel <desktop|terminal-bell|file|webhook>`
+   - `events`
+   - `template <compact|detailed|incident>`
+   - `idle <minutes>`
+2. Supported event groups:
+   - `approval-needed`
+   - `team-approved`
+   - `verify-passed`
+   - `verify-failed`
+   - `blocker-raised`
+   - `checkpoint-saved`
+   - `idle-watchdog`
+   - `session-stop`
+3. Supported channels:
+   - `desktop` (host OS notification adapter)
+   - `terminal-bell`
+   - `file` (append summaries to `.omg/state/notify.log`)
+   - `webhook` (external bridge managed outside OmG)
+4. Apply notification posture rules:
+   - `quiet`: only `approval-needed`, `verify-failed`, `blocker-raised`, `session-stop`
+   - `balanced`: quiet + `team-approved`, `checkpoint-saved`
+   - `watchdog`: balanced + `idle-watchdog`
+5. Enforce extension boundary:
+   - OmG manages trigger policy, templates, and state artifacts.
+   - Actual OS/webhook delivery must be handled by Gemini host hooks, shell scripts, or project-specific bridges.
+   - Worker/delegated sessions must stay read-only and must not dispatch external notifications.
+6. Enforce safety:
+   - external side-effect channels (`desktop`, `webhook`) require explicit opt-in
+   - `webhook` stays disabled if the bridge URL/secret is missing
+   - if approval posture is `suggest`, recommend explicit confirmation before enabling external channels
+7. If filesystem tools are available, write/update:
+   - `.omg/state/notify.json`
+   - `.omg/notify/README.md`
+   - `.omg/notify/templates/compact.md`
+   - `.omg/notify/templates/detailed.md`
+   - `.omg/notify/templates/incident.md`
+
+Suggested `notify.json` shape:
+{
+  "enabled": true,
+  "profile": "balanced",
+  "channels": {
+    "desktop": false,
+    "terminal-bell": true,
+    "file": true,
+    "webhook": false
+  },
+  "template": "compact",
+  "idle_watchdog_minutes": 15,
+  "events": {
+    "approval-needed": ["terminal-bell"],
+    "team-approved": ["file"],
+    "verify-passed": ["file"],
+    "verify-failed": ["terminal-bell", "file"],
+    "blocker-raised": ["terminal-bell", "file"],
+    "checkpoint-saved": ["file"],
+    "idle-watchdog": [],
+    "session-stop": ["terminal-bell", "file"]
+  },
+  "external_dispatch_requires_opt_in": true,
+  "worker_sessions_external_dispatch": false,
+  "updated_at": "<ISO-8601>",
+  "source": "omg:notify"
+}
+
+Output format:
+## Notification Status
+- requested:
+- applied:
+- profile:
+- channels:
+- template:
+- persisted:
+
+## Event Matrix
+| Event | Enabled | Channel | Template | Notes |
+| --- | --- | --- | --- | --- |
+
+## Extension Boundary
+- ...
+
+## Next Command
+- ...
+"""

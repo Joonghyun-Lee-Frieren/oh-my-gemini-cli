@@ -483,7 +483,7 @@
   <header>
     <div class="wrap">
       <div class="hero-top">
-        <span class="badge">Latest Release v0.3.5</span>
+        <span class="badge">Latest Update v0.3.6</span>
         <div class="top-actions">
           <a class="btn btn-link btn-github" href="https://github.com/Joonghyun-Lee-Frieren/oh-my-gemini-cli" target="_blank" rel="noreferrer noopener">
             <svg class="btn-icon" viewBox="0 0 16 16" aria-hidden="true">
@@ -530,8 +530,8 @@
 
       <div class="stats">
         <div class="stat"><div class="n">13</div><div class="l">Sub-agents</div></div>
-        <div class="stat"><div class="n">24</div><div class="l">Reusable skills</div></div>
-        <div class="stat"><div class="n">35</div><div class="l">Namespaced commands</div></div>
+        <div class="stat"><div class="n">25</div><div class="l">Reusable skills</div></div>
+        <div class="stat"><div class="n">36</div><div class="l">Namespaced commands</div></div>
         <div class="stat"><div class="n">5</div><div class="l">Context layers</div></div>
       </div>
     </div>
@@ -539,8 +539,8 @@
 
   <section>
     <div class="wrap">
-      <h2>Latest Update (v0.3.5 Team Assembly)</h2>
-      <p class="sub">Dynamic Agent Team Assembly adds approval-gated, role-fit team composition before staged execution.</p>
+      <h2>Latest Update (v0.3.6 Notification Routing)</h2>
+      <p class="sub">Extension-native notification routing adds event policies for approvals, verification outcomes, blockers, checkpoints, and idle watchdog alerts.</p>
       <table>
         <thead>
           <tr>
@@ -550,40 +550,32 @@
         </thead>
         <tbody>
           <tr>
-            <td>Dynamic Team Assembly</td>
-            <td>Added <code>/omg:team-assemble</code> and <code>$team-assemble</code> to build a task-fit roster before execution.</td>
+            <td>Notification Entry Points</td>
+            <td>Added <code>/omg:notify</code> and <code>$notify</code> to configure alert routing for long-running OmG sessions.</td>
           </tr>
           <tr>
-            <td>Approval Gate</td>
-            <td>Team assembly now proposes a roster first, then asks explicit confirmation before autonomous lifecycle execution.</td>
+            <td>Profiles</td>
+            <td>Added <code>quiet</code>, <code>balanced</code>, and <code>watchdog</code> profiles so unattended runs can choose the right alert density.</td>
           </tr>
           <tr>
-            <td>New Specialist Roles</td>
-            <td>Added <code>omg-director</code>, <code>omg-consultant</code>, and <code>omg-editor</code> for orchestration, strategic analysis, and output packaging.</td>
+            <td>Event Routing</td>
+            <td>Added first-class events for <code>approval-needed</code>, <code>verify-failed</code>, <code>blocker-raised</code>, <code>checkpoint-saved</code>, <code>idle-watchdog</code>, and <code>session-stop</code>.</td>
           </tr>
           <tr>
-            <td>Model Allocation Policy</td>
-            <td>Codified lane policy: judgment/gates on <code>gemini-3.1-pro</code>, execution on <code>gemini-3.1-flash</code>, and exploration/quick low-risk work on <code>gemini-3.1-flash-lite</code>.</td>
+            <td>Channel Policy</td>
+            <td>Notification plans now distinguish <code>desktop</code>, <code>terminal-bell</code>, <code>file</code>, and external <code>webhook</code> bridges.</td>
           </tr>
           <tr>
-            <td>Role-aware Reasoning Effort</td>
-            <td>Added support for global + teammate reasoning posture so reviewer/verifier lanes can run deeper without forcing all lanes to xhigh.</td>
+            <td>Runtime State</td>
+            <td>Added persisted policy and template conventions: <code>.omg/state/notify.json</code> and <code>.omg/notify/*.md</code>.</td>
           </tr>
           <tr>
-            <td>Anti-Slop Quality Gate</td>
-            <td>Verification/editor paths now include anti-slop checks for generic filler, repetitive phrasing, and weak evidence wording.</td>
-          </tr>
-          <tr>
-            <td>State Persistence</td>
-            <td>Added <code>.omg/state/team-assembly.md</code> convention for resume-safe roster handoff.</td>
-          </tr>
-          <tr>
-            <td>Documentation Boost</td>
-            <td>Added a dedicated guide: <code>docs/guide/agent-team-assembly.md</code>.</td>
+            <td>Safety Boundary</td>
+            <td>External delivery stays opt-in and delegated worker sessions keep external notification dispatch disabled by default.</td>
           </tr>
           <tr>
             <td>Activation Path</td>
-            <td>No extra preview toggle required in OmG; if extension is loaded, <code>/omg:team-assemble</code> is ready.</td>
+            <td>No extra preview flag is required; once the extension is loaded, <code>/omg:notify</code> is available immediately.</td>
           </tr>
         </tbody>
       </table>
@@ -718,6 +710,11 @@ Structured Result
             <td>Manual event policing and ad-hoc checks</td>
             <td><code>/omg:hooks</code> + <code>/omg:hooks-validate</code> enforce deterministic lanes, safety policy, and trigger health checks</td>
           </tr>
+          <tr>
+            <td>Long-run alerting</td>
+            <td>Manual monitoring or ad-hoc shell notifications</td>
+            <td><code>/omg:notify</code> keeps approvals, blockers, verify failures, checkpoints, and idle drift observable with extension-native policy files</td>
+          </tr>
         </tbody>
       </table>
     </div>
@@ -773,11 +770,11 @@ Structured Result
       <div class="cards" style="margin-bottom:10px;">
         <div class="card">
           <h3>Commands</h3>
-          <p>Fast control points for status, intent routing, dynamic team assembly, approval posture, and staged execution control.</p>
+          <p>Fast control points for status, notification routing, intent routing, approval posture, and staged execution control.</p>
         </div>
         <div class="card">
           <h3>Skills</h3>
-          <p>Reusable packs for team assembly, diagnostics, approval posture, context hygiene, and guardrail-aware delivery loops.</p>
+          <p>Reusable packs for notification routing, diagnostics, approval posture, context hygiene, and guardrail-aware delivery loops.</p>
         </div>
         <div class="card">
           <h3>Sub-agents</h3>
@@ -803,6 +800,7 @@ Structured Result
           <tr><td>Command</td><td><code>/omg:hooks-init</code></td><td>Bootstrap hook policy files and plugin contract scaffolding</td></tr>
           <tr><td>Command</td><td><code>/omg:hooks-validate</code></td><td>Validate trigger graph, ordering, and worker-session safety constraints</td></tr>
           <tr><td>Command</td><td><code>/omg:hooks-test</code></td><td>Dry-run event sequences and estimate hook efficiency impact</td></tr>
+          <tr><td>Command</td><td><code>/omg:notify</code></td><td>Configure approvals/blockers/verify/checkpoint/idle notification routing</td></tr>
           <tr><td>Command</td><td><code>/omg:intent</code></td><td>Classify request intent and route to the right stage</td></tr>
           <tr><td>Command</td><td><code>/omg:team-assemble</code></td><td>Build a task-fit team roster and request execution approval</td></tr>
           <tr><td>Command</td><td><code>/omg:deep-init</code></td><td>Build project map and validation baseline before long sessions</td></tr>
@@ -820,6 +818,7 @@ Structured Result
           <tr><td>Skill</td><td><code>$intent</code></td><td>Intent routing and next-command recommendation</td></tr>
           <tr><td>Skill</td><td><code>$hud</code></td><td>HUD profile control for status readability</td></tr>
           <tr><td>Skill</td><td><code>$hooks</code></td><td>Hook event policy, lane assignment, and safety guard tuning</td></tr>
+          <tr><td>Skill</td><td><code>$notify</code></td><td>Notification profile, event matrix, and channel safety policy</td></tr>
           <tr><td>Skill</td><td><code>$deep-init</code></td><td>Repository bootstrap map for long tasks</td></tr>
           <tr><td>Skill</td><td><code>$rules</code></td><td>Conditional policy activation by trigger</td></tr>
           <tr><td>Skill</td><td><code>$memory</code></td><td>Memory audit and modular rule activation map</td></tr>
@@ -891,6 +890,11 @@ Structured Result
             <td>Set operator posture</td>
             <td><code>/omg:approval auto</code></td>
             <td>Explicit confirmation policy aligned to task risk</td>
+          </tr>
+          <tr>
+            <td>Set alert posture</td>
+            <td><code>/omg:notify profile watchdog</code></td>
+            <td>Approval, blocker, verify-failure, checkpoint, and idle-watchdog alerts persisted to policy state</td>
           </tr>
           <tr>
             <td>Start workflow</td>

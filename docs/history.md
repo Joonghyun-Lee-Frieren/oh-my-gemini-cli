@@ -6,6 +6,7 @@ All notable changes to oh-my-gemini-cli are documented here.
 
 | Version | Date | Theme | Outcome |
 | --- | --- | --- | --- |
+| `v0.3.6` | 2026-03-10 | Notification routing | Added extension-native notification profiles, event routing, and safe external-delivery boundaries for long-running OmG sessions |
 | `v0.3.5` | 2026-03-04 | Dynamic Agent Team Assembly | Added approval-gated dynamic team composition with new director/consultant/editor roles and model-aware lane policy |
 | `v0.3.4` | 2026-02-28 | Deterministic hook orchestration | Added extension-native hook commands/skill with event-lane policy, safety validation, and dry-run testing |
 | `v0.3.3` | 2026-02-28 | Claude-style memory management | Added file-based memory index/topic split and modular rule-pack workflows |
@@ -18,6 +19,30 @@ All notable changes to oh-my-gemini-cli are documented here.
 | `v0.1.2` | 2026-02-22 | Model/branding consistency | `gemini-3.1-*` naming and OmG branding normalized |
 | `v0.1.1` | 2026-02-22 | Dashboard redesign | Retro game-style TUI and richer telemetry presentation |
 | `v0.1.0` | 2026-02-22 | Initial release | Multi-agent orchestration foundation shipped |
+
+## v0.3.6 - Notification Routing (2026-03-10)
+
+Added an extension-native notification policy layer so OmG can surface approvals, verification failures, blockers, checkpoints, and idle drift without depending on custom CLI flags.
+
+### Added
+
+- New notification command and skill:
+  - `/omg:notify`
+  - `$notify`
+- New runtime-state conventions:
+  - `.omg/state/notify.json`
+  - `.omg/notify/*.md`
+
+### Changed
+
+- `context/omg-core.md` updated with notification controls, persisted state conventions, and worker-session notification safety rails.
+- README, Korean README, and landing page updated with notification profile, channel, and activation guidance.
+- Extension/package version bumped to `0.3.6`.
+
+### Structural Fit Note
+
+- OmG notification routing remains extension-native and policy-driven.
+- Actual desktop/webhook delivery is intentionally delegated to Gemini host hooks, shell adapters, or project-specific bridges.
 
 ## v0.3.5 - Dynamic Agent Team Assembly (2026-03-04)
 
