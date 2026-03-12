@@ -59,17 +59,30 @@ OmG extends Gemini CLI from a single-session assistant into a structured, role-d
 
 ```mermaid
 flowchart TD
-    U["User Request"] --> G["Gemini CLI"]
-    G --> E["OmG Extension"]
-    E --> C["commands/omg/*.toml"]
-    E --> S["skills/*/SKILL.md"]
-    E --> A["agents/*.md"]
-    E --> X["GEMINI.md -> context/omg-core.md"]
-    C --> O["Orchestration Prompt"]
-    S --> O
-    A --> O
-    X --> O
-    O --> R["Structured Result: Plan, Execution, Validation, Next Steps"]
+    U["User Task"] --> CLI["Gemini CLI Session"]
+    CLI --> ORCH["OmG Extension Orchestration"]
+
+    CORE["GEMINI.md -> context/omg-core.md"] --> ORCH
+    CMDS["commands/omg/*.toml"] --> ORCH
+    AGENTS["agents/*.md (role prompts)"] --> ORCH
+    SKILLS["skills/*/SKILL.md (retained deep-work skills)"] --> ORCH
+
+    ORCH --> I["/omg:intent"]
+    I --> W["/omg:workspace (+ audit when needed)"]
+    W --> A["/omg:team-assemble (optional approval gate)"]
+    A --> P["team-plan -> team-prd -> taskboard sync"]
+    P --> E["team-exec"]
+    E --> V["team-verify"]
+    V --> D{"Done criteria met?"}
+    D -- "No" --> F["team-fix"]
+    F --> E
+    D -- "Yes" --> O["Validated output + next actions"]
+
+    W -. lane map .-> WS[".omg/state/workspace.json"]
+    P -. seed/sync .-> TB[".omg/state/taskboard.md"]
+    E -. slice updates .-> TB
+    V -. verifier evidence .-> TB
+    ORCH -. status/checkpoint/hooks/notify .-> ST[".omg/state/{workflow.md,hooks.json,notify.json,...}"]
 ```
 
 ## Team Workflow
@@ -78,26 +91,40 @@ flowchart TD
 sequenceDiagram
     participant User
     participant Director as omg-director
+    participant Workspace as workspace/taskboard state
     participant Planner as omg-planner
     participant Architect as omg-architect
+    participant Product as omg-product
     participant Executor as omg-executor
     participant Reviewer as omg-reviewer
+    participant Verifier as omg-verifier
     participant Debugger as omg-debugger
     participant Editor as omg-editor
 
     User->>Director: Request team execution
+    Director->>Workspace: Check lane health + task readiness
+    Workspace-->>Director: workspace/taskboard summary
     Director->>User: Propose dynamic team + approval gate
     User->>Director: Approve roster
-    Director->>Planner: Define goal and constraints
+    Director->>Planner: Run team-plan
     Planner->>Architect: Validate technical direction (when needed)
     Architect-->>Planner: Design feedback and risk flags
-    Planner->>Director: Hand off executable slices
-    Director->>Executor: Assign implementation lane
-    Executor->>Reviewer: Submit implementation result
-    Reviewer-->>Executor: Accept or request fix
-    Reviewer->>Debugger: Trigger on failing tests or regressions
-    Debugger-->>Reviewer: Root cause + patch proposal
-    Reviewer->>Director: Verification result
+    Planner-->>Director: Task graph + lane assumptions
+    Director->>Product: Run team-prd
+    Product-->>Director: Acceptance criteria + non-goals
+
+    loop team-exec -> team-verify -> team-fix until done/blocker
+        Director->>Executor: Assign smallest ready slice
+        Executor->>Workspace: Update taskboard with execution notes
+        Director->>Reviewer: Review implementation slice
+        Reviewer->>Verifier: Run acceptance + anti-slop gate
+        Verifier-->>Director: Pass/fail + verified task IDs
+        alt Verification fails
+            Director->>Debugger: Trigger root-cause analysis
+            Debugger-->>Executor: Patch plan and fix targets
+        end
+    end
+
     Director->>Editor: Package validated output
     Editor-->>User: Final validated deliverable
 ```
@@ -122,7 +149,7 @@ Example flow:
 /omg:team-assemble "Compare 3 competitors and produce an exec report"
 -> proposes: researcher x3 + consultant + editor + director
 -> asks: Proceed with this team? (yes/no)
--> after approval: team-plan -> team-prd -> team-exec -> team-verify -> team-fix
+-> after approval: team-plan -> team-prd -> taskboard -> team-exec -> team-verify -> team-fix
 ```
 
 Activation note:
